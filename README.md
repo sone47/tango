@@ -122,7 +122,7 @@ interface PracticeEntity {
 
 1. **克隆项目**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/sone47/tango.git
    cd tango
    ```
 
