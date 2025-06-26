@@ -6,8 +6,6 @@ interface VerticalSwipeHandlerProps {
   enabled: boolean
   onSwipeUp: () => void
   onSwipeDown: () => void
-  upHint?: ReactNode
-  downHint?: ReactNode
   distanceThreshold?: number
   velocityThreshold?: number
   exitDuration?: number
@@ -26,8 +24,6 @@ const VerticalSwipeHandler = ({
   enabled,
   onSwipeUp,
   onSwipeDown,
-  upHint,
-  downHint,
   distanceThreshold = 150,
   velocityThreshold = 300,
   exitDuration = 300,
@@ -88,32 +84,6 @@ const VerticalSwipeHandler = ({
 
   return (
     <div className={`relative ${className}`}>
-      {/* 上滑提示 */}
-      {upHint && (
-        <motion.div
-          className="absolute top-0 left-0 right-0 h-20 flex items-center justify-center pointer-events-none z-10"
-          animate={{
-            opacity: enabled && dragOffset < -30 ? Math.min(1, Math.abs(dragOffset + 30) / 80) : 0,
-          }}
-          transition={{ duration: 0.1 }}
-        >
-          {upHint}
-        </motion.div>
-      )}
-
-      {/* 下滑提示 */}
-      {downHint && (
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 h-20 flex items-center justify-center pointer-events-none z-10"
-          animate={{
-            opacity: enabled && dragOffset > 30 ? Math.min(1, Math.abs(dragOffset - 30) / 80) : 0,
-          }}
-          transition={{ duration: 0.1 }}
-        >
-          {downHint}
-        </motion.div>
-      )}
-
       {/* 可拖拽内容 */}
       <motion.div
         className="w-full h-full"

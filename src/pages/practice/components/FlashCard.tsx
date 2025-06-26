@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import Button from '@/components/Button'
 import ProficiencySlider from '@/components/ProficiencySlider'
+import toast from '@/components/Toast'
 import { practiceService } from '@/services/practiceService'
 import type { CardRevealState, Word } from '@/types'
 
@@ -76,11 +77,15 @@ const FlashCard = ({
 
   const handleSwipeUp = () => {
     const newProficiency = Math.min(100, proficiency + 14)
+    toast.success('已掌握', 1000)
+
     goToNextCard(newProficiency)
   }
 
   const handleSwipeDown = () => {
     const newProficiency = Math.max(0, proficiency - 14)
+    toast.error('未掌握', 800)
+
     goToNextCard(newProficiency)
   }
 
@@ -112,19 +117,6 @@ const FlashCard = ({
     audio.play()
   }
 
-  // 准备滑动提示组件
-  const upHint = (
-    <div className="bg-green-100 text-green-700 px-6 py-3 rounded-2xl font-medium shadow-lg">
-      ✓ 已掌握
-    </div>
-  )
-
-  const downHint = (
-    <div className="bg-red-100 text-red-700 px-6 py-3 rounded-2xl font-medium shadow-lg">
-      ✗ 未掌握
-    </div>
-  )
-
   return (
     <motion.div
       className="w-full max-w-sm mx-auto h-full flex flex-col"
@@ -139,8 +131,6 @@ const FlashCard = ({
           enabled={allRevealed}
           onSwipeUp={handleSwipeUp}
           onSwipeDown={handleSwipeDown}
-          upHint={upHint}
-          downHint={downHint}
           className="absolute inset-0 w-full h-full"
         >
           <motion.div
