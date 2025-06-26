@@ -22,12 +22,12 @@ const CardPackConfigModal = ({
   onConfirm,
   onCancel,
 }: CardPackConfigModalProps) => {
-  const [proficiency, setProficiency] = useState(0)
+  const [proficiency, setProficiency] = useState(100)
   const [filteredWordsCount, setFilteredWordsCount] = useState(0)
   const [practices, setPractices] = useState<Practice[]>([])
 
   const initData = useCallback(async () => {
-    setProficiency(0)
+    setProficiency(100)
 
     const vocabularyIds = cardPack.words.map((word) => word.id)
     const practices = await practiceService.getPracticesByVocabularyIds(vocabularyIds)
