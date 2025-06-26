@@ -3,7 +3,8 @@ import type { RecommendedPack } from '@/types'
 export class RecommendedPackService {
   async getRecommendedPacks(): Promise<RecommendedPack[]> {
     try {
-      const response = await fetch('/recommended-packs/index.json')
+      const basePath = import.meta.env.BASE_URL || '/'
+      const response = await fetch(`${basePath}recommended-packs/index.json`)
       if (!response.ok) {
         throw new Error('Failed to fetch recommended packs')
       }
@@ -17,7 +18,8 @@ export class RecommendedPackService {
 
   async downloadRecommendedPack(pack: RecommendedPack): Promise<File> {
     try {
-      const response = await fetch(`/recommended-packs/${pack.fileName}`)
+      const basePath = import.meta.env.BASE_URL || '/'
+      const response = await fetch(`${basePath}recommended-packs/${pack.fileName}`)
       if (!response.ok) {
         throw new Error(`Failed to download ${pack.fileName}`)
       }
