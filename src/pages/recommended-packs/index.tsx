@@ -44,7 +44,7 @@ const RecommendedPacksPage = () => {
       const importResult = await wordPackService.importFromExcel(file, pack.name)
 
       if (importResult.success) {
-        toast.success(`🎉 「${pack.name}」导入成功！`)
+        toast.success(`「${pack.name}」导入成功！`)
       } else {
         throw new Error(importResult.message)
       }
