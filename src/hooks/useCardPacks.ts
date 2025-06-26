@@ -16,7 +16,7 @@ interface UseCardPacksResult {
 export const useCardPacks = (): UseCardPacksResult => {
   const { currentWordPackId, hasData: hasWordPackData } = useCurrentWordPack()
   const [cardPacks, setCardPacks] = useState<CardPack[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const fetchCardPacks = async (wordPackId: number | null) => {

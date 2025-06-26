@@ -15,10 +15,8 @@ const WordPackManagePage = () => {
   const { allWordPacks, loading, hasData, error, fetchWordPacks } = useWordPackStore()
 
   useEffect(() => {
-    if (!loading && allWordPacks.length === 0 && !error) {
-      fetchWordPacks()
-    }
-  }, [loading, allWordPacks.length, error, fetchWordPacks])
+    fetchWordPacks()
+  }, [fetchWordPacks])
 
   const handleWordPackSelect = (wordPack: WordPack) => {
     setCurrentWordPackId(wordPack.id!)
