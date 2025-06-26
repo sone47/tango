@@ -9,7 +9,7 @@ import { ToastProvider } from './components/Toast'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter basename="/tango">
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <ToastProvider>
         <App />
       </ToastProvider>

@@ -8,7 +8,7 @@ function pathResolve(dir: string) {
 
 export default defineConfig({
   plugins: [react()],
-  base: '/tango/',
+  base: '/tango',
   server: {
     host: '0.0.0.0',
   },
