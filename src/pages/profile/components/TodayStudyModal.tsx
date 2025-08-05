@@ -79,7 +79,7 @@ const TodayStudyModal = ({ isOpen, onClose }: TodayStudyModalProps) => {
               <Calendar size={24} className="text-gray-400" />
             </div>
             <p className="text-gray-500">今天还没有学习记录</p>
-            <p className="text-sm text-gray-400 mt-1">开始练习卡片来记录学习进度吧！</p>
+            <p className="text-sm text-gray-400 mt-1">快去学习吧～</p>
           </div>
         ) : (
           <div className="space-y-3">

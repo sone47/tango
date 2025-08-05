@@ -141,8 +141,8 @@ const HistoryPool = ({ isOpen, onClose, studiedWords }: HistoryPoolProps) => {
           <div className="w-20 h-20 bg-gray-100 rounded-full mb-4 mx-auto flex items-center justify-center">
             <Star size={24} className="text-gray-400" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">暂无历史记录</h3>
-          <p className="text-gray-600">开始练习后，已学习的卡片会出现在这里</p>
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">暂无历史学习记录</h3>
+          <p className="text-gray-600">快去学习吧～</p>
         </div>
       )}
     </Modal>

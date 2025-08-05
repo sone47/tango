@@ -87,7 +87,7 @@ const CardPackConfigModal = ({
             className="w-full"
             disabled={!filteredWordsCount}
           >
-            开始练习
+            开始学习
           </Button>
 
           <Button
