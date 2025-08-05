@@ -43,6 +43,14 @@ else
     git checkout --orphan gh-pages
 fi
 
+# 保存 node_modules 的引用（如果存在）
+if [ -d "node_modules" ]; then
+    echo "💾 保存 node_modules 引用..."
+    NODE_MODULES_EXISTS=true
+else
+    NODE_MODULES_EXISTS=false
+fi
+
 echo "🗑️  清理 gh-pages 分支内容..."
 
 # 删除除了 .git 和 dist 以外的所有文件和目录
@@ -80,4 +88,17 @@ fi
 echo "🔙 切换回 $CURRENT_BRANCH 分支"
 git checkout "$CURRENT_BRANCH"
 
-echo "🎉 部署流程完成！" 
+# 恢复 node_modules（如果需要）
+if [ "$NODE_MODULES_EXISTS" = true ]; then
+    echo "📦 检查 node_modules..."
+    if [ ! -d "node_modules" ]; then
+        echo "🔄 重新安装依赖..."
+        pnpm install
+    else
+        echo "✅ node_modules 已存在，无需重新安装"
+    fi
+else
+    echo "ℹ️  原始分支没有 node_modules，跳过恢复"
+fi
+
+echo "🎉 部署流程完成！"
