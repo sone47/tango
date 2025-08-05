@@ -77,7 +77,7 @@ const StudyStats = () => {
             title="词包进度"
             value={progressLoading ? '-' : `${currentWordPackProgress}%`}
             icon={Package}
-            color="purple"
+            color="blue"
             onClick={wordPackProgressModal.open}
           />
         </div>

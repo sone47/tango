@@ -81,7 +81,7 @@ const ImportSection = () => {
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">
         <div
-          className={`w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center`}
+          className={`w-10 h-10 rounded-xl bg-green-100 text-green-600 flex items-center justify-center`}
         >
           <Upload size={20} />
         </div>
@@ -92,7 +92,7 @@ const ImportSection = () => {
         size="sm"
         icon={Star}
         onClick={handleRecommendedPacksClick}
-        className="text-orange-600 hover:bg-orange-50"
+        className="text-gray-600 hover:text-gray-800"
       >
         推荐词包
       </Button>
