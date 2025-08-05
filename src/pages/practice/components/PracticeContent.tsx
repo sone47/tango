@@ -91,10 +91,10 @@ const PracticeContent = ({
       <EmptyState
         icon="📚"
         title="未选择卡包"
-        description="点击上方按钮选择一个卡包开始练习"
+        description="点击下方按钮选择一个卡包开始学习"
         actions={[
           {
-            label: '选择卡包',
+            label: '开始学习',
             onClick: onSelectCardPack,
           },
         ]}
