@@ -39,6 +39,26 @@ export class VocabularyService {
       return []
     }
   }
+
+  async getWordsByCardPackId(cardPackId: number): Promise<VocabularyEntity[]> {
+    try {
+      const vocabularies = await this.vocabularyRepo.findBy('cardPackId', cardPackId)
+      return vocabularies
+    } catch (error) {
+      console.error('获取词汇失败:', error)
+      return []
+    }
+  }
+
+  async getWordCountByCardPackId(cardPackId: number): Promise<number> {
+    try {
+      const count = await this.vocabularyRepo.count('cardPackId', cardPackId)
+      return count
+    } catch (error) {
+      console.error('获取词汇数量失败:', error)
+      return 0
+    }
+  }
 }
 
 export const vocabularyService = new VocabularyService()

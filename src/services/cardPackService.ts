@@ -2,11 +2,11 @@ import { getGlobalIDBManager } from '@/hooks/useDatabase'
 import {
   type CardPackEntity,
   cardPackSchema,
-  type VocabularyEntity,
-  vocabularySchema,
   type WordPackEntity,
   wordPackSchema,
 } from '@/schemas'
+import { practiceService } from './practiceService'
+import { vocabularyService } from './vocabularyService'
 
 export class CardPackService {
   private get wordPackRepo() {
@@ -15,10 +15,6 @@ export class CardPackService {
 
   private get cardPackRepo() {
     return getGlobalIDBManager().getRepository<CardPackEntity>(cardPackSchema)
-  }
-
-  private get vocabularyRepo() {
-    return getGlobalIDBManager().getRepository<VocabularyEntity>(vocabularySchema)
   }
 
   /**
@@ -34,17 +30,18 @@ export class CardPackService {
    * @param wordPackId 词包ID
    * @returns 卡包基本信息列表
    */
-  async getCardPacksByWordPackId(wordPackId: number): Promise<CardPackEntity[]> {
+  async getCardPacksByWordPackId(wordPackId: number) {
     try {
       const cardPackEntities = await this.cardPackRepo.findBy('wordPackId', wordPackId)
 
       if (!cardPackEntities.length) return []
 
-      const cardPacks: CardPackEntity[] = await Promise.all(
+      const cardPacks = await Promise.all(
         cardPackEntities.map(async (entity) => {
           return {
             ...entity,
-            words: await this.getWordsByCardPackId(entity.id!),
+            words: await vocabularyService.getWordsByCardPackId(entity.id!),
+            progress: await practiceService.calculateCardPackProgress(entity.id!),
           }
         })
       )
@@ -66,19 +63,12 @@ export class CardPackService {
 
       return {
         ...cardPack,
-        words: await this.getWordsByCardPackId(cardPackId),
+        words: await vocabularyService.getWordsByCardPackId(cardPackId),
       }
     } catch (error) {
       console.error('获取完整卡包数据失败:', error)
       return null
     }
-  }
-
-  /**
-   * 根据卡包ID获取词汇列表
-   */
-  async getWordsByCardPackId(cardPackId: number) {
-    return this.vocabularyRepo.findBy('cardPackId', cardPackId)
   }
 }
 

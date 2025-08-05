@@ -7,9 +7,9 @@ import {
   type PracticeEntity,
   practiceSchema,
   type VocabularyEntity,
-  vocabularySchema,
 } from '@/schemas'
 import { now, todayRange } from '@/utils/date'
+import { vocabularyService } from './vocabularyService'
 
 export class PracticeService {
   private get practiceRepo() {
@@ -18,10 +18,6 @@ export class PracticeService {
 
   private get cardPackRepo() {
     return getGlobalIDBManager().getRepository<CardPackEntity>(cardPackSchema)
-  }
-
-  private get vocabularyRepo() {
-    return getGlobalIDBManager().getRepository<VocabularyEntity>(vocabularySchema)
   }
 
   async getTodayPractices(): Promise<PracticeEntity[]> {
@@ -136,34 +132,53 @@ export class PracticeService {
   async calculateWordPackProgress(wordPackId: number): Promise<number> {
     try {
       const cardPacks = await this.cardPackRepo.findBy('wordPackId', wordPackId)
-      if (cardPacks.length === 0) {
-        return 0
-      }
+      if (!cardPacks.length) return 0
 
       let totalWordsCount = 0
-      let totalWeightedProficiency = 0
+      const practices: PracticeEntity[] = []
 
       for (const cardPack of cardPacks) {
-        const vocabularies = await this.vocabularyRepo.findBy('cardPackId', cardPack.id)
+        const vocabularies = await vocabularyService.getWordsByCardPackId(cardPack.id)
         const vocabularyIds = vocabularies.map((v) => v.id)
 
-        if (vocabularyIds.length === 0) continue
+        if (!vocabularyIds.length) continue
 
-        const practices = await this.getPracticesByVocabularyIds(vocabularyIds)
-
-        totalWeightedProficiency += practices.reduce((acc, curr) => acc + curr.proficiency, 0)
+        const practicesForCardPack = await this.getPracticesByVocabularyIds(vocabularyIds)
+        practices.push(...practicesForCardPack)
         totalWordsCount += vocabularies.length
       }
 
-      if (totalWordsCount === 0) {
-        return 0
-      }
+      if (!totalWordsCount) return 0
 
-      return round(totalWeightedProficiency / totalWordsCount / 100, 4)
+      return this.calculateProficiency(practices, totalWordsCount)
     } catch (error) {
       console.error('计算词包进度失败:', error)
       return 0
     }
+  }
+
+  async calculateCardPackProgress(cardPackId: number): Promise<number> {
+    try {
+      const vocabularies = await vocabularyService.getWordsByCardPackId(cardPackId)
+      const vocabularyIds = vocabularies.map((v) => v.id)
+
+      if (!vocabularyIds.length) return 0
+
+      const practices = await this.getPracticesByVocabularyIds(vocabularyIds)
+
+      return this.calculateProficiency(practices, vocabularies.length)
+    } catch (error) {
+      console.error('计算卡包进度失败:', error)
+      return 0
+    }
+  }
+
+  private calculateProficiency(practices: PracticeEntity[], vocabularyCount: number): number {
+    const totalWeightedProficiency = practices.reduce((acc, curr) => acc + curr.proficiency, 0)
+
+    if (!vocabularyCount) return 0
+
+    return round(totalWeightedProficiency / vocabularyCount / 100, 4)
   }
 }
 

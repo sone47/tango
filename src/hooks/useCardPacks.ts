@@ -7,7 +7,7 @@ import type { CardPack } from '@/types'
 import { useCurrentWordPack } from './useCurrentWordPack'
 
 interface UseCardPacksResult {
-  cardPacks: CardPack[]
+  cardPacks: (CardPack & { progress: number })[]
   loading: boolean
   hasData: boolean
   error: string | null
@@ -15,7 +15,7 @@ interface UseCardPacksResult {
 
 export const useCardPacks = (): UseCardPacksResult => {
   const { currentWordPackId, hasData: hasWordPackData } = useCurrentWordPack()
-  const [cardPacks, setCardPacks] = useState<CardPack[]>([])
+  const [cardPacks, setCardPacks] = useState<(CardPack & { progress: number })[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
