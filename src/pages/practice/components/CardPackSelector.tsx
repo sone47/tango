@@ -48,14 +48,14 @@ const CardPackSelector = ({
           </div>
         ) : (
           <div className={spacing.listItems}>
-            {cardPacks.map((cardPack, index) => (
+            {cardPacks.map((cardPack) => (
               <motion.button
                 key={cardPack.id}
                 onClick={() => onSelectCardPack(cardPack)}
                 className={`w-full p-4 ${colors.gradients.blue} rounded-2xl border border-blue-100 ${colors.gradients.blueHover} transition-colors text-left`}
                 initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileInView={{ opacity: 1, x: 0, transition: { delay: 0.1 } }}
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="flex items-center justify-between">

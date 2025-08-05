@@ -59,7 +59,7 @@ const CardPackConfigModal = ({
 
         <div className="flex flex-col gap-2">
           <Typography.Text type="secondary" size="sm" weight="medium" className="text-gray-700">
-            过滤熟练度 ≤ {proficiency}% 的单词
+            选择熟练度 ≤ {proficiency}% 的单词
           </Typography.Text>
           <div>
             <ProficiencySlider
