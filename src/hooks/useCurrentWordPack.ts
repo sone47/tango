@@ -42,12 +42,6 @@ export const useCurrentWordPack = (): UseCurrentWordPackResult => {
   }, [fetchWordPacks])
 
   useEffect(() => {
-    if (allWordPacks.length && isNil(currentWordPackId)) {
-      setCurrentWordPackId(allWordPacks[0].id!)
-    }
-  }, [allWordPacks, currentWordPackId, setCurrentWordPackId])
-
-  useEffect(() => {
     if (!isNil(currentWordPackId)) {
       fetchCurrentWordPack(currentWordPackId)
     } else {

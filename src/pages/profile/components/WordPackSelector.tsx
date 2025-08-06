@@ -4,37 +4,27 @@ import { useCallback, useEffect, useState } from 'react'
 import WordPackItem from '@/components/WordPackItem'
 import { spacing } from '@/constants/styles'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
-import { wordPackService } from '@/services/wordPackService'
 import type { WordPack } from '@/types'
+import { useWordPackStore } from '@/stores/wordPackStore'
 
 interface WordPackSelectorProps {
   onWordPackSelect?: (wordPack: WordPack) => void
 }
 
 const WordPackSelector = ({ onWordPackSelect }: WordPackSelectorProps) => {
+  const wordPackStore = useWordPackStore()
   const { currentWordPackId, currentWordPack, setCurrentWordPackId } = useCurrentWordPack()
   const [displayWordPacks, setDisplayWordPacks] = useState<WordPack[]>([])
-  const [error, setError] = useState<string | null>(null)
 
   const fetchDisplayWordPacks = useCallback(async () => {
-    try {
-      setError(null)
-
       const totalLimit = 3
-      const recentWordPacks = await wordPackService.getWordPacksBy({
-        orderBy: {
-          field: 'createdAt',
-          direction: 'desc',
-        },
-        limit: totalLimit,
-      })
 
       if (!currentWordPack) {
-        setDisplayWordPacks(recentWordPacks)
+        setDisplayWordPacks(wordPackStore.allWordPacks.slice(0, totalLimit))
         return
       }
 
-      const otherWordPacks = recentWordPacks.filter((wp) => wp.id !== currentWordPack.id)
+      const otherWordPacks = wordPackStore.allWordPacks.filter((wp) => wp.id !== currentWordPack?.id)
 
       const result: WordPack[] = []
       if (currentWordPack) {
@@ -43,12 +33,7 @@ const WordPackSelector = ({ onWordPackSelect }: WordPackSelectorProps) => {
       result.push(...otherWordPacks)
 
       setDisplayWordPacks(result.slice(0, totalLimit))
-    } catch (err) {
-      console.error('获取词包失败:', err)
-      setError(err instanceof Error ? err.message : '获取词包失败')
-      setDisplayWordPacks([])
-    }
-  }, [currentWordPack])
+  }, [currentWordPack, wordPackStore.allWordPacks])
 
   useEffect(() => {
     fetchDisplayWordPacks()
@@ -57,14 +42,6 @@ const WordPackSelector = ({ onWordPackSelect }: WordPackSelectorProps) => {
   const handleWordPackSelect = (wordPack: WordPack) => {
     setCurrentWordPackId(wordPack.id!)
     onWordPackSelect?.(wordPack)
-  }
-
-  if (error) {
-    return (
-      <div className="text-center py-8 text-red-600">
-        <p>加载失败: {error}</p>
-      </div>
-    )
   }
 
   if (displayWordPacks.length === 0) {

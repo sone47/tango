@@ -6,6 +6,7 @@ import Modal from '@/components/Modal'
 interface UploadResultModalProps {
   isOpen: boolean
   onClose: () => void
+  onStart: () => void
   fileName: string
   isSuccess: boolean
   message?: string
@@ -19,6 +20,7 @@ interface UploadResultModalProps {
 const UploadResultModal = ({
   isOpen,
   onClose,
+  onStart,
   fileName,
   isSuccess,
   message,
@@ -89,8 +91,8 @@ const UploadResultModal = ({
         </div>
 
         <div className="pt-2">
-          <Button variant="primary" onClick={onClose} className="w-full">
-            确定
+          <Button variant="primary" onClick={onStart} className="w-full">
+            开始学习
           </Button>
         </div>
       </div>

@@ -6,19 +6,24 @@ import Button from '@/components/Button'
 import Card from '@/components/Card'
 import toast from '@/components/Toast'
 import { colors } from '@/constants/styles'
+import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { useModalState } from '@/hooks/useModalState'
-import { wordPackService } from '@/services/wordPackService'
+import { ImportResult, wordPackService } from '@/services/wordPackService'
 import type { FormatField } from '@/types/excel'
 
 import ExcelTemplateViewer from './ExcelTemplateViewer'
 import UploadResultModal from './UploadResultModal'
+import { useWordPackStore } from '@/stores/wordPackStore'
 
 const ImportSection = () => {
   const navigate = useNavigate()
+  const { setCurrentWordPackId } = useCurrentWordPack()
+  const wordPackStore = useWordPackStore()
   const [uploadResult, setUploadResult] = useState<{
     fileName: string
     isSuccess: boolean
     message?: string
+    wordPackId?: number
     stats?: {
       cardPackCount: number
       vocabularyCount: number
@@ -51,15 +56,7 @@ const ImportSection = () => {
       const importResult = await wordPackService.importFromExcel(file)
 
       if (importResult.success) {
-        toast.success(`🎉 文件导入成功！`)
-        setUploadResult({
-          fileName: file.name,
-          isSuccess: importResult.success,
-          message: importResult.message,
-          stats: importResult.stats,
-          errors: importResult.errors,
-        })
-        uploadResultModal.open()
+        handleImportSuccess(file.name, importResult)
       } else {
         toast.error(`导入失败：${importResult.message || '未知错误'}`)
       }
@@ -73,8 +70,39 @@ const ImportSection = () => {
     }
   }
 
+  const handleImportSuccess = (fileName: string, importResult: ImportResult) => {
+    if (!wordPackStore.hasData) {
+      setCurrentWordPackId(importResult.wordPackId!)
+    }
+
+    setUploadResult({
+      fileName,
+      isSuccess: importResult.success,
+      message: importResult.message,
+      wordPackId: importResult.wordPackId,
+      stats: importResult.stats,
+      errors: importResult.errors,
+    })
+
+    uploadResultModal.open()
+
+    wordPackStore.fetchWordPacks()
+  }
+
   const handleRecommendedPacksClick = () => {
     navigate('/recommended-packs')
+  }
+
+  const handleUploadResultClose = () => {
+    uploadResultModal.close()
+    setUploadResult(null)
+  }
+
+  const handleStartClick = () => {
+    if (uploadResult?.wordPackId) {
+      setCurrentWordPackId(uploadResult.wordPackId)
+    }
+    navigate('/')
   }
 
   const cardTitle = (
@@ -141,10 +169,8 @@ const ImportSection = () => {
       {uploadResult && (
         <UploadResultModal
           isOpen={uploadResultModal.isOpen}
-          onClose={() => {
-            uploadResultModal.close()
-            setUploadResult(null)
-          }}
+          onClose={handleUploadResultClose}
+          onStart={handleStartClick}
           fileName={uploadResult.fileName}
           isSuccess={uploadResult.isSuccess}
           message={uploadResult.message}
