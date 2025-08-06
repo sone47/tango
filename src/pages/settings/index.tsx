@@ -1,4 +1,4 @@
-import { ChevronRight, Headphones, Play, Shuffle } from 'lucide-react'
+import { BookCheck, ChevronRight, Headphones, Play } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import Button from '@/components/Button'
@@ -33,7 +33,7 @@ export default function SettingsPage() {
   return (
     <Page title="设置">
       <div className="space-y-6">
-        <SettingItem title="练习设置" icon={Shuffle} iconColor="blue" isCard>
+        <SettingItem title="练习设置" icon={BookCheck} iconColor="blue" isCard>
           <SettingItem title="开始时自动洗牌">
             <Switch
               checked={settings.wordOrder.mode === 'random'}
