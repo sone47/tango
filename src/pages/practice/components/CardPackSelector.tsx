@@ -70,7 +70,7 @@ const CardPackSelector = ({
                     </div>
                     <div>
                       <Typography.Text type="secondary" size="xs">
-                        已掌握 {cardPack.progress * 100}%
+                        已掌握 {(cardPack.progress * 100).toFixed(2)}%
                       </Typography.Text>
                     </div>
                   </div>
