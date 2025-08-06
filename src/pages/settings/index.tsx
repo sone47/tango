@@ -58,7 +58,7 @@ export default function SettingsPage() {
               </select>
             </SettingItem>
 
-            {voices.length && (
+            {voices.length > 0 && (
               <SettingItem title="语音" description={selectedVoice?.name ?? ''}>
                 <button
                   onClick={() => setShowVoiceSelector(!showVoiceSelector)}
