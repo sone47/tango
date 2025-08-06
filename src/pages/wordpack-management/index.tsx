@@ -3,7 +3,7 @@ import { Package } from 'lucide-react'
 import { useEffect } from 'react'
 
 import Loading from '@/components/Loading'
-import NavBar from '@/components/NavBar'
+import Page from '@/components/Page'
 import WordPackItem from '@/components/WordPackItem'
 import { spacing } from '@/constants/styles'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
@@ -79,13 +79,7 @@ const WordPackManagePage = () => {
     )
   }
 
-  return (
-    <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
-      <NavBar title="词包管理" />
-
-      <div className="flex-1 overflow-y-auto p-4">{renderContent()}</div>
-    </div>
-  )
+  return <Page title="词包管理">{renderContent()}</Page>
 }
 
 export default WordPackManagePage

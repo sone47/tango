@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 interface ButtonProps {
   children?: ReactNode
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger'
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
   rounded?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
   icon?: LucideIcon
   iconPosition?: 'left' | 'right'
@@ -46,6 +46,7 @@ const Button = ({
       sm: 'px-3 py-1.5 text-sm',
       md: 'px-4 py-2 text-base',
       lg: 'px-6 py-3 text-lg',
+      xl: 'px-8 py-4 text-xl',
     }
     return sizes[size]
   }
@@ -66,6 +67,7 @@ const Button = ({
       sm: 14,
       md: 16,
       lg: 20,
+      xl: 24,
     }
     return iconSizes[size]
   }

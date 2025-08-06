@@ -1,68 +1,29 @@
-import { motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { Bolt } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+
+import Button from '@/components/Button'
+import Typography from '@/components/Typography'
 
 const ProfileHeader = () => {
-  const [scrollProgress, setScrollProgress] = useState(0)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollContainer = document.querySelector('.profile-scroll-container')
-      if (scrollContainer) {
-        const currentScrollY = scrollContainer.scrollTop
-        const maxScroll = 100
-        const progress = Math.min(currentScrollY / maxScroll, 1)
-        setScrollProgress(progress)
-      }
-    }
-
-    const scrollContainer = document.querySelector('.profile-scroll-container')
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
-      return () => scrollContainer.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
-
-  // 计算动态值
-  const heightValue = 64 - 16 * scrollProgress // 64px -> 48px
-  const fontScale = 1 - 0.2 * scrollProgress // 1.0 -> 0.8
-  const opacityValue = 0.7 + 0.25 * scrollProgress // 0.7 -> 0.95
-
-  const justifyContent = scrollProgress > 0.5 ? 'center' : 'flex-start'
+  const handleSettingsClick = () => {
+    navigate('/settings')
+  }
 
   return (
-    <motion.div
-      ref={containerRef}
-      className="w-full flex items-center bg-white/70 backdrop-blur-sm"
-      animate={{
-        height: heightValue,
-        backgroundColor: `rgba(255, 255, 255, ${opacityValue})`,
-        paddingLeft: 24,
-        paddingRight: 24,
-        justifyContent,
-      }}
-      transition={{
-        duration: 0.15,
-        ease: 'easeOut',
-      }}
-    >
-      <motion.h1
-        className="font-bold text-gray-900 tracking-tight text-2xl transition-transform duration-200 ease-out"
-        animate={{
-          scale: fontScale,
-          x: scrollProgress > 0.3 ? '0%' : '0%', // 使用CSS justifyContent处理水平居中
-        }}
-        transition={{
-          duration: 0.15,
-          ease: 'easeOut',
-        }}
-        style={{
-          transformOrigin: scrollProgress > 0.3 ? 'center' : 'left center',
-        }}
-      >
+    <div className="w-full flex justify-between items-center bg-white/70 backdrop-blur-sm py-4 px-6">
+      <Typography.Title level={3} className="!font-bold">
         我的学习
-      </motion.h1>
-    </motion.div>
+      </Typography.Title>
+      <Button
+        variant="ghost"
+        size="xl"
+        className="!p-0"
+        icon={Bolt}
+        onClick={handleSettingsClick}
+      />
+    </div>
   )
 }
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import Button from '@/components/Button'
 import Loading from '@/components/Loading'
-import NavBar from '@/components/NavBar'
+import Page from '@/components/Page'
 import toast from '@/components/Toast'
 import Typography from '@/components/Typography'
 import { colors } from '@/constants/styles'
@@ -122,13 +122,7 @@ const RecommendedPacksPage = () => {
     )
   }
 
-  return (
-    <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
-      <NavBar title="推荐词包" />
-
-      <div className="flex-1 overflow-y-auto p-4">{renderContent()}</div>
-    </div>
-  )
+  return <Page title="推荐词包">{renderContent()}</Page>
 }
 
 export default RecommendedPacksPage
