@@ -10,7 +10,6 @@ import CardPackSelector from './components/CardPackSelector'
 import HistoryPool from './components/HistoryPool'
 import PracticeContent from './components/PracticeContent'
 import PracticeHeader from './components/PracticeHeader'
-import SwitchConfirmModal from './components/SwitchConfirmModal'
 
 export default function PracticeTab() {
   const { cardPacks, loading: cardPacksLoading, hasData } = useCardPacks()
@@ -24,12 +23,9 @@ export default function PracticeTab() {
     studiedWords,
     showCardPackConfig,
     tempSelectedCardPack,
-    pendingConfigAction,
-    showSwitchConfirm,
     showHistoryPool,
     updateState,
     resetRevealState,
-    isInProgress,
   } = usePracticeStore()
 
   const handleCardPackSelect = async (cardPack: CardPack) => {
@@ -46,15 +42,7 @@ export default function PracticeTab() {
   }
 
   const handleCardPackConfigConfirm = async (shouldShuffle: boolean, proficiency: number) => {
-    if (tempSelectedCardPack && isInProgress()) {
-      updateState({
-        pendingConfigAction: { shuffle: shouldShuffle, proficiency },
-        showCardPackConfig: false,
-        showSwitchConfirm: true,
-      })
-    } else {
-      await applyCardPackConfig(shouldShuffle, proficiency)
-    }
+    await applyCardPackConfig(shouldShuffle, proficiency)
   }
 
   const applyCardPackConfig = async (shouldShuffle = false, proficiency = 0) => {
@@ -79,21 +67,6 @@ export default function PracticeTab() {
       })
       resetRevealState()
     }
-  }
-
-  const handleSwitchConfirm = async () => {
-    if (pendingConfigAction) {
-      await applyCardPackConfig(pendingConfigAction.shuffle, pendingConfigAction.proficiency)
-      updateState({ pendingConfigAction: null, showSwitchConfirm: false })
-    }
-  }
-
-  const handleSwitchCancel = () => {
-    updateState({
-      tempSelectedCardPack: null,
-      pendingConfigAction: null,
-      showSwitchConfirm: false,
-    })
   }
 
   const handleCardPackConfigCancel = () => {
@@ -182,15 +155,6 @@ export default function PracticeTab() {
           cardPack={tempSelectedCardPack}
           onConfirm={handleCardPackConfigConfirm}
           onCancel={handleCardPackConfigCancel}
-        />
-      )}
-
-      {showSwitchConfirm && tempSelectedCardPack && selectedCardPack && (
-        <SwitchConfirmModal
-          isOpen={showSwitchConfirm}
-          newCardPack={tempSelectedCardPack}
-          onConfirm={handleSwitchConfirm}
-          onCancel={handleSwitchCancel}
         />
       )}
     </div>
