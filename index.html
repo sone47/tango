@@ -8,6 +8,21 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/src/main.tsx"></script>    
   </body>
+  <script>
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const forceVConsole = urlParams.get('vconsole') === 'true';
+      
+      if (forceVConsole) {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js';
+        script.onload = function() {
+          new VConsole();
+        };
+        document.head.appendChild(script);
+      }
+    })();
+  </script>
 </html>
