@@ -9,6 +9,8 @@ interface SliderProps {
   size?: 'sm' | 'md' | 'lg'
   className?: string
   color?: string
+  formatValue?: (value: number) => string
+  showValue?: boolean
 }
 
 const Slider = ({
@@ -21,7 +23,9 @@ const Slider = ({
   disabled = false,
   size = 'md',
   className = '',
-  color = '#6b7280', // 默认灰色
+  color = '#6b7280',
+  formatValue,
+  showValue = false,
 }: SliderProps) => {
   const getSliderHeight = (size: string) => {
     switch (size) {
@@ -34,10 +38,21 @@ const Slider = ({
     }
   }
 
-  // 计算滑块填充的百分比
   const fillPercentage = ((value - min) / (max - min)) * 100
 
-  return (
+  const displayValue = formatValue ? formatValue(value) : value.toString()
+
+  const renderValueDisplay = () => {
+    if (!showValue) return null
+
+    return (
+      <div className="text-xs font-medium text-gray-600 min-w-[2.5rem] text-center">
+        {displayValue}
+      </div>
+    )
+  }
+
+  const sliderElement = (
     <input
       type="range"
       min={min}
@@ -58,6 +73,13 @@ const Slider = ({
         background: `linear-gradient(to right, ${color} ${fillPercentage}%, #e5e7eb ${fillPercentage}%)`,
       }}
     />
+  )
+
+  return (
+    <div className="flex-1 relative min-h-[44px] flex items-center">
+      {sliderElement}
+      {renderValueDisplay()}
+    </div>
   )
 }
 

@@ -10,6 +10,7 @@ import { useDatabase } from '@/hooks/useDatabase'
 import PracticeTab from '@/pages/practice'
 import ProfileTab from '@/pages/profile'
 import RecommendedPacksPage from '@/pages/recommended-packs'
+import SettingsPage from '@/pages/settings'
 import WordPackManagePage from '@/pages/wordpack-management'
 import type { TabType } from '@/types'
 
@@ -68,6 +69,7 @@ function App() {
     <Routes>
       <Route path="/wordpack-management" element={<WordPackManagePage />} />
       <Route path="/recommended-packs" element={<RecommendedPacksPage />} />
+      <Route path="/settings" element={<SettingsPage />} />
       <Route path="/*" element={<MainApp />} />
     </Routes>
   )
