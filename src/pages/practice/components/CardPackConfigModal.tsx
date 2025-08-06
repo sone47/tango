@@ -5,6 +5,7 @@ import Button from '@/components/Button'
 import Modal from '@/components/Modal'
 import ProficiencySlider from '@/components/ProficiencySlider'
 import Typography from '@/components/Typography'
+import { useSettings } from '@/hooks/useSettings'
 import { practiceService } from '@/services/practiceService'
 import type { CardPack, Practice } from '@/types'
 import { filterWordsByProficiency } from '@/utils/practiceUtils'
@@ -22,9 +23,12 @@ const CardPackConfigModal = ({
   onConfirm,
   onCancel,
 }: CardPackConfigModalProps) => {
+  const { settings } = useSettings()
+
   const [proficiency, setProficiency] = useState(100)
   const [filteredWordsCount, setFilteredWordsCount] = useState(0)
   const [practices, setPractices] = useState<Practice[]>([])
+  const [isShuffle, setIsShuffle] = useState(settings.practice.isShuffle)
 
   const initData = useCallback(async () => {
     setProficiency(100)
@@ -80,29 +84,20 @@ const CardPackConfigModal = ({
           </Typography.Text>
         </div>
 
-        <div className="space-y-3">
+        <div className="flex items-center gap-4">
           <Button
             variant="primary"
-            onClick={() => onConfirm(false, proficiency)}
+            onClick={() => onConfirm(isShuffle, proficiency)}
             className="w-full"
             disabled={!filteredWordsCount}
           >
             开始学习
           </Button>
-
-          <Button
-            variant="primary"
-            onClick={() => onConfirm(true, proficiency)}
-            icon={Shuffle}
-            className="w-full bg-green-500 hover:bg-green-600"
-            disabled={!filteredWordsCount}
-          >
-            洗牌后开始
-          </Button>
-
-          <Button variant="secondary" onClick={onCancel} className="w-full">
-            取消
-          </Button>
+          <Shuffle
+            className="w-6 h-6 cursor-pointer"
+            color={isShuffle ? 'var(--color-blue-600)' : 'var(--color-gray-400)'}
+            onClick={() => setIsShuffle(!isShuffle)}
+          />
         </div>
       </div>
     </Modal>

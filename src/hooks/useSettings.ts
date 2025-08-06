@@ -3,8 +3,8 @@ import { useLocalStorage } from '@uidotdev/usehooks'
 import { defaultSettings } from '@/constants/settings'
 import { getVoicesByLanguage } from '@/utils/speechUtils'
 
-export interface WordOrderSettings {
-  mode: 'sequential' | 'random'
+export interface PracticeSettings {
+  isShuffle: boolean
 }
 
 export interface SpeechSettings {
@@ -16,7 +16,7 @@ export interface SpeechSettings {
 }
 
 export interface AppSettings {
-  wordOrder: WordOrderSettings
+  practice: PracticeSettings
   speech: SpeechSettings
 }
 
@@ -29,10 +29,10 @@ export function useSettings() {
     },
   })
 
-  const updateWordOrderSettings = (wordOrder: Partial<WordOrderSettings>) => {
+  const updatePracticeSettings = (practice: Partial<PracticeSettings>) => {
     setSettings((prev) => ({
       ...prev,
-      wordOrder: { ...prev.wordOrder, ...wordOrder },
+      practice: { ...prev.practice, ...practice },
     }))
   }
 
@@ -53,7 +53,7 @@ export function useSettings() {
 
   return {
     settings,
-    updateWordOrderSettings,
+    updatePracticeSettings,
     updateSpeechSettings,
     resetSettings,
   }

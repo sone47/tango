@@ -1,6 +1,6 @@
 export const defaultSettings = {
-  wordOrder: {
-    mode: 'sequential',
+  practice: {
+    isShuffle: true,
   },
   speech: {
     language: 'zh-CN',

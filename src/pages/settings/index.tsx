@@ -12,7 +12,7 @@ import SettingItem from '@/pages/settings/componetns/SettingItem'
 import { getVoicesByLanguage, textToSpeech, waitForVoicesReady } from '@/utils/speechUtils'
 
 export default function SettingsPage() {
-  const { settings, updateWordOrderSettings, updateSpeechSettings, resetSettings } = useSettings()
+  const { settings, updatePracticeSettings, updateSpeechSettings, resetSettings } = useSettings()
 
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
   const [showVoiceSelector, setShowVoiceSelector] = useState(false)
@@ -36,10 +36,8 @@ export default function SettingsPage() {
         <SettingItem title="练习设置" icon={BookCheck} iconColor="blue" isCard>
           <SettingItem title="开始时自动洗牌">
             <Switch
-              checked={settings.wordOrder.mode === 'random'}
-              onChange={(checked) =>
-                updateWordOrderSettings({ mode: checked ? 'random' : 'sequential' })
-              }
+              checked={settings.practice.isShuffle}
+              onChange={(checked) => updatePracticeSettings({ isShuffle: checked })}
             />
           </SettingItem>
         </SettingItem>
@@ -141,6 +139,7 @@ export default function SettingsPage() {
               variant="primary"
               size="sm"
               icon={Play}
+              // TODO 用户可自行填写测试语音
               onClick={() => textToSpeech('hello world', settings.speech)}
               className="w-full"
             >
