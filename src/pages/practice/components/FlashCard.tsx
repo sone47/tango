@@ -5,8 +5,10 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Button from '@/components/Button'
 import ProficiencySlider from '@/components/ProficiencySlider'
 import toast from '@/components/Toast'
+import { useSettings } from '@/hooks/useSettings'
 import { practiceService } from '@/services/practiceService'
 import type { CardRevealState, Word } from '@/types'
+import { textToSpeech } from '@/utils/speechUtils'
 
 import ProgressIndicator from './ProgressIndicator'
 import RevealOverlay from './RevealOverlay'
@@ -31,6 +33,8 @@ const FlashCard = ({
   currentIndex,
   totalCount,
 }: FlashCardProps) => {
+  const { settings } = useSettings()
+
   const [isFlipped, setIsFlipped] = useState(false)
   const [proficiency, setProficiency] = useState(0)
 
@@ -110,11 +114,27 @@ const FlashCard = ({
     setProficiency(value)
   }
 
-  const handlePlayAudio = (event: React.MouseEvent) => {
+  const handlePlayAudio = (text?: string, audioUrl?: string) => {
+    if (audioUrl) {
+      const audio = new Audio(audioUrl)
+      audio.play()
+    } else {
+      if (!text) return
+
+      textToSpeech(text, settings.speech)
+    }
+  }
+
+  const handlePlayPhoneticAudio = (event: React.MouseEvent) => {
     event.stopPropagation()
 
-    const audio = new Audio(word.wordAudio)
-    audio.play()
+    handlePlayAudio(word.phonetic, word.wordAudio)
+  }
+
+  const handlePlayExampleAudio = (event: React.MouseEvent) => {
+    event.stopPropagation()
+
+    handlePlayAudio(word.example, word.exampleAudio)
   }
 
   return (
@@ -163,13 +183,12 @@ const FlashCard = ({
                 >
                   <div className="flex items-center justify-center gap-2 h-12">
                     <span className="text-xl font-medium text-gray-800">{word.phonetic}</span>
-                    {word.wordAudio && (
+                    {word.phonetic && (
                       <Button
-                        onClick={handlePlayAudio}
+                        onClick={handlePlayPhoneticAudio}
                         variant="ghost"
                         size="sm"
                         icon={Volume2}
-                        className="!p-1.5 !min-w-0 !w-auto !h-auto bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200"
                       ></Button>
                     )}
                   </div>
@@ -230,10 +249,22 @@ const FlashCard = ({
 
               <div className="flex-1 flex flex-col justify-center min-h-0">
                 <div className="text-center space-y-4">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">例句</h3>
+                  <div className="flex items-center justify-center">
+                    <h3 className="text-lg font-semibold text-gray-800">例句</h3>
+                    {word.example && (
+                      <Button
+                        onClick={handlePlayExampleAudio}
+                        variant="ghost"
+                        size="sm"
+                        icon={Volume2}
+                      ></Button>
+                    )}
+                  </div>
                   <div className="bg-white/80 p-4 rounded-2xl">
                     {word.example ? (
-                      <p className="text-base leading-relaxed text-gray-800">{word.example}</p>
+                      <p className="text-base leading-relaxed text-gray-800">
+                        <span className="text-gray-500">{word.example}</span>
+                      </p>
                     ) : (
                       <div className="text-center py-4">
                         <p className="text-gray-500 text-base">暂无例句</p>
