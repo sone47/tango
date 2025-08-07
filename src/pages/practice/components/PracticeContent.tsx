@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Filter, LucideIcon, RotateCcw, Shuffle } from 'lucide-react'
+import { LucideIcon, RotateCcw, Shuffle } from 'lucide-react'
 
 import Button from '@/components/Button'
 import { usePracticeStore } from '@/stores/practiceStore'
