@@ -7,6 +7,7 @@ import Modal from '@/components/Modal'
 import Typography from '@/components/Typography'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { wordPackService } from '@/services/wordPackService'
+import { usePracticeStore } from '@/stores/practiceStore'
 
 interface SuccessModalProps {
   isOpen: boolean
@@ -17,7 +18,7 @@ interface SuccessModalProps {
 export default function SuccessModal({ isOpen, importedWordPackId, onClose }: SuccessModalProps) {
   const navigate = useNavigate()
   const { setCurrentWordPackId } = useCurrentWordPack()
-
+  const { updateState } = usePracticeStore()
   const [wordPackName, setWordPackName] = useState<string>('')
 
   useEffect(() => {
@@ -33,6 +34,10 @@ export default function SuccessModal({ isOpen, importedWordPackId, onClose }: Su
   const handleStartLearning = () => {
     if (!isNil(importedWordPackId)) {
       setCurrentWordPackId(importedWordPackId)
+
+      updateState({
+        showCardPackSelector: true,
+      })
     }
 
     navigate('/')
