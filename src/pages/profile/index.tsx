@@ -8,7 +8,7 @@ import StudyStats from './components/StudyStats'
 import WordPackManagement from './components/WordPackManagement'
 
 const ProfileTab = () => {
-  const viewId = history.state.usr.view
+  const viewId = history.state.usr?.view
 
   useEffect(() => {
     if (viewId) {
