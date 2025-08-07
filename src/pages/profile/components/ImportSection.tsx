@@ -9,11 +9,11 @@ import { colors } from '@/constants/styles'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { useModalState } from '@/hooks/useModalState'
 import { ImportResult, wordPackService } from '@/services/wordPackService'
+import { useWordPackStore } from '@/stores/wordPackStore'
 import type { FormatField } from '@/types/excel'
 
 import ExcelTemplateViewer from './ExcelTemplateViewer'
 import UploadResultModal from './UploadResultModal'
-import { useWordPackStore } from '@/stores/wordPackStore'
 
 const ImportSection = () => {
   const navigate = useNavigate()
@@ -130,20 +130,17 @@ const ImportSection = () => {
   return (
     <>
       <Card title={cardTitle}>
-        {/* 功能说明 */}
         <div className={`${colors.gradients.green} p-4 rounded-xl mb-4`}>
           <div className="flex items-start gap-3">
             <FileText size={20} className="text-green-600 mt-0.5 flex-shrink-0" />
             <div className="min-w-0 flex-1">
               <h4 className="font-medium text-green-800 mb-2">Excel 文件导入</h4>
 
-              {/* Excel模板查看器 */}
               <ExcelTemplateViewer formatFields={formatFields} />
             </div>
           </div>
         </div>
 
-        {/* 上传按钮 */}
         <label
           htmlFor="file-upload"
           className={`flex items-center justify-center gap-3 w-full p-4 ${
@@ -165,7 +162,6 @@ const ImportSection = () => {
         />
       </Card>
 
-      {/* 上传结果弹窗 */}
       {uploadResult && (
         <UploadResultModal
           isOpen={uploadResultModal.isOpen}
