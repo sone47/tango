@@ -98,12 +98,9 @@ const RevealOverlay = ({
   // 计算滑动目标位置
   const getSlideTarget = () => {
     if (isSliding && slideDirection) {
-      return slideDirection === 'right' ? 400 : -400
+      return slideDirection === 'right' ? 250 : -250
     }
-    // 如果需要回弹，返回0
-    if (shouldSnapBack) {
-      return 0
-    }
+
     return 0
   }
 
@@ -115,7 +112,6 @@ const RevealOverlay = ({
       {/* 背景内容 */}
       {children}
 
-      {/* 遮挡层 */}
       {showOverlay && !shouldHide && (
         <motion.div
           className={`absolute inset-0 ${colors.bg} rounded-md flex items-center justify-center cursor-grab active:cursor-grabbing reveal-overlay border ${colors.border}`}
