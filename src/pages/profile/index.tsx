@@ -18,13 +18,13 @@ const ProfileTab = () => {
 
   return (
     <motion.div
-      className="h-full bg-gradient-to-br from-blue-50 to-indigo-100 relative"
+      className="h-full bg-gradient-to-br from-blue-50 to-indigo-100"
       initial={PROFILE_ANIMATIONS.container.initial}
       animate={PROFILE_ANIMATIONS.container.animate}
       transition={PROFILE_ANIMATIONS.container.transition}
     >
       <motion.div
-        className="absolute top-0 left-0 right-0 z-10"
+        className="fixed w-full top-0 z-1"
         initial={PROFILE_ANIMATIONS.header.initial}
         animate={PROFILE_ANIMATIONS.header.animate}
         transition={PROFILE_ANIMATIONS.header.transition}
