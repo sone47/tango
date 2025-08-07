@@ -1,10 +1,6 @@
 import { getGlobalIDBManager } from '@/hooks/useDatabase'
-import {
-  type CardPackEntity,
-  cardPackSchema,
-  type WordPackEntity,
-  wordPackSchema,
-} from '@/schemas'
+import { type CardPackEntity, cardPackSchema, type WordPackEntity, wordPackSchema } from '@/schemas'
+
 import { practiceService } from './practiceService'
 import { vocabularyService } from './vocabularyService'
 

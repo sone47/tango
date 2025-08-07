@@ -1,11 +1,12 @@
+import { isNil } from 'lodash'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import Button from '@/components/Button'
 import Modal from '@/components/Modal'
 import Typography from '@/components/Typography'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { wordPackService } from '@/services/wordPackService'
-import { isNil } from 'lodash'
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 interface SuccessModalProps {
   isOpen: boolean
@@ -16,7 +17,7 @@ interface SuccessModalProps {
 export default function SuccessModal({ isOpen, importedWordPackId, onClose }: SuccessModalProps) {
   const navigate = useNavigate()
   const { setCurrentWordPackId } = useCurrentWordPack()
-  
+
   const [wordPackName, setWordPackName] = useState<string>('')
 
   useEffect(() => {
@@ -44,17 +45,11 @@ export default function SuccessModal({ isOpen, importedWordPackId, onClose }: Su
 
     onClose()
   }
-    
+
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={handleClose}
-      title="导入成功"
-    >
+    <Modal isOpen={isOpen} onClose={handleClose} title="导入成功">
       <div className="flex flex-col gap-8 items-center">
-        <Typography.Text type="secondary">
-          「{wordPackName}」导入成功！
-        </Typography.Text>
+        <Typography.Text type="secondary">「{wordPackName}」导入成功！</Typography.Text>
         <Button variant="primary" onClick={handleStartLearning} className="w-full">
           开始学习
         </Button>

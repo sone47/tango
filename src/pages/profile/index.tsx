@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'
 import { useEffect } from 'react'
 
-import AnimatedSection, { PROFILE_ANIMATIONS } from './components/AnimatedSection'
+import { PROFILE_ANIMATIONS } from '@/constants/motion'
+
+import AnimatedSection from './components/AnimatedSection'
 import ImportSection from './components/ImportSection'
 import ProfileHeader from './components/ProfileHeader'
 import StudyStats from './components/StudyStats'
