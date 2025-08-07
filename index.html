@@ -5,10 +5,25 @@
     <link rel="icon" type="image/svg+xml" href="./logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TanGo</title>
-    <script type="module" crossorigin src="/tango/assets/index-xrLiE-qD.js"></script>
+    <script type="module" crossorigin src="/tango/assets/index-B1oKt477.js"></script>
     <link rel="stylesheet" crossorigin href="/tango/assets/index-Cd9sRYCg.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>    
   </body>
+  <script>
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const forceVConsole = urlParams.get('vconsole') === 'true';
+      
+      if (forceVConsole) {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js';
+        script.onload = function() {
+          new VConsole();
+        };
+        document.head.appendChild(script);
+      }
+    })();
+  </script>
 </html>
