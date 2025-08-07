@@ -8,14 +8,18 @@ import Page from '@/components/Page'
 import toast from '@/components/Toast'
 import Typography from '@/components/Typography'
 import { colors } from '@/constants/styles'
+import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { recommendedPackService } from '@/services/recommendedPackService'
 import { wordPackService } from '@/services/wordPackService'
+import { useWordPackStore } from '@/stores/wordPackStore'
 import type { RecommendedPack } from '@/types'
 
 const RecommendedPacksPage = () => {
   const [recommendedPacks, setRecommendedPacks] = useState<RecommendedPack[]>([])
   const [loading, setLoading] = useState(true)
   const [importingIndex, setImportingIndex] = useState<number | null>(null)
+  const { setCurrentWordPackId } = useCurrentWordPack()
+  const wordPackStore = useWordPackStore()
 
   useEffect(() => {
     loadRecommendedPacks()
@@ -45,6 +49,10 @@ const RecommendedPacksPage = () => {
 
       if (importResult.success) {
         toast.success(`「${pack.name}」导入成功！`)
+
+        if (!wordPackStore.hasData) {
+          setCurrentWordPackId(importResult.wordPackId!)
+        }
       } else {
         throw new Error(importResult.message)
       }
