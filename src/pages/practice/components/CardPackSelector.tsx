@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion'
 import { BookOpen, FileX } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
+import Button from '@/components/Button'
 import Loading from '@/components/Loading'
 import Modal from '@/components/Modal'
 import Typography from '@/components/Typography'
@@ -24,6 +26,16 @@ const CardPackSelector = ({
   loading = false,
   hasData = true,
 }: CardPackSelectorProps) => {
+  const navigate = useNavigate()
+
+  const handleImportRecommendedCardPack = () => {
+    navigate('/recommended-packs')
+  }
+
+  const handleImportCustomCardPack = () => {
+    navigate('/profile', { state: { view: 'import' } })
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -81,17 +93,16 @@ const CardPackSelector = ({
         )}
       </div>
 
-      <Typography.Text
-        type="secondary"
-        size="sm"
-        className="block mt-6 p-4 bg-gray-50 rounded-xl text-center"
-      >
-        {loading
-          ? '正在加载卡包列表...'
-          : !hasData || !cardPacks.length
-            ? '请先导入词包数据'
-            : '选择一个卡包开始练习'}
-      </Typography.Text>
+      {(!hasData || !cardPacks.length) && (
+        <div className="flex flex-col justify-center gap-2">
+          <Button variant="primary" onClick={handleImportRecommendedCardPack}>
+            导入推荐词包
+          </Button>
+          <Button variant="secondary" onClick={handleImportCustomCardPack}>
+            导入自定义词包
+          </Button>
+        </div>
+      )}
     </Modal>
   )
 }

@@ -14,7 +14,6 @@ interface ButtonProps {
   disabled?: boolean
   className?: string
   onClick?: (event: React.MouseEvent) => void
-  type?: 'button' | 'submit' | 'reset'
 }
 
 const Button = ({
@@ -29,7 +28,6 @@ const Button = ({
   disabled = false,
   className = '',
   onClick,
-  type = 'button',
 }: ButtonProps) => {
   const getVariantStyles = () => {
     const variants = {
@@ -76,7 +74,6 @@ const Button = ({
 
   return (
     <motion.button
-      type={type}
       className={`
         font-medium transition-colors
         ${getVariantStyles()}

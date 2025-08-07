@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Filter, LucideIcon, RotateCcw, Shuffle } from 'lucide-react'
+import { LucideIcon, RotateCcw, Shuffle } from 'lucide-react'
 
 import Button from '@/components/Button'
 import { usePracticeStore } from '@/stores/practiceStore'
@@ -96,26 +96,6 @@ const PracticeContent = ({
           {
             label: '开始学习',
             onClick: onSelectCardPack,
-          },
-        ]}
-      />
-    )
-  }
-
-  // 卡包为空状态
-  if (shuffledWords.length === 0) {
-    return (
-      <EmptyState
-        icon="📝"
-        title="卡包已空"
-        description="当前过滤条件下没有可学习的卡片"
-        iconBgColor="bg-gray-100"
-        actions={[
-          {
-            label: '重新选择',
-            onClick: onSelectCardPack,
-            icon: Filter,
-            size: 'md',
           },
         ]}
       />

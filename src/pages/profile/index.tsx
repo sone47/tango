@@ -1,12 +1,21 @@
 import { motion } from 'framer-motion'
+import { useEffect } from 'react'
 
 import AnimatedSection, { PROFILE_ANIMATIONS } from './components/AnimatedSection'
 import ImportSection from './components/ImportSection'
 import ProfileHeader from './components/ProfileHeader'
-import WordPackManagement from './components/WordPackManagement'
 import StudyStats from './components/StudyStats'
+import WordPackManagement from './components/WordPackManagement'
 
 const ProfileTab = () => {
+  const viewId = history.state.usr.view
+
+  useEffect(() => {
+    if (viewId) {
+      document.getElementById(viewId)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [viewId])
+
   return (
     <motion.div
       className="h-full bg-gradient-to-br from-blue-50 to-indigo-100 relative"
@@ -29,17 +38,23 @@ const ProfileTab = () => {
           paddingTop: 80,
         }}
       >
-        <AnimatedSection delay={0.08}>
-          <StudyStats />
-        </AnimatedSection>
+        <div id="stats">
+          <AnimatedSection delay={0.08}>
+            <StudyStats />
+          </AnimatedSection>
+        </div>
 
-        <AnimatedSection delay={0.16}>
-          <WordPackManagement />
-        </AnimatedSection>
+        <div id="word-pack-management">
+          <AnimatedSection delay={0.16}>
+            <WordPackManagement />
+          </AnimatedSection>
+        </div>
 
-        <AnimatedSection delay={0.24}>
-          <ImportSection />
-        </AnimatedSection>
+        <div id="import">
+          <AnimatedSection delay={0.24}>
+            <ImportSection />
+          </AnimatedSection>
+        </div>
       </div>
     </motion.div>
   )
