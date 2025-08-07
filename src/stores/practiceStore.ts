@@ -27,7 +27,7 @@ const initialState: PracticeState = {
   currentWordIndex: 0,
   shuffledWords: [],
   studiedWords: [],
-  showCardPackSelector: false,
+  showCardPackSelector: true,
   showHistoryPool: false,
   showCardPackConfig: false,
   tempSelectedCardPack: null,

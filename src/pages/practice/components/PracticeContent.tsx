@@ -102,26 +102,6 @@ const PracticeContent = ({
     )
   }
 
-  // 卡包为空状态
-  if (shuffledWords.length === 0) {
-    return (
-      <EmptyState
-        icon="📝"
-        title="卡包已空"
-        description="当前过滤条件下没有可学习的卡片"
-        iconBgColor="bg-gray-100"
-        actions={[
-          {
-            label: '重新选择',
-            onClick: onSelectCardPack,
-            icon: Filter,
-            size: 'md',
-          },
-        ]}
-      />
-    )
-  }
-
   // 完成状态
   if (currentWordIndex >= shuffledWords.length) {
     return (
