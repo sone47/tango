@@ -14,10 +14,11 @@ import type { FormatField } from '@/types/excel'
 
 import ExcelTemplateViewer from './ExcelTemplateViewer'
 import UploadResultModal from './UploadResultModal'
+import { isNil } from 'lodash'
 
 const ImportSection = () => {
   const navigate = useNavigate()
-  const { setCurrentWordPackId } = useCurrentWordPack()
+  const { setCurrentWordPackId, currentWordPack } = useCurrentWordPack()
   const wordPackStore = useWordPackStore()
   const [uploadResult, setUploadResult] = useState<{
     fileName: string
@@ -71,7 +72,7 @@ const ImportSection = () => {
   }
 
   const handleImportSuccess = (fileName: string, importResult: ImportResult) => {
-    if (!wordPackStore.hasData) {
+    if (!currentWordPack) {
       setCurrentWordPackId(importResult.wordPackId!)
     }
 
@@ -99,7 +100,7 @@ const ImportSection = () => {
   }
 
   const handleStartClick = () => {
-    if (uploadResult?.wordPackId) {
+    if (!isNil(uploadResult?.wordPackId)) {
       setCurrentWordPackId(uploadResult.wordPackId)
     }
     navigate('/')

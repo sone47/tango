@@ -8,18 +8,18 @@ import Page from '@/components/Page'
 import toast from '@/components/Toast'
 import Typography from '@/components/Typography'
 import { colors } from '@/constants/styles'
-import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { recommendedPackService } from '@/services/recommendedPackService'
 import { wordPackService } from '@/services/wordPackService'
-import { useWordPackStore } from '@/stores/wordPackStore'
 import type { RecommendedPack } from '@/types'
+
+import SuccessModal from './components/SuccessModal'
 
 const RecommendedPacksPage = () => {
   const [recommendedPacks, setRecommendedPacks] = useState<RecommendedPack[]>([])
   const [loading, setLoading] = useState(true)
   const [importingIndex, setImportingIndex] = useState<number | null>(null)
-  const { setCurrentWordPackId } = useCurrentWordPack()
-  const wordPackStore = useWordPackStore()
+  const [successImportedModalOpen, setSuccessImportedModalOpen] = useState(false)
+  const [successImportedWordPackId, setSuccessImportedWordPackId] = useState<number>()
 
   useEffect(() => {
     loadRecommendedPacks()
@@ -48,11 +48,8 @@ const RecommendedPacksPage = () => {
       const importResult = await wordPackService.importFromExcel(file, pack.name)
 
       if (importResult.success) {
-        toast.success(`「${pack.name}」导入成功！`)
-
-        if (!wordPackStore.hasData) {
-          setCurrentWordPackId(importResult.wordPackId!)
-        }
+        setSuccessImportedModalOpen(true)
+        setSuccessImportedWordPackId(importResult.wordPackId!)
       } else {
         throw new Error(importResult.message)
       }
@@ -63,6 +60,10 @@ const RecommendedPacksPage = () => {
       hideLoading?.()
       setImportingIndex(null)
     }
+  }
+
+  const handleCloseSuccessImportedModal = () => {
+    setSuccessImportedModalOpen(false)
   }
 
   const renderContent = () => {
@@ -130,7 +131,16 @@ const RecommendedPacksPage = () => {
     )
   }
 
-  return <Page title="推荐词包">{renderContent()}</Page>
+  return (
+    <Page title="推荐词包">
+      {renderContent()}
+      <SuccessModal
+        isOpen={successImportedModalOpen}
+        onClose={handleCloseSuccessImportedModal}
+        importedWordPackId={successImportedWordPackId}
+      />
+    </Page>
+  )
 }
 
 export default RecommendedPacksPage
