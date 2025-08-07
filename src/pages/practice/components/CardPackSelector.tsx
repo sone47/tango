@@ -93,7 +93,7 @@ const CardPackSelector = ({
         )}
       </div>
 
-      {(!hasData || !cardPacks.length) && (
+      {!loading && (!hasData || !cardPacks.length) && (
         <div className="flex flex-col justify-center gap-2">
           <Button variant="primary" onClick={handleImportRecommendedCardPack}>
             导入推荐词包
