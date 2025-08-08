@@ -5,14 +5,12 @@ import type { CardPack } from '@/types'
 
 interface PracticeHeaderProps {
   selectedCardPack: CardPack | null
-  hasData: boolean
   onSelectCardPack: () => void
   onShowHistoryPool: () => void
 }
 
 const PracticeHeader = ({
   selectedCardPack,
-  hasData: _hasData,
   onSelectCardPack,
   onShowHistoryPool,
 }: PracticeHeaderProps) => {

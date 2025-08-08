@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
-import { Package } from 'lucide-react'
 import { useEffect } from 'react'
 
+import EmptyWordPack from '@/components/EmptyWordPack'
 import Loading from '@/components/Loading'
 import Page from '@/components/Page'
 import WordPackItem from '@/components/WordPackItem'
@@ -16,7 +16,7 @@ const WordPackManagePage = () => {
 
   useEffect(() => {
     fetchWordPacks()
-  }, [fetchWordPacks])
+  }, [])
 
   const handleWordPackSelect = (wordPack: WordPack) => {
     setCurrentWordPackId(wordPack.id!)
@@ -40,13 +40,7 @@ const WordPackManagePage = () => {
     }
 
     if (!hasData) {
-      return (
-        <div className="text-center py-8 text-gray-500">
-          <Package className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">暂无词包</h3>
-          <p className="text-sm text-gray-600">请先导入词包数据</p>
-        </div>
-      )
+      return <EmptyWordPack showImportButton={false} />
     }
 
     return (

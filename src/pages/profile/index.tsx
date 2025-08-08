@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useEffect } from 'react'
 
 import { PROFILE_ANIMATIONS } from '@/constants/motion'
+import { useWordPackStore } from '@/stores/wordPackStore'
 
 import AnimatedSection from './components/AnimatedSection'
 import ImportSection from './components/ImportSection'
@@ -11,6 +12,11 @@ import WordPackManagement from './components/WordPackManagement'
 
 const ProfileTab = () => {
   const viewId = history.state.usr?.view
+  const { fetchWordPacks } = useWordPackStore()
+
+  useEffect(() => {
+    fetchWordPacks()
+  }, [])
 
   useEffect(() => {
     if (viewId) {

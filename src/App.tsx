@@ -19,7 +19,7 @@ function MainApp() {
   const navigate = useNavigate()
 
   const tabs: TabConfig[] = [
-    { id: 'practice', icon: BookOpen, label: '练习', component: PracticeTab, path: '/' },
+    { id: 'practice', icon: BookOpen, label: '学习', component: PracticeTab, path: '/' },
     { id: 'profile', icon: User, label: '我的', component: ProfileTab, path: '/profile' },
   ]
 

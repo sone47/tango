@@ -10,6 +10,7 @@ export const defaultSettings = {
   },
 } as const
 
+// TODO https://github.com/TiagoDanin/Windows-Locale
 export const languageOptions = [
   { value: 'zh-CN', label: '中文（普通话）' },
   { value: 'en-US', label: 'English (US)' },

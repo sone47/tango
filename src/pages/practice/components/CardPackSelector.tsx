@@ -6,6 +6,7 @@ import Loading from '@/components/Loading'
 import Modal from '@/components/Modal'
 import Typography from '@/components/Typography'
 import { colors, spacing } from '@/constants/styles'
+import { useWordPackStore } from '@/stores/wordPackStore'
 import type { CardPack } from '@/types'
 
 interface CardPackSelectorProps {
@@ -14,7 +15,6 @@ interface CardPackSelectorProps {
   onSelectCardPack: (cardPack: CardPack) => void
   cardPacks: (CardPack & { progress: number })[]
   loading?: boolean
-  hasData?: boolean
 }
 
 const CardPackSelector = ({
@@ -23,8 +23,9 @@ const CardPackSelector = ({
   onSelectCardPack,
   cardPacks,
   loading = false,
-  hasData = true,
 }: CardPackSelectorProps) => {
+  const { hasData } = useWordPackStore()
+
   return (
     <Modal
       isOpen={isOpen}
@@ -40,7 +41,7 @@ const CardPackSelector = ({
             <Loading text="加载卡包中..." size="md" />
           </div>
         ) : !hasData ? (
-          <EmptyWordPack />
+          <EmptyWordPack showImportButton />
         ) : (
           <div className={spacing.listItems}>
             {cardPacks.map((cardPack) => (

@@ -1,11 +1,12 @@
 import { BookOpen, Package } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+import EmptyWordPack from '@/components/EmptyWordPack'
 import Loading from '@/components/Loading'
 import Modal from '@/components/Modal'
 import { baseStyles, colors, spacing } from '@/constants/styles'
-import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { practiceService } from '@/services/practiceService'
+import { useWordPackStore } from '@/stores/wordPackStore'
 import type { WordPack } from '@/types'
 
 interface WordPackProgressData {
@@ -20,7 +21,7 @@ interface WordPackProgressModalProps {
 }
 
 const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) => {
-  const { allWordPacks } = useCurrentWordPack()
+  const { allWordPacks, hasData } = useWordPackStore()
   const [progressData, setProgressData] = useState<WordPackProgressData[]>([])
   const [loading, setLoading] = useState(false)
 
@@ -61,7 +62,7 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
 
   // 当模态框打开时获取数据
   useEffect(() => {
-    if (!isOpen || !allWordPacks.length) return
+    if (!isOpen || !hasData) return
 
     fetchWordPackProgress()
   }, [isOpen, allWordPacks])
@@ -80,12 +81,8 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
           <div className="h-64">
             <Loading text="加载进度中..." size="md" />
           </div>
-        ) : progressData.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            <Package className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">暂无词包</h3>
-            <p className="text-sm text-gray-600">请先导入词包数据</p>
-          </div>
+        ) : !hasData ? (
+          <EmptyWordPack showImportButton={false} />
         ) : (
           <div className={spacing.listItems}>
             {progressData.map((item) => (
@@ -121,13 +118,11 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
         )}
       </div>
 
-      <div className="mt-6 p-4 bg-gray-50 rounded-xl text-center text-sm text-gray-600">
-        {loading
-          ? '正在计算学习进度...'
-          : progressData.length === 0
-            ? '请先导入词包数据'
-            : `共 ${progressData.length} 个词包`}
-      </div>
+      {!!progressData.length && (
+        <div className="mt-6 p-4 bg-gray-50 rounded-xl text-center text-sm text-gray-600">
+          {loading ? '正在计算学习进度...' : `共 ${progressData.length} 个词包`}
+        </div>
+      )}
     </Modal>
   )
 }

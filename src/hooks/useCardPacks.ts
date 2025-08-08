@@ -9,12 +9,11 @@ import { useCurrentWordPack } from './useCurrentWordPack'
 interface UseCardPacksResult {
   cardPacks: (CardPack & { progress: number })[]
   loading: boolean
-  hasData: boolean
   error: string | null
 }
 
 export const useCardPacks = (): UseCardPacksResult => {
-  const { currentWordPackId, hasData: hasWordPackData } = useCurrentWordPack()
+  const { currentWordPackId } = useCurrentWordPack()
   const [cardPacks, setCardPacks] = useState<(CardPack & { progress: number })[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -41,7 +40,6 @@ export const useCardPacks = (): UseCardPacksResult => {
     }
   }
 
-  // 当当前词包ID变化时，重新获取卡包
   useEffect(() => {
     fetchCardPacks(currentWordPackId)
   }, [currentWordPackId])
@@ -49,7 +47,6 @@ export const useCardPacks = (): UseCardPacksResult => {
   return {
     cardPacks,
     loading,
-    hasData: hasWordPackData && cardPacks.length > 0,
     error,
   }
 }

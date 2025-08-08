@@ -36,11 +36,9 @@ export const useWordPackStore = create<WordPackState & WordPackActions>((set, ge
     set({ loading: true, error: null })
 
     try {
-      const wordPacks = await wordPackService.getWordPacksBy()
       set({
-        allWordPacks: wordPacks,
-        hasData: wordPacks.length > 0,
-        loading: false,
+        allWordPacks: await wordPackService.getWordPacksBy(),
+        hasData: await wordPackService.hasData(),
         error: null,
         lastRefreshTime: Date.now(),
       })
@@ -50,9 +48,10 @@ export const useWordPackStore = create<WordPackState & WordPackActions>((set, ge
       set({
         allWordPacks: [],
         hasData: false,
-        loading: false,
         error: errorMessage,
       })
+    } finally {
+      set({ loading: false })
     }
   },
 

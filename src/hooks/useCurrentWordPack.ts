@@ -3,16 +3,11 @@ import { isNil } from 'lodash'
 import { useEffect, useState } from 'react'
 
 import { wordPackService } from '@/services/wordPackService'
-import { useWordPackStore } from '@/stores/wordPackStore'
 import type { WordPack } from '@/types'
 
 interface UseCurrentWordPackResult {
   currentWordPackId: number | null
   currentWordPack: WordPack | null
-  allWordPacks: WordPack[]
-  loading: boolean
-  hasData: boolean
-  error: string | null
   setCurrentWordPackId: (id: number | null) => void
 }
 
@@ -25,8 +20,6 @@ export const useCurrentWordPack = (): UseCurrentWordPackResult => {
   )
   const [currentWordPack, setCurrentWordPack] = useState<WordPack | null>(null)
 
-  const { allWordPacks, loading, hasData, error, fetchWordPacks } = useWordPackStore()
-
   const fetchCurrentWordPack = async (wordPackId: number) => {
     try {
       const wordPack = await wordPackService.getWordPackById(wordPackId)
@@ -36,10 +29,6 @@ export const useCurrentWordPack = (): UseCurrentWordPackResult => {
       setCurrentWordPack(null)
     }
   }
-
-  useEffect(() => {
-    fetchWordPacks()
-  }, [fetchWordPacks])
 
   useEffect(() => {
     if (isNil(currentWordPackId)) {
@@ -52,10 +41,6 @@ export const useCurrentWordPack = (): UseCurrentWordPackResult => {
   return {
     currentWordPackId,
     currentWordPack,
-    allWordPacks,
-    loading,
-    hasData,
-    error,
     setCurrentWordPackId,
   }
 }

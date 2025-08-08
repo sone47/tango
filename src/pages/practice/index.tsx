@@ -1,7 +1,10 @@
+import { useEffect } from 'react'
+
 import { useCardPacks } from '@/hooks/useCardPacks'
 import { cardPackService } from '@/services/cardPackService'
 import { practiceService } from '@/services/practiceService'
 import { usePracticeStore } from '@/stores/practiceStore'
+import { useWordPackStore } from '@/stores/wordPackStore'
 import type { CardPack } from '@/types'
 import { processWords } from '@/utils/practiceUtils'
 
@@ -12,7 +15,8 @@ import PracticeContent from './components/PracticeContent'
 import PracticeHeader from './components/PracticeHeader'
 
 export default function PracticeTab() {
-  const { cardPacks, loading: cardPacksLoading, hasData } = useCardPacks()
+  const { cardPacks, loading: cardPacksLoading } = useCardPacks()
+  const { fetchWordPacks } = useWordPackStore()
 
   const {
     selectedCardPack,
@@ -27,6 +31,12 @@ export default function PracticeTab() {
     updateState,
     resetRevealState,
   } = usePracticeStore()
+
+  useEffect(() => {
+    updateState({ showCardPackSelector: true })
+
+    fetchWordPacks()
+  }, [])
 
   const handleCardPackSelect = async (cardPack: CardPack) => {
     const fullCardPack = await cardPackService.getCardPackWithWordsById(cardPack.id)
@@ -119,7 +129,6 @@ export default function PracticeTab() {
     <div className="h-full flex flex-col">
       <PracticeHeader
         selectedCardPack={selectedCardPack}
-        hasData={hasData}
         onSelectCardPack={() => updateState({ showCardPackSelector: true })}
         onShowHistoryPool={() => updateState({ showHistoryPool: true })}
       />
@@ -140,7 +149,6 @@ export default function PracticeTab() {
         onSelectCardPack={handleCardPackSelect}
         cardPacks={cardPacks}
         loading={cardPacksLoading}
-        hasData={hasData}
       />
 
       <HistoryPool
