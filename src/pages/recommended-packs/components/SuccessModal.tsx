@@ -16,7 +16,7 @@ interface SuccessModalProps {
 
 export default function SuccessModal({ isOpen, importedWordPackId, onClose }: SuccessModalProps) {
   const navigate = useNavigate()
-  const { setCurrentWordPackId } = useCurrentWordPack()
+  const { setCurrentWordPackId, currentWordPackId } = useCurrentWordPack()
   const [wordPackName, setWordPackName] = useState<string>('')
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function SuccessModal({ isOpen, importedWordPackId, onClose }: Su
   }
 
   const handleClose = () => {
-    if (!isNil(importedWordPackId)) {
+    if (!isNil(importedWordPackId) && isNil(currentWordPackId)) {
       setCurrentWordPackId(importedWordPackId)
     }
 
