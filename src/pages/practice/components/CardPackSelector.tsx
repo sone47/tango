@@ -35,7 +35,7 @@ const CardPackSelector = ({
       iconColor="blue"
       maxWidth="lg"
     >
-      <div className="max-h-96 overflow-y-auto">
+      <div className="max-h-96 overflow-y-auto overflow-x-hidden">
         {loading ? (
           <div className="h-64">
             <Loading text="加载卡包中..." size="md" />
