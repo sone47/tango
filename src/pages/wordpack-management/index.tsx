@@ -39,7 +39,7 @@ const WordPackManagePage = () => {
       )
     }
 
-    if (!hasData || allWordPacks.length === 0) {
+    if (!hasData) {
       return (
         <div className="text-center py-8 text-gray-500">
           <Package className="h-12 w-12 mx-auto mb-4 text-gray-400" />

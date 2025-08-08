@@ -72,7 +72,7 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
       onClose={onClose}
       title="词包学习进度"
       icon={Package}
-      iconColor="purple"
+      iconColor="blue"
       maxWidth="lg"
     >
       <div className="max-h-96 overflow-y-auto">

@@ -1,0 +1,34 @@
+import { FileX } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+
+import Button from './Button'
+
+export default function EmptyWordPack() {
+  const navigate = useNavigate()
+
+  const handleImportRecommendedCardPack = () => {
+    navigate('/recommended-packs')
+  }
+
+  const handleImportCustomCardPack = () => {
+    navigate('/profile', { state: { view: 'import' } })
+  }
+
+  return (
+    <>
+      <div className="flex flex-col items-center justify-center py-8 text-gray-500">
+        <FileX className="h-12 w-12 mb-4 text-gray-400" />
+        <h3 className="text-lg font-medium text-gray-900 mb-2">暂无词包</h3>
+        <p className="text-sm text-gray-600 text-center">请先导入词包数据</p>
+      </div>
+      <div className="flex flex-col justify-center gap-2">
+        <Button variant="primary" onClick={handleImportRecommendedCardPack}>
+          导入推荐词包
+        </Button>
+        <Button variant="secondary" onClick={handleImportCustomCardPack}>
+          导入自定义词包
+        </Button>
+      </div>
+    </>
+  )
+}
