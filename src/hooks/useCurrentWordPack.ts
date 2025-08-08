@@ -42,21 +42,12 @@ export const useCurrentWordPack = (): UseCurrentWordPackResult => {
   }, [fetchWordPacks])
 
   useEffect(() => {
-    if (!isNil(currentWordPackId)) {
-      fetchCurrentWordPack(currentWordPackId)
-    } else {
+    if (isNil(currentWordPackId)) {
       setCurrentWordPack(null)
+    } else {
+      fetchCurrentWordPack(currentWordPackId)
     }
   }, [currentWordPackId])
-
-  useEffect(() => {
-    if (!isNil(currentWordPackId) && allWordPacks.length) {
-      const isValid = allWordPacks.some((wp) => wp.id === currentWordPackId)
-      if (!isValid) {
-        setCurrentWordPackId(allWordPacks[0]?.id || null)
-      }
-    }
-  }, [allWordPacks, currentWordPackId, setCurrentWordPackId])
 
   return {
     currentWordPackId,
