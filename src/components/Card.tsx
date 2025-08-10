@@ -37,7 +37,7 @@ const Card = ({
     return (
       <div className="flex items-center gap-3 mb-4">
         {Icon && (
-          <div className={`${baseStyles.iconContainer} ${colors.icon[iconColor]}`}>
+          <div className={`${baseStyles.iconContainer} ${iconColor ? colors.icon[iconColor] : ''}`}>
             <Icon size={20} />
           </div>
         )}

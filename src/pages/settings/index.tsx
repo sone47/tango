@@ -42,7 +42,7 @@ export default function SettingsPage() {
   return (
     <Page title="设置">
       <div className="space-y-6">
-        <SettingItem title="练习设置" icon={BookCheck} iconColor="blue" isCard>
+        <SettingItem title="练习设置" icon={BookCheck} isCard>
           <SettingItem title="开始时自动洗牌">
             <Switch
               checked={settings.practice.isShuffle}
@@ -51,7 +51,7 @@ export default function SettingsPage() {
           </SettingItem>
         </SettingItem>
 
-        <SettingItem title="语音设置" icon={Headphones} iconColor="green" isCard>
+        <SettingItem title="语音设置" icon={Headphones} isCard>
           <div className="space-y-4 w-full">
             <SettingItem title="语言">
               <select
