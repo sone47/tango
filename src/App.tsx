@@ -11,6 +11,7 @@ import PracticeTab from '@/pages/practice'
 import ProfileTab from '@/pages/profile'
 import RecommendedPacksPage from '@/pages/recommended-packs'
 import SettingsPage from '@/pages/settings'
+import TransferPage from '@/pages/transfer'
 import WordPackManagePage from '@/pages/wordpack-management'
 import type { TabType } from '@/types'
 
@@ -70,6 +71,7 @@ function App() {
       <Route path="/wordpack-management" element={<WordPackManagePage />} />
       <Route path="/recommended-packs" element={<RecommendedPacksPage />} />
       <Route path="/settings" element={<SettingsPage />} />
+      <Route path="/transfer" element={<TransferPage />} />
       <Route path="/*" element={<MainApp />} />
     </Routes>
   )

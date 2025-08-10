@@ -8,6 +8,10 @@ export const defaultSettings = {
     pitch: 1.0,
     volume: 1.0,
   },
+  transfer: {
+    importStrategy: 'overwrite' as const,
+    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+  },
 } as const
 
 // TODO https://github.com/TiagoDanin/Windows-Locale

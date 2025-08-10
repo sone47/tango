@@ -1,8 +1,10 @@
-import { BookCheck, ChevronRight, Headphones, Play } from 'lucide-react'
+import { BookCheck, ChevronRight, Headphones, Play, Share2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import Button from '@/components/Button'
 import Card from '@/components/Card'
+import Input from '@/components/Input'
 import Page from '@/components/Page'
 import Slider from '@/components/Slider'
 import Switch from '@/components/Switch'
@@ -12,7 +14,14 @@ import SettingItem from '@/pages/settings/componetns/SettingItem'
 import { getVoicesByLanguage, textToSpeech, waitForVoicesReady } from '@/utils/speechUtils'
 
 export default function SettingsPage() {
-  const { settings, updatePracticeSettings, updateSpeechSettings, resetSettings } = useSettings()
+  const {
+    settings,
+    updatePracticeSettings,
+    updateSpeechSettings,
+    updateTransferSettings,
+    resetSettings,
+  } = useSettings()
+  const navigate = useNavigate()
 
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
   const [showVoiceSelector, setShowVoiceSelector] = useState(false)
@@ -144,6 +153,62 @@ export default function SettingsPage() {
               className="w-full"
             >
               测试语音
+            </Button>
+          </div>
+        </SettingItem>
+
+        <SettingItem title="数据传输" icon={Share2} iconColor="purple" isCard>
+          <div className="space-y-4 w-full">
+            <SettingItem title="导入策略">
+              <select
+                value={settings.transfer?.importStrategy ?? 'overwrite'}
+                onChange={(e) =>
+                  updateTransferSettings({
+                    importStrategy: (e.target.value as 'overwrite' | 'merge') ?? 'overwrite',
+                  })
+                }
+                className="text-sm bg-gray-100 rounded-lg px-3 py-1 border-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="overwrite">覆盖</option>
+                <option value="merge" disabled>
+                  合并（规划中）
+                </option>
+              </select>
+            </SettingItem>
+
+            <SettingItem title="ICE/TURN 服务器" description="可填写多个，用英文逗号分隔">
+              <Input
+                variant="ghost"
+                size="sm"
+                defaultValue={
+                  Array.isArray(settings.transfer?.iceServers)
+                    ? settings.transfer.iceServers
+                        .map((s) => (typeof s.urls === 'string' ? s.urls : s.urls[0]))
+                        .join(',')
+                    : ''
+                }
+                onBlur={(e) => {
+                  const value = e.target.value.trim()
+                  const urls = value
+                    ? value
+                        .split(',')
+                        .map((v) => v.trim())
+                        .filter(Boolean)
+                    : ['stun:stun.l.google.com:19302']
+                  updateTransferSettings({ iceServers: urls.map((u) => ({ urls: u })) })
+                }}
+                placeholder="stun:stun.l.google.com:19302, turn:example.com:3478"
+                className="w-full"
+              />
+            </SettingItem>
+
+            <Button
+              variant="primary"
+              size="sm"
+              className="w-full"
+              onClick={() => navigate('/transfer')}
+            >
+              打开数据传输页面
             </Button>
           </div>
         </SettingItem>
