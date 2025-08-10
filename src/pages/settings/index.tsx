@@ -157,7 +157,7 @@ export default function SettingsPage() {
           </div>
         </SettingItem>
 
-        <SettingItem title="数据传输" icon={Share2} iconColor="purple" isCard>
+        <SettingItem title="数据传输" icon={Share2} isCard>
           <div className="space-y-4 w-full">
             <SettingItem title="导入策略">
               <select

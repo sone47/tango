@@ -19,7 +19,7 @@ const Card = ({
   children,
   title,
   icon: Icon,
-  iconColor = 'blue',
+  iconColor,
   className = '',
   delay = 0,
   onClick,
