@@ -47,11 +47,11 @@ const CardPackSelector = ({
     )
   }
 
-  if (!hasData) {
+  if (!content && !hasData) {
     content = <EmptyWordPack showImportButton />
   }
 
-  if (!currentWordPack) {
+  if (!content && !currentWordPack) {
     content = (
       <>
         <div className="flex flex-col items-center justify-center py-8 text-gray-500">
