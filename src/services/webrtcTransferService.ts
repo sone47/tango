@@ -43,7 +43,6 @@ export class WebRTCTransferService {
     this.peer.on('open', (id) => {
       console.log('Peer ID:', id)
       if (config.initiator) {
-        // 发起者：等待用户指定要连接的对方 ID
         this.onOfferHandler?.({ peerId: id })
       }
     })

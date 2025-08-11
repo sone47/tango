@@ -33,7 +33,7 @@ export default function TransferPage() {
   }
 
   return (
-    <Page title="数据传输">
+    <Page title="数据同步">
       <div className="space-y-6">
         <Card>
           <div className="space-y-3">

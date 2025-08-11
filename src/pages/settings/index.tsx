@@ -157,9 +157,9 @@ export default function SettingsPage() {
           </div>
         </SettingItem>
 
-        <SettingItem title="数据传输" icon={Share2} isCard>
+        <SettingItem title="数据同步" icon={Share2} isCard>
           <div className="space-y-4 w-full">
-            <SettingItem title="导入策略">
+            <SettingItem title="同步策略">
               <select
                 value={settings.transfer?.importStrategy ?? 'overwrite'}
                 onChange={(e) =>
@@ -208,7 +208,7 @@ export default function SettingsPage() {
               className="w-full"
               onClick={() => navigate('/transfer')}
             >
-              打开数据传输页面
+              前往数据同步页面
             </Button>
           </div>
         </SettingItem>
