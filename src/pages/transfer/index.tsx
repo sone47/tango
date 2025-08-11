@@ -4,7 +4,6 @@ import Card from '@/components/Card'
 import Page from '@/components/Page'
 import { Tabs } from '@/components/Tabs'
 
-import OfflineBackup from './components/OfflineBackup'
 import Receiver from './components/Receiver'
 import Sender from './components/Sender'
 
@@ -26,21 +25,17 @@ export default function TransferPage() {
 
   return (
     <Page title="数据同步">
-      <div className="space-y-6">
-        <Card>
-          {isLoad && (
-            <Tabs
-              tabs={[
-                { label: '我是发送端', value: 'sender', component: <Sender /> },
-                { label: '我是接收端', value: 'receiver', component: <Receiver /> },
-              ]}
-              defaultValue={role}
-            />
-          )}
-        </Card>
-
-        <OfflineBackup />
-      </div>
+      <Card>
+        {isLoad && (
+          <Tabs
+            defaultValue={role}
+            tabs={[
+              { label: '发送', value: 'sender', component: <Sender /> },
+              { label: '接收', value: 'receiver', component: <Receiver /> },
+            ]}
+          />
+        )}
+      </Card>
     </Page>
   )
 }

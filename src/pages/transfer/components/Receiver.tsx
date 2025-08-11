@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import toast from '@/components/Toast'
+import Typography from '@/components/Typography'
+import { Separator } from '@/components/ui/separator'
 import { useSettings } from '@/hooks/useSettings'
 import { type DataSyncPayload, dataSyncService } from '@/services/dataSyncService'
 import { webrtcTransferService } from '@/services/webrtcTransferService'
@@ -91,6 +93,18 @@ export default function Receiver() {
     }, 1000)
   }
 
+  const handleImportJSON = async (file: File) => {
+    try {
+      const text = await file.text()
+      const payload = JSON.parse(text) as DataSyncPayload
+      await dataSyncService.importAllOverwrite(payload)
+      toast.success('导入完成')
+    } catch (error) {
+      toast.error('导入失败')
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     return () => {
       webrtcTransferService.destroy()
@@ -99,7 +113,7 @@ export default function Receiver() {
 
   return (
     <div className="space-y-2">
-      <div className="text-sm text-gray-600">请输入发送端的 Peer ID 进行连接</div>
+      <div className="text-sm text-gray-600">请输入发送端的配对 ID 进行连接</div>
       <div className="flex gap-2">
         <Input
           variant="ghost"
@@ -114,13 +128,30 @@ export default function Receiver() {
         </Button>
       </div>
       {connected && (
-        <div className="space-y-2">
-          <Button variant="secondary" disabled={receiving} icon={Download} className="w-full">
-            等待接收中
-          </Button>
-        </div>
+        <Button variant="secondary" disabled={receiving} icon={Download} className="w-full">
+          等待接收中
+        </Button>
       )}
       {progressMsg && <div className="text-sm text-gray-600">{progressMsg}</div>}
+
+      <Separator className="my-4" />
+
+      <div className="flex flex-col gap-2">
+        <Typography.Text type="secondary" size="sm">
+          当配对功能无法使用时，请使用数据导入
+        </Typography.Text>
+        <label className="w-full cursor-pointer">
+          <input
+            type="file"
+            accept="application/json"
+            className="hidden"
+            onChange={(e) => e.target.files?.[0] && handleImportJSON(e.target.files[0])}
+          />
+          <Button variant="secondary" icon={Download} className="w-full pointer-events-none">
+            导入数据文件
+          </Button>
+        </label>
+      </div>
     </div>
   )
 }
