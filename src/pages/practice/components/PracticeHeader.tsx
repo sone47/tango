@@ -22,7 +22,6 @@ const PracticeHeader = ({
       <Button
         variant="secondary"
         size="sm"
-        rounded="full"
         onClick={onSelectCardPack}
         icon={Menu}
         className="shadow-lg"
@@ -34,7 +33,6 @@ const PracticeHeader = ({
       <Button
         variant="primary"
         size="sm"
-        rounded="full"
         onClick={onShowHistoryPool}
         icon={History}
         className="shadow-md"

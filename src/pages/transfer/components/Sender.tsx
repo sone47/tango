@@ -83,7 +83,12 @@ export default function Sender() {
     }
   }
 
-  if (!myPeerId) return <Button onClick={createPeer}>创建 Peer</Button>
+  if (!myPeerId)
+    return (
+      <Button size="sm" onClick={createPeer}>
+        创建 Peer
+      </Button>
+    )
 
   return (
     <div className="space-y-2">

@@ -5,8 +5,7 @@ import type { ReactNode } from 'react'
 interface ButtonProps {
   children?: ReactNode
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger'
-  size?: 'sm' | 'md' | 'lg' | 'xl'
-  rounded?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   icon?: LucideIcon
   iconPosition?: 'left' | 'right'
   loading?: boolean
@@ -20,7 +19,6 @@ const Button = ({
   children,
   variant = 'primary',
   size = 'md',
-  rounded = 'xl',
   icon: Icon,
   iconPosition = 'left',
   loading = false,
@@ -41,6 +39,7 @@ const Button = ({
 
   const getSizeStyles = () => {
     const sizes = {
+      xs: 'px-2 py-1 text-xs',
       sm: 'px-3 py-1.5 text-sm',
       md: 'px-4 py-2 text-base',
       lg: 'px-6 py-3 text-lg',
@@ -51,17 +50,19 @@ const Button = ({
 
   const getRoundedStyles = () => {
     const roundedMap = {
+      xs: 'rounded-xs',
       sm: 'rounded-sm',
       md: 'rounded-md',
       lg: 'rounded-lg',
       xl: 'rounded-xl',
       full: 'rounded-full',
     }
-    return roundedMap[rounded]
+    return roundedMap[size]
   }
 
   const getIconSize = () => {
     const iconSizes = {
+      xs: 12,
       sm: 14,
       md: 16,
       lg: 20,

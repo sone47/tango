@@ -60,7 +60,6 @@ const EmptyState = ({
               key={index}
               variant={action.variant || 'primary'}
               size={action.size || 'lg'}
-              rounded={action.rounded || 'full'}
               onClick={action.onClick}
               icon={action.icon}
               className={action.className}
