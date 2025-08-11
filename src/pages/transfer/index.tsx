@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import Card from '@/components/Card'
 import Page from '@/components/Page'
 import { Tabs } from '@/components/Tabs'
 
@@ -26,11 +27,26 @@ export default function TransferPage() {
     <Page title="数据同步">
       {isLoad && (
         <Tabs
-          isContentWrapper
           defaultValue={role}
           tabs={[
-            { label: '发送', value: 'sender', component: <Sender /> },
-            { label: '接收', value: 'receiver', component: <Receiver /> },
+            {
+              label: '发送',
+              value: 'sender',
+              component: (
+                <Card>
+                  <Sender />
+                </Card>
+              ),
+            },
+            {
+              label: '接收',
+              value: 'receiver',
+              component: (
+                <Card>
+                  <Receiver />
+                </Card>
+              ),
+            },
           ]}
         />
       )}

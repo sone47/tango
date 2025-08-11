@@ -162,6 +162,7 @@ export default function Sender() {
         </Typography.Text>
         <Button
           variant="secondary"
+          size="sm"
           icon={Upload}
           onClick={handleExportJSON}
           className="w-full"

@@ -79,7 +79,7 @@ export default function Receiver() {
   }
 
   const handleConnect = () => {
-    if (!remotePeerId.trim()) return toast.error('请输入对方的 Peer ID')
+    if (!remotePeerId.trim()) return toast.error('请输入对方的配对 ID')
 
     createPeer()
 
@@ -121,7 +121,7 @@ export default function Receiver() {
           className="flex-1"
           value={remotePeerId}
           onChange={(e) => setRemotePeerId(e.target.value)}
-          placeholder="输入发送端的 Peer ID"
+          placeholder="输入发送端的配对 ID"
         />
         <Button size="sm" onClick={handleConnect} disabled={!remotePeerId.trim()}>
           连接
@@ -147,7 +147,12 @@ export default function Receiver() {
             className="hidden"
             onChange={(e) => e.target.files?.[0] && handleImportJSON(e.target.files[0])}
           />
-          <Button variant="secondary" icon={Download} className="w-full pointer-events-none">
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={Download}
+            className="w-full pointer-events-none"
+          >
             导入数据文件
           </Button>
         </label>
