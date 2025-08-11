@@ -9,21 +9,22 @@ import { type DataSyncPayload, dataSyncService } from '@/services/dataSyncServic
 import { webrtcTransferService } from '@/services/webrtcTransferService'
 
 interface ReceiverProps {
-  initialRemotePeerId?: string
   onProgressChange: (message: string) => void
 }
 
-export default function Receiver({ initialRemotePeerId, onProgressChange }: ReceiverProps) {
-  const [remotePeerId, setRemotePeerId] = useState(initialRemotePeerId || '')
+export default function Receiver({ onProgressChange }: ReceiverProps) {
+  const [remotePeerId, setRemotePeerId] = useState('')
   const [connected, setConnected] = useState(false)
   const [receiving, setReceiving] = useState(false)
   const { settings } = useSettings()
 
   useEffect(() => {
-    if (initialRemotePeerId) {
-      setRemotePeerId(initialRemotePeerId)
+    const urlParams = new URLSearchParams(location.search)
+    const peerId = urlParams.get('peer')
+    if (peerId) {
+      setRemotePeerId(decodeURIComponent(peerId))
     }
-  }, [initialRemotePeerId])
+  }, [])
 
   const createPeer = () => {
     webrtcTransferService.destroy()

@@ -12,7 +12,6 @@ type Role = 'sender' | 'receiver'
 
 export default function TransferPage() {
   const [role, setRole] = useState<Role | null>(null)
-  const [remotePeerId, setRemotePeerId] = useState('')
   const [progressMsg, setProgressMsg] = useState('')
 
   useEffect(() => {
@@ -20,7 +19,6 @@ export default function TransferPage() {
     const peerId = urlParams.get('peer')
     if (peerId) {
       setRole('receiver')
-      setRemotePeerId(decodeURIComponent(peerId))
     }
   }, [])
 
@@ -48,9 +46,7 @@ export default function TransferPage() {
 
             {role === 'sender' && <Sender onProgressChange={setProgressMsg} />}
 
-            {role === 'receiver' && (
-              <Receiver initialRemotePeerId={remotePeerId} onProgressChange={setProgressMsg} />
-            )}
+            {role === 'receiver' && <Receiver onProgressChange={setProgressMsg} />}
 
             {progressMsg && <div className="text-sm text-gray-600">{progressMsg}</div>}
           </div>
