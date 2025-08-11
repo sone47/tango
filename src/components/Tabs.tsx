@@ -20,7 +20,7 @@ export function Tabs({ defaultValue, tabs }: TabsProps) {
 
   return (
     <ShadTabs defaultValue={defaultValue} value={activeTab}>
-      <TabsList>
+      <TabsList className="w-full">
         {tabs.map((tab) => (
           <TabsTrigger key={tab.value} value={tab.value} onClick={() => handleTabChange(tab.value)}>
             {tab.label}
@@ -28,7 +28,7 @@ export function Tabs({ defaultValue, tabs }: TabsProps) {
         ))}
       </TabsList>
       {tabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value}>
+        <TabsContent key={tab.value} value={tab.value} className="py-2">
           {tab.component}
         </TabsContent>
       ))}
