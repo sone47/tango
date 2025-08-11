@@ -1,41 +1,37 @@
-import type { LucideIcon } from 'lucide-react'
+import { useState } from 'react'
 
-import type { TabType } from '@/types'
-
-import TabButton from './TabButton'
-
-export interface TabConfig {
-  id: TabType
-  icon: LucideIcon
-  label: string
-  path: string
-  component: React.ComponentType<unknown>
-}
+import { Tabs as ShadTabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 interface TabsProps {
-  tabs: TabConfig[]
-  activeTab: TabType
-  onTabChange: (tab: TabType) => void
-  className?: string
+  defaultValue?: string
+  tabs: {
+    label: string
+    value: string
+    component: React.ReactNode
+  }[]
 }
 
-const Tabs = ({ tabs, activeTab, onTabChange, className = '' }: TabsProps) => {
+export function Tabs({ defaultValue, tabs }: TabsProps) {
+  const [activeTab, setActiveTab] = useState(defaultValue)
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value)
+  }
+
   return (
-    <div className={`bg-white/80 backdrop-blur-lg border-t border-gray-200/50 ${className}`}>
-      <div className="flex items-center justify-around py-1 px-4">
+    <ShadTabs defaultValue={defaultValue} value={activeTab}>
+      <TabsList>
         {tabs.map((tab) => (
-          <TabButton
-            key={tab.id}
-            id={tab.id}
-            icon={tab.icon}
-            label={tab.label}
-            isActive={activeTab === tab.id}
-            onClick={onTabChange}
-          />
+          <TabsTrigger key={tab.value} value={tab.value} onClick={() => handleTabChange(tab.value)}>
+            {tab.label}
+          </TabsTrigger>
         ))}
-      </div>
-    </div>
+      </TabsList>
+      {tabs.map((tab) => (
+        <TabsContent key={tab.value} value={tab.value}>
+          {tab.component}
+        </TabsContent>
+      ))}
+    </ShadTabs>
   )
 }
-
-export default Tabs

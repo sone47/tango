@@ -8,14 +8,11 @@ import { useSettings } from '@/hooks/useSettings'
 import { type DataSyncPayload, dataSyncService } from '@/services/dataSyncService'
 import { webrtcTransferService } from '@/services/webrtcTransferService'
 
-interface ReceiverProps {
-  onProgressChange: (message: string) => void
-}
-
-export default function Receiver({ onProgressChange }: ReceiverProps) {
+export default function Receiver() {
   const [remotePeerId, setRemotePeerId] = useState('')
   const [connected, setConnected] = useState(false)
   const [receiving, setReceiving] = useState(false)
+  const [progressMsg, setProgressMsg] = useState('')
   const { settings } = useSettings()
 
   useEffect(() => {
@@ -47,7 +44,7 @@ export default function Receiver({ onProgressChange }: ReceiverProps) {
         const message = JSON.parse(text)
         if (message.type === 'payload') {
           setReceiving(true)
-          onProgressChange('正在导入...')
+          setProgressMsg('正在导入...')
           const payload = message.payload as DataSyncPayload
           const strategy = settings.transfer?.importStrategy || 'overwrite'
           if (strategy === 'overwrite') {
@@ -56,13 +53,15 @@ export default function Receiver({ onProgressChange }: ReceiverProps) {
             // TODO 未来实现合并；当前退回覆盖
             await dataSyncService.importAllOverwrite(payload)
           }
-          setReceiving(false)
-          onProgressChange('导入完成')
+          setProgressMsg('导入完成')
           toast.success('数据导入完成')
         }
       } catch (e) {
         console.error(e)
+        setProgressMsg('数据解析失败')
         toast.error('数据解析失败')
+      } finally {
+        setReceiving(false)
       }
     })
 
@@ -73,7 +72,7 @@ export default function Receiver({ onProgressChange }: ReceiverProps) {
 
     webrtcTransferService.onClose(() => {
       setConnected(false)
-      onProgressChange('连接已断开')
+      setProgressMsg('连接已断开')
     })
   }
 
@@ -121,6 +120,7 @@ export default function Receiver({ onProgressChange }: ReceiverProps) {
           </Button>
         </div>
       )}
+      {progressMsg && <div className="text-sm text-gray-600">{progressMsg}</div>}
     </div>
   )
 }

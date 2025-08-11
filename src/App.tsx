@@ -4,7 +4,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
 import ErrorDisplay from '@/components/ErrorDisplay'
 import Loading from '@/components/Loading'
-import Tabs, { type TabConfig } from '@/components/Tabs'
+import TabBar, { type TabConfig } from '@/components/TabBar'
 import { DB_NAME, DB_VERSION } from '@/constants/database'
 import { useDatabase } from '@/hooks/useDatabase'
 import PracticeTab from '@/pages/practice'
@@ -42,7 +42,7 @@ function MainApp() {
           <Route path="/profile" element={<ProfileTab />} />
         </Routes>
       </div>
-      <Tabs tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
+      <TabBar tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
   )
 }

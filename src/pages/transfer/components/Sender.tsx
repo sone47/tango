@@ -8,14 +8,11 @@ import { useSettings } from '@/hooks/useSettings'
 import { dataSyncService } from '@/services/dataSyncService'
 import { webrtcTransferService } from '@/services/webrtcTransferService'
 
-interface SenderProps {
-  onProgressChange: (message: string) => void
-}
-
-export default function Sender({ onProgressChange }: SenderProps) {
+export default function Sender() {
   const [myPeerId, setMyPeerId] = useState('')
   const [connected, setConnected] = useState(false)
   const [sending, setSending] = useState(false)
+  const [progressMsg, setProgressMsg] = useState('')
   const { settings } = useSettings()
 
   const createPeer = () => {
@@ -45,7 +42,7 @@ export default function Sender({ onProgressChange }: SenderProps) {
 
     webrtcTransferService.onClose(() => {
       setConnected(false)
-      onProgressChange('连接已断开')
+      setProgressMsg('连接已断开')
     })
   }
 
@@ -70,18 +67,19 @@ export default function Sender({ onProgressChange }: SenderProps) {
 
     try {
       setSending(true)
-      onProgressChange('正在打包数据...')
+      setProgressMsg('正在打包数据...')
       const payload = await dataSyncService.exportAll()
       const json = JSON.stringify({ type: 'payload', payload })
       const bytes = new TextEncoder().encode(json)
       webrtcTransferService.send(bytes)
-      setSending(false)
-      onProgressChange('发送完成')
+      setProgressMsg('发送完成')
       toast.success('发送完成')
     } catch (error) {
-      setSending(false)
+      setProgressMsg('发送失败')
       toast.error('发送失败')
       console.error(error)
+    } finally {
+      setSending(false)
     }
   }
 
@@ -118,6 +116,7 @@ export default function Sender({ onProgressChange }: SenderProps) {
       ) : (
         <div className="text-sm text-gray-600">等待对方连接...</div>
       )}
+      {progressMsg && <div className="text-sm text-gray-600">{progressMsg}</div>}
     </div>
   )
 }
