@@ -16,7 +16,6 @@ import DebugLogger from './DebugLogger'
 export default function Receiver() {
   const [remotePeerId, setRemotePeerId] = useState('')
   const [connected, setConnected] = useState(false)
-  const [receiving, setReceiving] = useState(false)
   const [connectLoading, setConnectLoading] = useState(false)
   const [logs, setLogs] = useState<LogEntry[]>([])
   const { settings } = useSettings()
@@ -68,8 +67,6 @@ export default function Receiver() {
         const text = new TextDecoder().decode(chunk)
         const message = JSON.parse(text)
         if (message.type === 'payload') {
-          setReceiving(true)
-
           const payload = message.payload as DataSyncPayload
           const strategy = settings.transfer?.importStrategy || 'overwrite'
           if (strategy === 'overwrite') {
@@ -85,8 +82,6 @@ export default function Receiver() {
       } catch (e) {
         toast.error('接收失败')
         console.error(e)
-      } finally {
-        setReceiving(false)
       }
     })
 
