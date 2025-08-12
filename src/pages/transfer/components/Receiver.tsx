@@ -70,7 +70,7 @@ export default function Receiver() {
     webrtcTransferService.onError((err) => {
       setConnectLoading(false)
       console.error(err)
-      toast.error(`连接失败: ${err.message}`)
+      toast.error('连接失败')
     })
 
     webrtcTransferService.onClose(() => {
