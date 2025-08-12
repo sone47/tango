@@ -12,6 +12,7 @@ interface CardProps {
   icon?: LucideIcon
   iconColor?: keyof typeof colors.icon
   className?: string
+  contentClassName?: string
   delay?: number
   onClick?: () => void
   whileTap?: boolean
@@ -23,6 +24,7 @@ const Card = ({
   icon: Icon,
   iconColor,
   className = '',
+  contentClassName = '',
   delay = 0,
   onClick,
   whileTap = false,
@@ -43,7 +45,7 @@ const Card = ({
   const cardContent = (
     <>
       {(title || Icon) && <CardHeader>{renderTitle()}</CardHeader>}
-      <CardContent className={cn(title || Icon ? '' : 'pt-0')}>{children}</CardContent>
+      <CardContent className={contentClassName}>{children}</CardContent>
     </>
   )
 
@@ -64,15 +66,7 @@ const Card = ({
     )
   }
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay }}
-    >
-      <UICard className={cardClassName}>{cardContent}</UICard>
-    </motion.div>
-  )
+  return <UICard className={cardClassName}>{cardContent}</UICard>
 }
 
 export default Card

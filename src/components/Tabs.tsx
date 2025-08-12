@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { Tabs as ShadTabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { cn } from '@/lib/utils'
 
 interface TabsProps {
   defaultValue?: string
@@ -8,10 +9,13 @@ interface TabsProps {
     label: string
     value: string
     component: React.ReactNode
+    className?: string
   }[]
+  className?: string
+  tabListClassName?: string
 }
 
-export function Tabs({ defaultValue, tabs }: TabsProps) {
+export function Tabs({ defaultValue, tabs, className, tabListClassName }: TabsProps) {
   const [activeTab, setActiveTab] = useState(defaultValue)
 
   const handleTabChange = (value: string) => {
@@ -19,8 +23,8 @@ export function Tabs({ defaultValue, tabs }: TabsProps) {
   }
 
   return (
-    <ShadTabs defaultValue={defaultValue} value={activeTab}>
-      <TabsList className="w-full">
+    <ShadTabs defaultValue={defaultValue} value={activeTab} className={className}>
+      <TabsList className={cn('w-full', tabListClassName)}>
         {tabs.map((tab) => (
           <TabsTrigger key={tab.value} value={tab.value} onClick={() => handleTabChange(tab.value)}>
             {tab.label}
@@ -28,7 +32,7 @@ export function Tabs({ defaultValue, tabs }: TabsProps) {
         ))}
       </TabsList>
       {tabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value} className="py-2">
+        <TabsContent key={tab.value} value={tab.value} className={cn('py-2', tab.className)}>
           {tab.component}
         </TabsContent>
       ))}

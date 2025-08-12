@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import Card from '@/components/Card'
 import Page from '@/components/Page'
 import { Tabs } from '@/components/Tabs'
 
@@ -32,20 +31,12 @@ export default function TransferPage() {
             {
               label: '发送',
               value: 'sender',
-              component: (
-                <Card>
-                  <Sender />
-                </Card>
-              ),
+              component: <Sender />,
             },
             {
               label: '接收',
               value: 'receiver',
-              component: (
-                <Card>
-                  <Receiver />
-                </Card>
-              ),
+              component: <Receiver />,
             },
           ]}
         />

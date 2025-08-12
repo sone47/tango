@@ -1,8 +1,8 @@
-import { Copy, Upload } from 'lucide-react'
+import { Upload } from 'lucide-react'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 
 import Button from '@/components/Button'
-import Input from '@/components/Input'
+import Card from '@/components/Card'
 import toast from '@/components/Toast'
 import Typography from '@/components/Typography'
 import { Separator } from '@/components/ui/separator'
@@ -55,12 +55,12 @@ export default function Sender() {
 
     webrtcTransferService.onConnect(() => {
       setConnected(true)
-      toast.success('连接成功')
+      toast.success('配对已完成，可以开始传输数据了')
     })
 
     webrtcTransferService.onError((err) => {
       console.error(err)
-      toast.error(`连接失败: ${err.message}`)
+      toast.error(`配对失败: ${err.message}`)
     })
 
     webrtcTransferService.onClose(() => {
@@ -86,7 +86,7 @@ export default function Sender() {
 
   const handleSendAll = async () => {
     if (!webrtcTransferService.isConnected()) {
-      toast.error('未连接')
+      toast.error('未完成配对')
       return
     }
 
@@ -97,6 +97,11 @@ export default function Sender() {
       const json = JSON.stringify({ type: 'payload', payload })
       const bytes = new TextEncoder().encode(json)
       webrtcTransferService.send(bytes)
+
+      toast.success('已发送')
+    } catch (e) {
+      toast.error('发送失败')
+      console.error(e)
     } finally {
       setSending(false)
     }
@@ -125,67 +130,64 @@ export default function Sender() {
   let content: ReactElement | null = null
   if (myPeerId) {
     content = (
-      <>
-        <div className="text-sm text-gray-600">我的配对 ID</div>
-        <div className="flex gap-2">
-          <Input variant="ghost" size="sm" className="flex-1" value={myPeerId} readOnly />
-          <Button size="sm" onClick={() => handleCopy(myPeerId)} icon={Copy}>
-            复制
-          </Button>
-        </div>
-        <div className="text-sm text-gray-600">分享链接给对方</div>
-        <div className="flex gap-2">
-          <Input variant="ghost" size="sm" className="flex-1" value={shareUrl} readOnly />
-          <Button size="sm" onClick={() => handleCopy(shareUrl)} icon={Copy}>
-            复制
-          </Button>
-        </div>
+      <div className="space-y-3">
         {connected ? (
-          <div className="space-y-2">
-            <Button
-              variant="primary"
-              size="sm"
-              icon={Upload}
-              loading={sending}
-              onClick={handleSendAll}
-              className="w-full"
-            >
-              发送全部数据
-            </Button>
-          </div>
+          <Button
+            variant="primary"
+            size="sm"
+            icon={Upload}
+            loading={sending}
+            onClick={handleSendAll}
+            className="w-full"
+          >
+            发送全部词包和学习进度
+          </Button>
         ) : (
-          <div className="text-sm text-gray-600">等待对方连接...</div>
+          <>
+            <Button size="sm" className="w-full" onClick={() => handleCopy(myPeerId)}>
+              通过 ID 配对
+            </Button>
+            <Button
+              size="sm"
+              variant="secondary"
+              className="w-full"
+              onClick={() => handleCopy(shareUrl)}
+            >
+              通过链接配对
+            </Button>
+            <div className="text-sm text-gray-600">等待对方配对...</div>
+          </>
         )}
-      </>
+      </div>
     )
   } else {
     content = (
-      <Button
-        className="w-full"
-        variant="primary"
-        size="sm"
-        onClick={createPeer}
-        loading={createLoading}
-      >
-        {createLoading ? '创建中...' : '创建配对 ID'}
-      </Button>
+      <>
+        <Button
+          className="w-full"
+          variant="primary"
+          size="sm"
+          onClick={createPeer}
+          loading={createLoading}
+        >
+          {createLoading ? '生成配对信息中...' : '开始配对'}
+        </Button>
+        <Typography.Text type="secondary" size="xs">
+          与其他设备配对，将数据同步至其他设备
+        </Typography.Text>
+      </>
     )
   }
 
   return (
-    <div className="space-y-2">
-      {content}
+    <div className="space-y-4">
+      <Card className="space-y-2">
+        {content}
+        <Separator className="my-4"></Separator>
+        <DebugLogger logs={logs} onClear={clearLogs} title="传输日志" />
+      </Card>
 
-      <Separator className="my-4"></Separator>
-
-      <DebugLogger logs={logs} onClear={clearLogs} title="传输日志" />
-
-      <Separator className="my-4"></Separator>
-
-      <div className="flex flex-col gap-2">
-        <Typography.Text type="secondary" size="sm">
-          当配对功能无法使用时，请使用数据导出
-        </Typography.Text>
+      <Card contentClassName="flex flex-col gap-2">
         <Button
           variant="secondary"
           size="sm"
@@ -196,7 +198,10 @@ export default function Sender() {
         >
           导出数据文件
         </Button>
-      </div>
+        <Typography.Text type="secondary" size="xs">
+          当配对功能无法使用时，请使用数据导出
+        </Typography.Text>
+      </Card>
     </div>
   )
 }

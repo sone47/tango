@@ -159,7 +159,7 @@ export default function SettingsPage() {
 
         <SettingItem title="数据同步" icon={Share2} isCard>
           <div className="space-y-4 w-full">
-            <SettingItem title="同步策略">
+            <SettingItem title="接收策略">
               <select
                 value={settings.transfer?.importStrategy ?? 'overwrite'}
                 onChange={(e) =>

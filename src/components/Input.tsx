@@ -1,4 +1,3 @@
-import type { LucideIcon } from 'lucide-react'
 import { forwardRef } from 'react'
 
 import { Input as ShadcnInput } from '@/components/ui/input'
@@ -8,8 +7,6 @@ export interface InputProps extends Omit<React.ComponentProps<'input'>, 'size'> 
   label?: string
   description?: string
   error?: string
-  icon?: LucideIcon
-  iconPosition?: 'left' | 'right'
   size?: 'sm' | 'md' | 'lg'
   variant?: 'default' | 'ghost'
   containerClassName?: string
@@ -23,8 +20,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       label,
       description,
       error,
-      icon: Icon,
-      iconPosition = 'left',
       size = 'md',
       variant = 'default',
       ...props
@@ -48,42 +43,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       return variants[variant]
     }
 
-    const getIconSize = () => {
-      const iconSizes = {
-        sm: 14,
-        md: 16,
-        lg: 18,
-      }
-      return iconSizes[size]
-    }
-
     const inputElement = (
-      <div className="relative">
-        {Icon && iconPosition === 'left' && (
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-            <Icon size={getIconSize()} />
-          </div>
+      <ShadcnInput
+        ref={ref}
+        className={cn(
+          getSizeStyles(),
+          getVariantStyles(),
+          error && 'border-destructive focus-visible:border-destructive',
+          className
         )}
-        <ShadcnInput
-          ref={ref}
-          className={cn(
-            getSizeStyles(),
-            getVariantStyles(),
-            Icon && iconPosition === 'left' && 'pl-9',
-            Icon && iconPosition === 'right' && 'pr-9',
-            error && 'border-destructive focus-visible:border-destructive',
-            className
-          )}
-          aria-invalid={!!error}
-          aria-describedby={description || error ? `${props.id || 'input'}-description` : undefined}
-          {...props}
-        />
-        {Icon && iconPosition === 'right' && (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-            <Icon size={getIconSize()} />
-          </div>
-        )}
-      </div>
+        aria-invalid={!!error}
+        aria-describedby={description || error ? `${props.id || 'input'}-description` : undefined}
+        {...props}
+      />
     )
 
     if (label || description || error) {
