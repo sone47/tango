@@ -173,7 +173,7 @@ export default function Sender() {
           {createLoading ? '生成配对信息中...' : '开始配对'}
         </Button>
         <Typography.Text type="secondary" size="xs">
-          与其他设备配对，将数据同步至其他设备
+          与其他设备配对，将全部词包和学习进度同步至其他设备
         </Typography.Text>
       </>
     )

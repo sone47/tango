@@ -37,7 +37,7 @@ const Card = ({
             <Icon size={20} />
           </div>
         )}
-        {title && <h2 className="text-lg font-semibold text-gray-900">{title}</h2>}
+        {title && <h2 className="text-lg font-semibold text-gray-900 w-full">{title}</h2>}
       </div>
     )
   }
