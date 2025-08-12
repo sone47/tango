@@ -20,7 +20,7 @@ const ProfileHeader = () => {
       <Typography.Title level={4} className="!font-bold">
         我的学习
       </Typography.Title>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-6">
         <Button
           variant="ghost"
           size="lg"
