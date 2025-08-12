@@ -2,7 +2,9 @@ import { motion } from 'framer-motion'
 import type { LucideIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 
+import { Card as UICard, CardContent, CardHeader } from '@/components/ui/card'
 import { baseStyles, colors } from '@/constants/styles'
+import { cn } from '@/lib/utils'
 
 interface CardProps {
   children: ReactNode
@@ -26,16 +28,8 @@ const Card = ({
   whileTap = false,
 }: CardProps) => {
   const renderTitle = () => {
-    if (!title && !Icon) return null
-
-    // 如果title是自定义组件，直接渲染
-    if (title && typeof title !== 'string') {
-      return <div className="mb-4">{title}</div>
-    }
-
-    // 如果title是字符串或者只有icon，使用默认布局
     return (
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-3">
         {Icon && (
           <div className={`${baseStyles.iconContainer} ${iconColor ? colors.icon[iconColor] : ''}`}>
             <Icon size={20} />
@@ -48,10 +42,12 @@ const Card = ({
 
   const cardContent = (
     <>
-      {renderTitle()}
-      {children}
+      {(title || Icon) && <CardHeader>{renderTitle()}</CardHeader>}
+      <CardContent className={cn(title || Icon ? '' : 'pt-0')}>{children}</CardContent>
     </>
   )
+
+  const cardClassName = cn('backdrop-blur-sm shadow-lg border-none', className)
 
   if (onClick) {
     return (
@@ -59,11 +55,11 @@ const Card = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay }}
-        className={`${baseStyles.card} p-6 text-left w-full ${className}`}
+        className="text-left w-full"
         onClick={onClick}
         whileTap={whileTap ? { scale: 0.98 } : undefined}
       >
-        {cardContent}
+        <UICard className={cardClassName}>{cardContent}</UICard>
       </motion.button>
     )
   }
@@ -73,9 +69,8 @@ const Card = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      className={`${baseStyles.card} p-6 ${className}`}
     >
-      {cardContent}
+      <UICard className={cardClassName}>{cardContent}</UICard>
     </motion.div>
   )
 }

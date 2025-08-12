@@ -25,7 +25,7 @@ const Modal = ({
   children,
   title,
   icon: Icon,
-  iconColor = 'blue',
+  iconColor,
   maxWidth = 'sm',
   showCloseButton = true,
   className = '',
@@ -67,7 +67,9 @@ const Modal = ({
                 <div className="flex items-center justify-between p-6 border-b border-gray-100">
                   <div className="flex items-center gap-3">
                     {Icon && (
-                      <div className={`${baseStyles.iconContainer} ${colors.icon[iconColor]}`}>
+                      <div
+                        className={`${baseStyles.iconContainer} ${iconColor ? colors.icon[iconColor] : ''}`}
+                      >
                         <Icon size={20} />
                       </div>
                     )}
