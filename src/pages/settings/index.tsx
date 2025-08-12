@@ -1,6 +1,5 @@
 import { BookCheck, ChevronRight, Headphones, Play, Share2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 import Button from '@/components/Button'
 import Card from '@/components/Card'
@@ -21,7 +20,6 @@ export default function SettingsPage() {
     updateTransferSettings,
     resetSettings,
   } = useSettings()
-  const navigate = useNavigate()
 
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
   const [showVoiceSelector, setShowVoiceSelector] = useState(false)
@@ -201,15 +199,6 @@ export default function SettingsPage() {
                 className="w-full"
               />
             </SettingItem>
-
-            <Button
-              variant="primary"
-              size="sm"
-              className="w-full"
-              onClick={() => navigate('/transfer')}
-            >
-              前往数据同步页面
-            </Button>
           </div>
         </SettingItem>
 

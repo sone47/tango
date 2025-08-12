@@ -49,7 +49,7 @@ const Card = ({
     </>
   )
 
-  const cardClassName = cn('backdrop-blur-sm shadow-lg border-none', className)
+  const cardClassName = cn('backdrop-blur-sm shadow-lg border-none gap-2', className)
 
   if (onClick) {
     return (

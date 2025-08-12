@@ -43,7 +43,7 @@ const ProfileTab = () => {
       <div
         className="h-full overflow-auto p-4 space-y-6 profile-scroll-container"
         style={{
-          paddingTop: 80,
+          paddingTop: 72,
         }}
       >
         <div id="stats">

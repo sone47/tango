@@ -71,7 +71,7 @@ function App() {
       <Route path="/wordpack-management" element={<WordPackManagePage />} />
       <Route path="/recommended-packs" element={<RecommendedPacksPage />} />
       <Route path="/settings" element={<SettingsPage />} />
-      <Route path="/transfer" element={<TransferPage />} />
+      <Route path="/sync" element={<TransferPage />} />
       <Route path="/*" element={<MainApp />} />
     </Routes>
   )
