@@ -22,7 +22,7 @@ export const defaultSettings = {
       },
     ],
   },
-} as const
+}
 
 // TODO https://github.com/TiagoDanin/Windows-Locale
 export const languageOptions = [

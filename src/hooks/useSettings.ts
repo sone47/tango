@@ -1,4 +1,5 @@
 import { useLocalStorage } from '@uidotdev/usehooks'
+import { cloneDeep } from 'lodash'
 import { useEffect } from 'react'
 
 import { defaultSettings } from '@/constants/settings'
@@ -34,7 +35,7 @@ function buildRuntimeDefaults(): AppSettings {
     },
     transfer: {
       importStrategy: defaultSettings.transfer.importStrategy,
-      iceServers: defaultSettings.transfer.iceServers.map((s) => ({ ...s })),
+      iceServers: cloneDeep(defaultSettings.transfer.iceServers),
     },
   }
 }
