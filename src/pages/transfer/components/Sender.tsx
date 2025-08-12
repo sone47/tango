@@ -16,9 +16,10 @@ export default function Sender() {
   const [sending, setSending] = useState(false)
   const [progressMsg, setProgressMsg] = useState('')
   const [exportLoading, setExportLoading] = useState(false)
+  const [createLoading, setCreateLoading] = useState(false)
   const { settings } = useSettings()
 
-  const createPeer = () => {
+  const createPeer = async () => {
     webrtcTransferService.destroy()
 
     const iceServers = (
@@ -26,8 +27,6 @@ export default function Sender() {
         ? settings.transfer.iceServers
         : [{ urls: 'stun:stun.l.google.com:19302' }]
     ) as RTCIceServer[]
-
-    webrtcTransferService.create({ initiator: true, iceServers })
 
     webrtcTransferService.onOffer((offer) => {
       setMyPeerId(offer.peerId)
@@ -47,6 +46,9 @@ export default function Sender() {
       setConnected(false)
       setProgressMsg('连接已断开')
     })
+
+    setCreateLoading(true)
+    await webrtcTransferService.create({ initiator: true, iceServers })
   }
 
   const shareUrl = useMemo(() => {
@@ -144,8 +146,14 @@ export default function Sender() {
     )
   } else {
     content = (
-      <Button className="w-full" variant="primary" size="sm" onClick={createPeer}>
-        开始配对
+      <Button
+        className="w-full"
+        variant="primary"
+        size="sm"
+        onClick={createPeer}
+        loading={createLoading}
+      >
+        {createLoading ? '创建中...' : '创建配对 ID'}
       </Button>
     )
   }

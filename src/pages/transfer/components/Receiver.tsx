@@ -15,6 +15,7 @@ export default function Receiver() {
   const [connected, setConnected] = useState(false)
   const [receiving, setReceiving] = useState(false)
   const [progressMsg, setProgressMsg] = useState('')
+  const [connectLoading, setConnectLoading] = useState(false)
   const { settings } = useSettings()
 
   useEffect(() => {
@@ -25,18 +26,18 @@ export default function Receiver() {
     }
   }, [])
 
-  const createPeer = () => {
+  const createPeer = async () => {
     webrtcTransferService.destroy()
+
     const iceServers = (
       settings.transfer?.iceServers?.length
         ? settings.transfer.iceServers
         : [{ urls: 'stun:stun.l.google.com:19302' }]
     ) as RTCIceServer[]
 
-    webrtcTransferService.create({ initiator: false, iceServers })
-
     webrtcTransferService.onConnect(() => {
       setConnected(true)
+      setConnectLoading(false)
       toast.success('连接成功')
     })
 
@@ -56,7 +57,6 @@ export default function Receiver() {
             await dataSyncService.importAllOverwrite(payload)
           }
           setProgressMsg('导入完成')
-          toast.success('数据导入完成')
         }
       } catch (e) {
         console.error(e)
@@ -76,21 +76,22 @@ export default function Receiver() {
       setConnected(false)
       setProgressMsg('连接已断开')
     })
+
+    await webrtcTransferService.create({ initiator: false, iceServers })
   }
 
-  const handleConnect = () => {
+  const handleConnect = async () => {
     if (!remotePeerId.trim()) return toast.error('请输入对方的配对 ID')
 
-    createPeer()
+    try {
+      setConnectLoading(true)
+      await createPeer()
 
-    setTimeout(() => {
-      try {
-        webrtcTransferService.connectTo(remotePeerId.trim())
-      } catch (error) {
-        toast.error('连接失败')
-        console.error(error)
-      }
-    }, 1000)
+      webrtcTransferService.connectTo(remotePeerId.trim())
+    } catch (error) {
+      console.error(error)
+      toast.error('连接失败')
+    }
   }
 
   const handleImportJSON = async (file: File) => {
@@ -123,8 +124,13 @@ export default function Receiver() {
           onChange={(e) => setRemotePeerId(e.target.value)}
           placeholder="输入发送端的配对 ID"
         />
-        <Button size="sm" onClick={handleConnect} disabled={!remotePeerId.trim()}>
-          连接
+        <Button
+          size="sm"
+          onClick={handleConnect}
+          disabled={!remotePeerId.trim()}
+          loading={connectLoading}
+        >
+          {connectLoading ? '连接中...' : '连接'}
         </Button>
       </div>
       {connected && (

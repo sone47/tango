@@ -29,31 +29,35 @@ export class WebRTCTransferService {
   private onCloseHandler?: () => void
   private onErrorHandler?: (err: Error) => void
 
-  create(config: WebRTCConfig) {
+  async create(config: WebRTCConfig) {
     this.destroy()
 
     const peerId = config.peerId || this.generatePeerId()
 
-    this.peer = new Peer(peerId, {
-      config: {
-        iceServers: config.iceServers || [{ urls: 'stun:stun.l.google.com:19302' }],
-      },
-    })
+    return new Promise((resolve, reject) => {
+      this.peer = new Peer(peerId, {
+        config: {
+          iceServers: config.iceServers || [{ urls: 'stun:stun.l.google.com:19302' }],
+        },
+      })
 
-    this.peer.on('open', (id) => {
-      console.log('Peer ID:', id)
-      if (config.initiator) {
-        this.onOfferHandler?.({ peerId: id })
-      }
-    })
+      this.peer.on('open', (id) => {
+        resolve(id)
+        console.log('Peer ID:', id)
+        if (config.initiator) {
+          this.onOfferHandler?.({ peerId: id })
+        }
+      })
 
-    this.peer.on('connection', (conn) => {
-      this.setupConnection(conn)
-    })
+      this.peer.on('connection', (conn) => {
+        this.setupConnection(conn)
+      })
 
-    this.peer.on('error', (err) => {
-      console.error('Peer error:', err)
-      this.onErrorHandler?.(err)
+      this.peer.on('error', (err) => {
+        console.error('Peer error:', err)
+        this.onErrorHandler?.(err)
+        reject(err)
+      })
     })
   }
 
