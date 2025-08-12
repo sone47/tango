@@ -8,15 +8,36 @@ import Typography from '@/components/Typography'
 import { Separator } from '@/components/ui/separator'
 import { useSettings } from '@/hooks/useSettings'
 import { type DataSyncPayload, dataSyncService } from '@/services/dataSyncService'
-import { webrtcTransferService } from '@/services/webrtcTransferService'
+import { type LogEntry, webrtcTransferService } from '@/services/webrtcTransferService'
+
+import DebugLogger from './DebugLogger'
 
 export default function Receiver() {
   const [remotePeerId, setRemotePeerId] = useState('')
   const [connected, setConnected] = useState(false)
   const [receiving, setReceiving] = useState(false)
-  const [progressMsg, setProgressMsg] = useState('')
   const [connectLoading, setConnectLoading] = useState(false)
+  const [logs, setLogs] = useState<LogEntry[]>([])
   const { settings } = useSettings()
+
+  useEffect(() => {
+    clearLogs()
+
+    const handleLog = (log: LogEntry) => {
+      setLogs((prev) => [...prev, log])
+    }
+
+    webrtcTransferService.onLog(handleLog)
+
+    return () => {
+      webrtcTransferService.onLog()
+    }
+  }, [])
+
+  const clearLogs = () => {
+    setLogs([])
+    webrtcTransferService.clearLogs()
+  }
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search)
@@ -47,7 +68,7 @@ export default function Receiver() {
         const message = JSON.parse(text)
         if (message.type === 'payload') {
           setReceiving(true)
-          setProgressMsg('正在导入...')
+
           const payload = message.payload as DataSyncPayload
           const strategy = settings.transfer?.importStrategy || 'overwrite'
           if (strategy === 'overwrite') {
@@ -56,12 +77,7 @@ export default function Receiver() {
             // TODO 未来实现合并；当前退回覆盖
             await dataSyncService.importAllOverwrite(payload)
           }
-          setProgressMsg('导入完成')
         }
-      } catch (e) {
-        console.error(e)
-        setProgressMsg('数据解析失败')
-        toast.error('数据解析失败')
       } finally {
         setReceiving(false)
       }
@@ -75,7 +91,6 @@ export default function Receiver() {
 
     webrtcTransferService.onClose(() => {
       setConnected(false)
-      setProgressMsg('连接已断开')
     })
 
     await webrtcTransferService.create({ initiator: false, iceServers })
@@ -139,7 +154,10 @@ export default function Receiver() {
           等待接收中
         </Button>
       )}
-      {progressMsg && <div className="text-sm text-gray-600">{progressMsg}</div>}
+
+      <Separator className="my-4" />
+
+      <DebugLogger logs={logs} onClear={clearLogs} title="传输日志" />
 
       <Separator className="my-4" />
 

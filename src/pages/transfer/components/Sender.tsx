@@ -1,5 +1,5 @@
 import { Copy, Upload } from 'lucide-react'
-import { ReactElement, useMemo, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useState } from 'react'
 
 import Button from '@/components/Button'
 import Input from '@/components/Input'
@@ -8,16 +8,37 @@ import Typography from '@/components/Typography'
 import { Separator } from '@/components/ui/separator'
 import { useSettings } from '@/hooks/useSettings'
 import { dataSyncService } from '@/services/dataSyncService'
-import { webrtcTransferService } from '@/services/webrtcTransferService'
+import { type LogEntry, webrtcTransferService } from '@/services/webrtcTransferService'
+
+import DebugLogger from './DebugLogger'
 
 export default function Sender() {
   const [myPeerId, setMyPeerId] = useState('')
   const [connected, setConnected] = useState(false)
   const [sending, setSending] = useState(false)
-  const [progressMsg, setProgressMsg] = useState('')
   const [exportLoading, setExportLoading] = useState(false)
   const [createLoading, setCreateLoading] = useState(false)
+  const [logs, setLogs] = useState<LogEntry[]>([])
   const { settings } = useSettings()
+
+  useEffect(() => {
+    clearLogs()
+
+    const handleLog = (log: LogEntry) => {
+      setLogs((prev) => [...prev, log])
+    }
+
+    webrtcTransferService.onLog(handleLog)
+
+    return () => {
+      webrtcTransferService.onLog()
+    }
+  }, [])
+
+  const clearLogs = () => {
+    setLogs([])
+    webrtcTransferService.clearLogs()
+  }
 
   const createPeer = async () => {
     webrtcTransferService.destroy()
@@ -44,7 +65,6 @@ export default function Sender() {
 
     webrtcTransferService.onClose(() => {
       setConnected(false)
-      setProgressMsg('连接已断开')
     })
 
     setCreateLoading(true)
@@ -72,17 +92,11 @@ export default function Sender() {
 
     try {
       setSending(true)
-      setProgressMsg('正在打包数据...')
+
       const payload = await dataSyncService.exportAll()
       const json = JSON.stringify({ type: 'payload', payload })
       const bytes = new TextEncoder().encode(json)
       webrtcTransferService.send(bytes)
-      setProgressMsg('发送完成')
-      toast.success('发送完成')
-    } catch (error) {
-      setProgressMsg('发送失败')
-      toast.error('发送失败')
-      console.error(error)
     } finally {
       setSending(false)
     }
@@ -130,6 +144,7 @@ export default function Sender() {
           <div className="space-y-2">
             <Button
               variant="primary"
+              size="sm"
               icon={Upload}
               loading={sending}
               onClick={handleSendAll}
@@ -141,7 +156,6 @@ export default function Sender() {
         ) : (
           <div className="text-sm text-gray-600">等待对方连接...</div>
         )}
-        {progressMsg && <div className="text-sm text-gray-600">{progressMsg}</div>}
       </>
     )
   } else {
@@ -161,6 +175,10 @@ export default function Sender() {
   return (
     <div className="space-y-2">
       {content}
+
+      <Separator className="my-4"></Separator>
+
+      <DebugLogger logs={logs} onClear={clearLogs} title="传输日志" />
 
       <Separator className="my-4"></Separator>
 
