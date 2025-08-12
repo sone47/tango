@@ -69,7 +69,7 @@ const HistoryPool = ({ isOpen, onClose, studiedWords }: HistoryPoolProps) => {
             </div>
           </div>
 
-          <Carousel className="w-full" setApi={setApi}>
+          <Carousel className="w-full" setApi={setApi} opts={{ loop: true }}>
             <CarouselContent>
               {studiedWords.map((word) => (
                 <CarouselItem key={word.id}>
