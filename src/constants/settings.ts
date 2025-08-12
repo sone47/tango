@@ -10,8 +10,17 @@ export const defaultSettings = {
   },
   transfer: {
     importStrategy: 'overwrite' as const,
-    // TODO 配置 TURN 服务器
-    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+    iceServers: [
+      {
+        urls: [
+          'turn:stun.evan-brass.net',
+          'turn:stun.evan-brass.net?transport=tcp',
+          'stun:stun.evan-brass.net',
+        ],
+        username: 'guest',
+        credential: 'password',
+      },
+    ],
   },
 } as const
 
