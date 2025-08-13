@@ -99,7 +99,7 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
                     <span>学习进度</span>
                     <span>{round(item.progress * 100, 2)}%</span>
                   </div>
-                  <Progress value={item.progress} />
+                  <Progress value={item.progress * 100} />
                 </div>
               </div>
             ))}
