@@ -1,4 +1,5 @@
-import { Copy, Trash2 } from 'lucide-react'
+import { Copy, Eye, EyeOff, Trash2 } from 'lucide-react'
+import { useState } from 'react'
 
 import Button from '@/components/Button'
 import toast from '@/components/Toast'
@@ -19,6 +20,8 @@ export default function DebugLogger({
   title = '调试日志',
   className = '',
 }: DebugLoggerProps) {
+  const [showLogs, setShowLogs] = useState(false)
+
   const formatTime = (date: Date) => {
     return DateUtils.format(date, 'HH:mm:ss')
   }
@@ -39,10 +42,21 @@ export default function DebugLogger({
     }
   }
 
+  const handleToggleShowLogs = () => {
+    setShowLogs(!showLogs)
+  }
+
   return (
     <div className={`flex flex-col gap-1 ${className}`}>
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-700">{title}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-gray-700">{title}</span>
+          {showLogs ? (
+            <Eye className={`h-4 w-4 text-gray-500`} onClick={handleToggleShowLogs} />
+          ) : (
+            <EyeOff className={`h-4 w-4 text-gray-500`} onClick={handleToggleShowLogs} />
+          )}
+        </div>
         <div className="flex items-center gap-1">
           <Button
             size="sm"
@@ -50,7 +64,6 @@ export default function DebugLogger({
             onClick={handleCopy}
             icon={Copy}
             disabled={logs.length === 0}
-            className="text-gray-600"
           >
             复制
           </Button>
@@ -61,7 +74,6 @@ export default function DebugLogger({
               onClick={onClear}
               icon={Trash2}
               disabled={logs.length === 0}
-              className="text-gray-600"
             >
               清空
             </Button>
@@ -69,12 +81,14 @@ export default function DebugLogger({
         </div>
       </div>
 
-      <Textarea
-        readOnly
-        value={logText}
-        placeholder="暂无日志"
-        className="h-32 text-xs font-mono"
-      />
+      {showLogs && (
+        <Textarea
+          readOnly
+          value={logText}
+          placeholder="暂无日志"
+          className="h-32 text-xs font-mono"
+        />
+      )}
     </div>
   )
 }
