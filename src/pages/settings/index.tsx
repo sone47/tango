@@ -64,6 +64,7 @@ export default function SettingsPage() {
               <SettingItem title="语音">
                 <Select
                   size="sm"
+                  contentClassName="max-h-60 overflow-y-auto"
                   options={getVoicesByLanguage(settings.speech.language).map((voice) => ({
                     value: voice.name,
                     label: voice.name,
