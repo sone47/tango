@@ -8,7 +8,7 @@ import Sender from './components/Sender'
 
 type Role = 'sender' | 'receiver'
 
-export default function TransferPage() {
+export default function SyncPage() {
   const [isLoad, setIsLoad] = useState(false)
   const [role, setRole] = useState<Role>('sender')
 
