@@ -144,13 +144,13 @@ const ImportSection = () => {
 
         <label
           htmlFor="file-upload"
-          className={`flex items-center justify-center gap-3 w-full p-4 ${
+          className={`flex items-center justify-center gap-3 w-full py-2 ${
             isUploading
               ? 'bg-gray-400 cursor-not-allowed'
               : `${colors.gradients.greenButton} cursor-pointer hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]`
-          } text-white rounded-xl font-medium transition-all duration-200`}
+          } text-white rounded-md transition-all duration-200`}
         >
-          <Upload size={20} className={isUploading ? 'animate-pulse' : ''} />
+          <Upload size={18} className={isUploading ? 'animate-pulse' : ''} />
           <span>{isUploading ? '正在导入...' : '上传 Excel 文件'}</span>
         </label>
         <input

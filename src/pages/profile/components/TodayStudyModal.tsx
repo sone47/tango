@@ -63,8 +63,6 @@ const TodayStudyModal = ({ isOpen, onClose }: TodayStudyModalProps) => {
       isOpen={isOpen}
       onClose={onClose}
       title="今日学习"
-      icon={Calendar}
-      iconColor="blue"
       maxWidth="md"
       className="max-h-[80vh]"
     >
@@ -86,10 +84,10 @@ const TodayStudyModal = ({ isOpen, onClose }: TodayStudyModalProps) => {
             {todayStudy.map(({ practice, word }) => (
               <div key={practice.vocabularyId} className="p-4 bg-gray-50 rounded-xl">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-medium text-gray-900">{word!.word}</h4>
+                  <h4 className="text-gray-900">{word!.phonetic}</h4>
                   <ProficiencyBadge proficiency={practice.proficiency} size="sm" />
                 </div>
-                <p className="text-sm text-gray-600 mb-1">{word!.phonetic}</p>
+                <p className="font-medium text-sm text-gray-900 mb-1">{word!.word}</p>
                 <p className="text-sm text-gray-700 mb-2">{word!.definition}</p>
                 <p className="text-xs text-gray-500 flex justify-between">
                   <span>练习次数: {practice.practiceCount} 次</span>

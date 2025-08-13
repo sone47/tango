@@ -1,9 +1,10 @@
-import { BookOpen, Package } from 'lucide-react'
+import { BookOpen } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import EmptyWordPack from '@/components/EmptyWordPack'
 import Loading from '@/components/Loading'
 import Modal from '@/components/Modal'
+import { Progress } from '@/components/ui/progress'
 import { baseStyles, colors, spacing } from '@/constants/styles'
 import { practiceService } from '@/services/practiceService'
 import { useWordPackStore } from '@/stores/wordPackStore'
@@ -68,14 +69,7 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
   }, [isOpen, allWordPacks])
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="词包学习进度"
-      icon={Package}
-      iconColor="blue"
-      maxWidth="lg"
-    >
+    <Modal isOpen={isOpen} onClose={onClose} title="词包学习进度">
       <div className="max-h-96 overflow-y-auto">
         {loading ? (
           <div className="h-64">
@@ -92,25 +86,19 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 flex-1">
-                    <div className={`${baseStyles.iconContainer} ${colors.icon.purple}`}>
+                    <div className={`${baseStyles.iconContainer} ${colors.icon.blue}`}>
                       <BookOpen size={20} />
                     </div>
                     <h3 className="font-semibold text-gray-900 truncate">{item.wordPack.name}</h3>
                   </div>
                 </div>
 
-                {/* 进度条 */}
                 <div className="mt-3">
                   <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
                     <span>学习进度</span>
                     <span>{item.progress * 100}%</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full transition-all duration-500 ease-out"
-                      style={{ width: `${Math.min(item.progress, 100)}%` }}
-                    />
-                  </div>
+                  <Progress value={item.progress} />
                 </div>
               </div>
             ))}

@@ -16,7 +16,7 @@ const ProfileHeader = () => {
   }
 
   return (
-    <div className="w-full flex justify-between items-center bg-white/70 backdrop-blur-sm py-3 px-6">
+    <div className="w-full flex justify-between items-center bg-white/70 backdrop-blur-sm py-2 px-6">
       <Typography.Title level={4} className="!font-bold">
         我的学习
       </Typography.Title>
