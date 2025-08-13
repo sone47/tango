@@ -1,63 +1,67 @@
-import { motion } from 'framer-motion'
 import type { LucideIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 
-interface ButtonProps {
+import { cn } from '@/lib/utils'
+
+import { Button as ShadcnButton } from './ui/button'
+
+interface ButtonProps extends React.ComponentProps<'button'> {
   children?: ReactNode
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger'
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  variant?:
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | 'link'
+    | 'primary'
+    | 'danger'
+  size?: 'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'md' | 'xl'
   icon?: LucideIcon
-  iconPosition?: 'left' | 'right'
   loading?: boolean
   fullWidth?: boolean
-  disabled?: boolean
-  className?: string
-  onClick?: (event: React.MouseEvent) => void
+  asChild?: boolean
 }
 
 const Button = ({
   children,
-  variant = 'primary',
-  size = 'md',
+  variant = 'default',
+  size = 'default',
   icon: Icon,
-  iconPosition = 'left',
   loading = false,
   fullWidth = false,
   disabled = false,
   className = '',
+  asChild = false,
   onClick,
+  ...props
 }: ButtonProps) => {
-  const getVariantStyles = () => {
-    const variants = {
-      primary: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800',
-      secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300',
-      ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 active:bg-gray-200',
-      danger: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
-    }
-    return variants[variant]
+  const mapVariant = (v: ButtonProps['variant']) => {
+    const variantMap = {
+      primary: 'default',
+      danger: 'destructive',
+      secondary: 'secondary',
+      ghost: 'ghost',
+      default: 'default',
+      destructive: 'destructive',
+      outline: 'outline',
+      link: 'link',
+    } as const
+    return variantMap[v as keyof typeof variantMap] || 'default'
   }
 
-  const getSizeStyles = () => {
-    const sizes = {
-      xs: 'px-2 py-1 text-xs',
-      sm: 'px-3 py-1.5 text-sm',
-      md: 'px-4 py-2 text-base',
-      lg: 'px-6 py-3 text-lg',
-      xl: 'px-8 py-4 text-xl',
-    }
-    return sizes[size]
-  }
-
-  const getRoundedStyles = () => {
-    const roundedMap = {
-      xs: 'rounded-xs',
-      sm: 'rounded-sm',
-      md: 'rounded-md',
-      lg: 'rounded-lg',
-      xl: 'rounded-xl',
-      full: 'rounded-full',
-    }
-    return roundedMap[size]
+  // 映射自定义尺寸到 shadcn 尺寸
+  const mapSize = (s: ButtonProps['size']) => {
+    const sizeMap = {
+      xs: 'sm',
+      sm: 'sm',
+      md: 'default',
+      lg: 'lg',
+      xl: 'lg',
+      default: 'default',
+      icon: 'icon',
+    } as const
+    return sizeMap[s as keyof typeof sizeMap] || 'default'
   }
 
   const getIconSize = () => {
@@ -67,37 +71,36 @@ const Button = ({
       md: 16,
       lg: 20,
       xl: 24,
+      default: 16,
+      icon: 16,
     }
-    return iconSizes[size]
+    return iconSizes[size as keyof typeof iconSizes] || 16
+  }
+
+  const getExtraStyles = () => {
+    if (size === 'xs') return 'h-7 px-2 text-xs'
+    if (size === 'xl') return 'h-12 px-8 text-lg'
+    return ''
   }
 
   const isDisabled = disabled || loading
 
   return (
-    <motion.button
-      className={`
-        font-medium transition-colors
-        ${getVariantStyles()}
-        ${getSizeStyles()}
-        ${getRoundedStyles()}
-        ${fullWidth ? 'w-full' : ''}
-        ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}
-        flex items-center justify-center gap-2
-        ${className}
-      `}
+    <ShadcnButton
+      variant={mapVariant(variant)}
+      size={mapSize(size)}
       disabled={isDisabled}
       onClick={(event) => onClick?.(event)}
-      whileTap={!isDisabled ? { scale: 0.98 } : undefined}
-      whileHover={!isDisabled ? { scale: 1.02 } : undefined}
-      transition={{ duration: 0.15 }}
+      asChild={asChild}
+      className={cn(getExtraStyles(), fullWidth && 'w-full', 'gap-2', className)}
+      {...props}
     >
       {loading && (
         <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
       )}
-      {Icon && iconPosition === 'left' && <Icon size={getIconSize()} />}
+      {Icon && <Icon size={getIconSize()} />}
       {children}
-      {Icon && iconPosition === 'right' && <Icon size={getIconSize()} />}
-    </motion.button>
+    </ShadcnButton>
   )
 }
 
