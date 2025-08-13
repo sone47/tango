@@ -1,6 +1,7 @@
 import { Upload } from 'lucide-react'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 
+import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'
 import Button from '@/components/Button'
 import Card from '@/components/Card'
 import toast from '@/components/Toast'
@@ -13,13 +14,17 @@ import { type LogEntry, webrtcTransferService } from '@/services/webrtcTransferS
 import DebugLogger from './DebugLogger'
 
 export default function Sender() {
+  const { settings } = useSettings()
+  const sendSuccessAlertDialog = useAlertDialog()
+  const copyIdAlertDialog = useAlertDialog()
+  const copyUrlAlertDialog = useAlertDialog()
+
   const [myPeerId, setMyPeerId] = useState('')
   const [connected, setConnected] = useState(false)
   const [sending, setSending] = useState(false)
   const [exportLoading, setExportLoading] = useState(false)
   const [createLoading, setCreateLoading] = useState(false)
   const [logs, setLogs] = useState<LogEntry[]>([])
-  const { settings } = useSettings()
 
   useEffect(() => {
     clearLogs()
@@ -41,7 +46,7 @@ export default function Sender() {
   }
 
   const createPeer = async () => {
-    webrtcTransferService.destroy()
+    handleBeforeCreatePeer()
 
     const iceServers = (
       settings.transfer?.iceServers?.length
@@ -54,8 +59,17 @@ export default function Sender() {
     })
 
     webrtcTransferService.onConnect(() => {
+      setCreateLoading(false)
+
       setConnected(true)
       toast.success('配对已完成，可以开始传输数据了')
+    })
+
+    webrtcTransferService.onData((chunk) => {
+      const text = new TextDecoder().decode(chunk)
+      if (text === 'success') {
+        handleSendSuccess()
+      }
     })
 
     webrtcTransferService.onError((err) => {
@@ -64,11 +78,22 @@ export default function Sender() {
     })
 
     webrtcTransferService.onClose(() => {
+      toast.show({
+        type: 'info',
+        content: '配对已断开',
+      })
+
       setConnected(false)
     })
 
     setCreateLoading(true)
     await webrtcTransferService.create({ initiator: true, iceServers })
+  }
+
+  const handleBeforeCreatePeer = () => {
+    webrtcTransferService.destroy()
+    setConnected(false)
+    setSending(false)
   }
 
   const shareUrl = useMemo(() => {
@@ -79,9 +104,14 @@ export default function Sender() {
     return url.toString()
   }, [myPeerId])
 
-  const handleCopy = async (text: string) => {
+  const handleCopyId = async (text: string) => {
     await navigator.clipboard.writeText(text)
-    toast.success('已复制')
+    copyIdAlertDialog.show()
+  }
+
+  const handleCopyUrl = async (text: string) => {
+    await navigator.clipboard.writeText(text)
+    copyUrlAlertDialog.show()
   }
 
   const handleSendAll = async () => {
@@ -97,12 +127,10 @@ export default function Sender() {
       const json = JSON.stringify({ type: 'payload', payload })
       const bytes = new TextEncoder().encode(json)
       webrtcTransferService.send(bytes)
-
-      toast.success('已发送')
     } catch (e) {
       toast.error('发送失败')
       console.error(e)
-    } finally {
+
       setSending(false)
     }
   }
@@ -127,6 +155,12 @@ export default function Sender() {
     }
   }
 
+  const handleSendSuccess = () => {
+    setSending(false)
+
+    sendSuccessAlertDialog.show()
+  }
+
   let content: ReactElement | null = null
   if (myPeerId) {
     content = (
@@ -144,14 +178,14 @@ export default function Sender() {
           </Button>
         ) : (
           <>
-            <Button size="sm" className="w-full" onClick={() => handleCopy(myPeerId)}>
+            <Button size="sm" className="w-full" onClick={() => handleCopyId(myPeerId)}>
               通过 ID 配对
             </Button>
             <Button
               size="sm"
               variant="secondary"
               className="w-full"
-              onClick={() => handleCopy(shareUrl)}
+              onClick={() => handleCopyUrl(shareUrl)}
             >
               通过链接配对
             </Button>
@@ -180,28 +214,66 @@ export default function Sender() {
   }
 
   return (
-    <div className="space-y-4">
-      <Card className="space-y-2">
-        {content}
-        <Separator className="my-4"></Separator>
-        <DebugLogger logs={logs} onClear={clearLogs} title="传输日志" />
-      </Card>
+    <>
+      <div className="space-y-4">
+        <Card className="space-y-2">
+          {content}
+          <Separator className="my-4"></Separator>
+          <DebugLogger logs={logs} onClear={clearLogs} title="传输日志" />
+        </Card>
 
-      <Card contentClassName="flex flex-col gap-2">
-        <Button
-          variant="secondary"
-          size="sm"
-          icon={Upload}
-          onClick={handleExportJSON}
-          className="w-full"
-          loading={exportLoading}
-        >
-          导出数据文件
-        </Button>
-        <Typography.Text type="secondary" size="xs">
-          当配对功能无法使用时，请使用数据导出
-        </Typography.Text>
-      </Card>
-    </div>
+        <Card contentClassName="flex flex-col gap-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={Upload}
+            onClick={handleExportJSON}
+            className="w-full"
+            loading={exportLoading}
+          >
+            导出数据文件
+          </Button>
+          <Typography.Text type="secondary" size="xs">
+            当配对功能无法使用时，请使用数据导出
+          </Typography.Text>
+        </Card>
+      </div>
+
+      <AlertDialog
+        open={sendSuccessAlertDialog.isOpen}
+        onOpenChange={sendSuccessAlertDialog.setIsOpen}
+        title="数据已发送"
+        showCancel={false}
+        confirmText="关闭连接"
+        onConfirm={() => {
+          sendSuccessAlertDialog.hide()
+
+          webrtcTransferService.destroy()
+          setMyPeerId('')
+        }}
+      />
+
+      <AlertDialog
+        open={copyIdAlertDialog.isOpen}
+        onOpenChange={copyIdAlertDialog.setIsOpen}
+        title="配对 ID 已复制"
+        description={`请将 ID （${myPeerId}）输入数据同步-接收端配对 ID 输入框，即可完成配对`}
+        showCancel={false}
+        onConfirm={() => {
+          copyIdAlertDialog.hide()
+        }}
+      />
+
+      <AlertDialog
+        open={copyUrlAlertDialog.isOpen}
+        onOpenChange={copyUrlAlertDialog.setIsOpen}
+        title="配对链接已复制"
+        description={`请将链接（${shareUrl}）发送给另一台设备，点击链接即可完成配对`}
+        showCancel={false}
+        onConfirm={() => {
+          copyUrlAlertDialog.hide()
+        }}
+      />
+    </>
   )
 }

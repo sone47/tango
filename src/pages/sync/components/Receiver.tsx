@@ -1,4 +1,4 @@
-import { CircleCheck, Download, LoaderCircle } from 'lucide-react'
+import { CircleCheck, Download, LoaderCircle, LucideIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import Button from '@/components/Button'
@@ -14,11 +14,19 @@ import { type LogEntry, webrtcTransferService } from '@/services/webrtcTransferS
 import DebugLogger from './DebugLogger'
 
 export default function Receiver() {
+  const { settings } = useSettings()
+
   const [remotePeerId, setRemotePeerId] = useState('')
   const [connected, setConnected] = useState(false)
   const [connectLoading, setConnectLoading] = useState(false)
   const [logs, setLogs] = useState<LogEntry[]>([])
-  const { settings } = useSettings()
+  const [receiveProgress, setReceiveProgress] = useState<
+    {
+      icon: LucideIcon
+      text: string
+      iconClassName?: string
+    }[]
+  >([])
 
   useEffect(() => {
     clearLogs()
@@ -34,11 +42,6 @@ export default function Receiver() {
     }
   }, [])
 
-  const clearLogs = () => {
-    setLogs([])
-    webrtcTransferService.clearLogs()
-  }
-
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search)
     const peerId = urlParams.get('peer')
@@ -47,8 +50,30 @@ export default function Receiver() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!connected) return
+
+    setReceiveProgress([
+      {
+        icon: CircleCheck,
+        text: '您已成功与另一台设备配对',
+        iconClassName: 'text-green-500',
+      },
+      {
+        icon: LoaderCircle,
+        text: '等待另一台设备传输数据',
+        iconClassName: 'animate-spin text-gray-400',
+      },
+    ])
+  }, [connected])
+
+  const clearLogs = () => {
+    setLogs([])
+    webrtcTransferService.clearLogs()
+  }
+
   const createPeer = async () => {
-    webrtcTransferService.destroy()
+    handleBeforeCreatePeer()
 
     const iceServers = (
       settings.transfer?.iceServers?.length
@@ -62,28 +87,7 @@ export default function Receiver() {
       toast.success('连接成功')
     })
 
-    webrtcTransferService.onData(async (chunk) => {
-      try {
-        const text = new TextDecoder().decode(chunk)
-        const message = JSON.parse(text)
-        if (message.type === 'payload') {
-          const payload = message.payload as DataSyncPayload
-          const strategy = settings.transfer?.importStrategy || 'overwrite'
-          if (strategy === 'overwrite') {
-            await dataSyncService.importAllOverwrite(payload)
-          } else {
-            // TODO 未来实现合并；当前退回覆盖
-            await dataSyncService.importAllOverwrite(payload)
-          }
-        }
-
-        console.log(message.type)
-        toast.success('接收成功')
-      } catch (e) {
-        toast.error('接收失败')
-        console.error(e)
-      }
-    })
+    webrtcTransferService.onData(handleData)
 
     webrtcTransferService.onError((err) => {
       setConnectLoading(false)
@@ -91,11 +95,13 @@ export default function Receiver() {
       toast.error('连接失败')
     })
 
-    webrtcTransferService.onClose(() => {
-      setConnected(false)
-    })
-
     await webrtcTransferService.create({ initiator: false, iceServers })
+  }
+
+  const handleBeforeCreatePeer = () => {
+    webrtcTransferService.destroy()
+    setConnected(false)
+    setReceiveProgress([])
   }
 
   const handleConnect = async () => {
@@ -110,6 +116,54 @@ export default function Receiver() {
       console.error(error)
       toast.error('连接失败')
     }
+  }
+
+  const handleData = async (chunk: Uint8Array) => {
+    handleReceiveDataSuccess()
+
+    try {
+      const text = new TextDecoder().decode(chunk)
+      const message = JSON.parse(text)
+      if (message.type === 'payload') {
+        const payload = message.payload as DataSyncPayload
+        const strategy = settings.transfer?.importStrategy || 'overwrite'
+        if (strategy === 'overwrite') {
+          await dataSyncService.importAllOverwrite(payload)
+        } else {
+          // TODO 未来实现合并
+          await dataSyncService.importAllOverwrite(payload)
+        }
+      }
+
+      setReceiveProgress([
+        {
+          icon: CircleCheck,
+          text: '数据导入完成',
+          iconClassName: 'text-green-500',
+        },
+      ])
+    } catch (e) {
+      toast.error('接收失败')
+      console.error(e)
+    }
+  }
+
+  const handleReceiveDataSuccess = () => {
+    webrtcTransferService.send(new TextEncoder().encode('success'))
+
+    setReceiveProgress([
+      {
+        icon: CircleCheck,
+        text: '数据接收成功',
+        iconClassName: 'text-green-500',
+      },
+      {
+        icon: LoaderCircle,
+        text: '正在导入数据',
+        iconClassName: 'animate-spin text-gray-400',
+      },
+    ])
+    webrtcTransferService.destroy()
   }
 
   const handleImportJSON = async (file: File) => {
@@ -135,14 +189,12 @@ export default function Receiver() {
       <Card contentClassName="space-y-3">
         {connected ? (
           <div className="flex flex-col">
-            <div className="flex items-center gap-2">
-              <CircleCheck className="w-4 h-4 text-green-500" />
-              <Typography.Text size="xs">您已成功与另一台设备配对</Typography.Text>
-            </div>
-            <div className="flex items-center gap-2">
-              <LoaderCircle className="w-4 h-4 animate-spin text-gray-400" />
-              <Typography.Text size="xs">等待另一台设备传输数据</Typography.Text>
-            </div>
+            {receiveProgress.map((item, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <item.icon className={`w-4 h-4 ${item.iconClassName}`} />
+                <Typography.Text size="xs">{item.text}</Typography.Text>
+              </div>
+            ))}
           </div>
         ) : (
           <div className="w-full flex gap-2">

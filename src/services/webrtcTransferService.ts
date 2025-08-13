@@ -132,7 +132,7 @@ export class WebRTCTransferService {
         size: dataSize,
       })
 
-      if (data instanceof Uint8Array) {
+      if (data instanceof Uint8Array || data instanceof ArrayBuffer) {
         this.onDataHandler?.(new Uint8Array(data))
       } else if (typeof data === 'string') {
         this.onDataHandler?.(new TextEncoder().encode(data))

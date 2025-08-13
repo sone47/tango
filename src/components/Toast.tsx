@@ -3,14 +3,14 @@ import { CheckCircle, Loader2, XCircle } from 'lucide-react'
 import { createContext, ReactNode, useCallback, useState } from 'react'
 
 export interface ToastOptions {
-  type?: 'success' | 'error' | 'loading'
+  type?: 'success' | 'error' | 'loading' | 'info'
   duration?: number
   content: string
 }
 
 interface ToastItem extends ToastOptions {
   id: string
-  type: 'success' | 'error' | 'loading'
+  type: 'success' | 'error' | 'loading' | 'info'
 }
 
 interface ToastContextValue {
