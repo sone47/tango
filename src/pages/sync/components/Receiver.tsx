@@ -1,8 +1,10 @@
 import { CircleCheck, Download, LoaderCircle, LucideIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import Button from '@/components/Button'
 import Card from '@/components/Card'
+import Dialog, { useDialog } from '@/components/Dialog'
 import Input from '@/components/Input'
 import toast from '@/components/Toast'
 import Typography from '@/components/Typography'
@@ -15,6 +17,8 @@ import DebugLogger from './DebugLogger'
 
 export default function Receiver() {
   const { settings } = useSettings()
+  const successDialog = useDialog()
+  const navigate = useNavigate()
 
   const [remotePeerId, setRemotePeerId] = useState('')
   const [connected, setConnected] = useState(false)
@@ -142,6 +146,8 @@ export default function Receiver() {
           iconClassName: 'text-green-500',
         },
       ])
+
+      successDialog.open()
     } catch (e) {
       toast.error('接收失败')
       console.error(e)
@@ -171,11 +177,17 @@ export default function Receiver() {
       const text = await file.text()
       const payload = JSON.parse(text) as DataSyncPayload
       await dataSyncService.importAllOverwrite(payload)
-      toast.success('导入完成')
+
+      successDialog.open()
     } catch (error) {
       toast.error('导入失败')
       console.error(error)
     }
+  }
+
+  const handleGoToStudy = () => {
+    successDialog.close()
+    navigate('/')
   }
 
   useEffect(() => {
@@ -185,63 +197,74 @@ export default function Receiver() {
   }, [])
 
   return (
-    <div className="space-y-4">
-      <Card contentClassName="space-y-3">
-        {connected ? (
-          <div className="flex flex-col">
-            {receiveProgress.map((item, index) => (
-              <div key={index} className="flex items-center gap-2">
-                <item.icon className={`w-4 h-4 ${item.iconClassName}`} />
-                <Typography.Text size="xs">{item.text}</Typography.Text>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="w-full flex gap-2">
-            <Input
-              variant="ghost"
-              size="sm"
-              className="flex-1"
-              value={remotePeerId}
-              onChange={(e) => setRemotePeerId(e.target.value)}
-              placeholder="请输入配对 ID"
+    <>
+      <div className="space-y-4">
+        <Card contentClassName="space-y-3">
+          {connected ? (
+            <div className="flex flex-col">
+              {receiveProgress.map((item, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <item.icon className={`w-4 h-4 ${item.iconClassName}`} />
+                  <Typography.Text size="xs">{item.text}</Typography.Text>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="w-full flex gap-2">
+              <Input
+                variant="ghost"
+                size="sm"
+                className="flex-1"
+                value={remotePeerId}
+                onChange={(e) => setRemotePeerId(e.target.value)}
+                placeholder="请输入配对 ID"
+              />
+              <Button
+                size="sm"
+                onClick={handleConnect}
+                disabled={!remotePeerId.trim() || connected}
+                loading={connectLoading}
+              >
+                {connectLoading ? '配对中...' : '确认配对'}
+              </Button>
+            </div>
+          )}
+
+          <Separator className="my-4" />
+          <DebugLogger logs={logs} onClear={clearLogs} title="传输日志" />
+        </Card>
+
+        <Card contentClassName="flex flex-col gap-2">
+          <label className="w-full cursor-pointer">
+            <input
+              type="file"
+              accept="application/json"
+              className="hidden"
+              onChange={(e) => e.target.files?.[0] && handleImportJSON(e.target.files[0])}
             />
             <Button
+              variant="secondary"
               size="sm"
-              onClick={handleConnect}
-              disabled={!remotePeerId.trim() || connected}
-              loading={connectLoading}
+              icon={Download}
+              className="w-full pointer-events-none"
             >
-              {connectLoading ? '配对中...' : '确认配对'}
+              导入数据文件
             </Button>
-          </div>
-        )}
+          </label>
+          <Typography.Text type="secondary" size="xs">
+            当配对功能无法使用时，请使用数据导入
+          </Typography.Text>
+        </Card>
+      </div>
 
-        <Separator className="my-4" />
-        <DebugLogger logs={logs} onClear={clearLogs} title="传输日志" />
-      </Card>
-
-      <Card contentClassName="flex flex-col gap-2">
-        <label className="w-full cursor-pointer">
-          <input
-            type="file"
-            accept="application/json"
-            className="hidden"
-            onChange={(e) => e.target.files?.[0] && handleImportJSON(e.target.files[0])}
-          />
-          <Button
-            variant="secondary"
-            size="sm"
-            icon={Download}
-            className="w-full pointer-events-none"
-          >
-            导入数据文件
-          </Button>
-        </label>
-        <Typography.Text type="secondary" size="xs">
-          当配对功能无法使用时，请使用数据导入
-        </Typography.Text>
-      </Card>
-    </div>
+      <Dialog
+        open={successDialog.isOpen}
+        onOpenChange={successDialog.setIsOpen}
+        title="数据导入成功"
+        showConfirm={true}
+        confirmText="去学习"
+        onConfirm={handleGoToStudy}
+      ></Dialog>
+    </>
   )
 }
