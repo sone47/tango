@@ -1,4 +1,4 @@
-import { BookCheck, ChevronRight, Headphones, Play, Share2 } from 'lucide-react'
+import { BookCheck, Headphones, Play, Share2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import Button from '@/components/Button'
@@ -23,7 +23,6 @@ export default function SettingsPage() {
   } = useSettings()
 
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
-  const [showVoiceSelector, setShowVoiceSelector] = useState(false)
   const [rate, setRate] = useState(settings.speech.rate)
   const [pitch, setPitch] = useState(settings.speech.pitch)
   const [volume, setVolume] = useState(settings.speech.volume)
@@ -35,8 +34,6 @@ export default function SettingsPage() {
     }
     loadVoices()
   }, [])
-
-  const selectedVoice = voices.find((voice) => voice.name === settings.speech.voice)
 
   return (
     <Page title="设置">
@@ -64,35 +61,17 @@ export default function SettingsPage() {
             </SettingItem>
 
             {voices.length > 0 && (
-              <SettingItem title="语音" description={selectedVoice?.name ?? ''}>
-                <button
-                  onClick={() => setShowVoiceSelector(!showVoiceSelector)}
-                  className="flex items-center gap-1 text-sm text-blue-600"
-                >
-                  选择
-                  <ChevronRight size={14} />
-                </button>
+              <SettingItem title="语音">
+                <Select
+                  size="sm"
+                  options={getVoicesByLanguage(settings.speech.language).map((voice) => ({
+                    value: voice.name,
+                    label: voice.name,
+                  }))}
+                  value={settings.speech.voice}
+                  onValueChange={(value) => updateSpeechSettings({ voice: value })}
+                ></Select>
               </SettingItem>
-            )}
-
-            {showVoiceSelector && (
-              <div className="bg-gray-50 rounded-xl p-3 space-y-2 max-h-32 overflow-y-auto">
-                {getVoicesByLanguage(settings.speech.language).map((voice) => (
-                  <button
-                    key={voice.name}
-                    onClick={() => {
-                      updateSpeechSettings({ voice: voice.name })
-                    }}
-                    className={`w-full text-left text-sm p-2 rounded-lg transition-colors ${
-                      voice.name === settings.speech.voice
-                        ? 'bg-blue-100 text-blue-600'
-                        : 'hover:bg-gray-100'
-                    }`}
-                  >
-                    {voice.name}
-                  </button>
-                ))}
-              </div>
             )}
 
             <SettingItem title="语速">
