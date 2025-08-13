@@ -5,6 +5,7 @@ import Button from '@/components/Button'
 import Card from '@/components/Card'
 import Input from '@/components/Input'
 import Page from '@/components/Page'
+import Select from '@/components/Select'
 import Slider from '@/components/Slider'
 import Switch from '@/components/Switch'
 import { languageOptions } from '@/constants/settings'
@@ -52,17 +53,14 @@ export default function SettingsPage() {
         <SettingItem title="语音设置" icon={Headphones} isCard>
           <div className="space-y-4 w-full">
             <SettingItem title="语言">
-              <select
+              <Select
+                className="w-1/2"
+                triggerClassName="w-full"
+                size="sm"
+                options={languageOptions}
                 value={settings.speech.language}
-                onChange={(e) => updateSpeechSettings({ language: e.target.value })}
-                className="text-sm bg-gray-100 rounded-lg px-3 py-1 border-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {languageOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+                onValueChange={(value) => updateSpeechSettings({ language: value })}
+              />
             </SettingItem>
 
             {voices.length > 0 && (
@@ -158,20 +156,19 @@ export default function SettingsPage() {
         <SettingItem title="数据同步" icon={Share2} isCard>
           <div className="space-y-4 w-full">
             <SettingItem title="接收策略">
-              <select
+              <Select
+                className="w-1/2"
+                triggerClassName="w-full"
+                size="sm"
+                options={[
+                  { value: 'overwrite', label: '覆盖' },
+                  { value: 'merge', label: '合并（规划中）', disabled: true },
+                ]}
                 value={settings.transfer?.importStrategy ?? 'overwrite'}
-                onChange={(e) =>
-                  updateTransferSettings({
-                    importStrategy: (e.target.value as 'overwrite' | 'merge') ?? 'overwrite',
-                  })
+                onValueChange={(value) =>
+                  updateTransferSettings({ importStrategy: value as 'overwrite' | 'merge' })
                 }
-                className="text-sm bg-gray-100 rounded-lg px-3 py-1 border-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="overwrite">覆盖</option>
-                <option value="merge" disabled>
-                  合并（规划中）
-                </option>
-              </select>
+              />
             </SettingItem>
 
             <SettingItem title="ICE/TURN 服务器" description="可填写多个，用英文逗号分隔">
