@@ -75,7 +75,7 @@ const StudyStats = () => {
           />
           <StatCard
             title="词包进度"
-            value={progressLoading ? '-' : `${currentWordPackProgress}%`}
+            value={progressLoading ? '-' : `${currentWordPackProgress * 100}%`}
             icon={Package}
             color="blue"
             onClick={wordPackProgressModal.open}

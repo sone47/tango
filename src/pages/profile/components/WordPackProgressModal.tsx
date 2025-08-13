@@ -103,7 +103,7 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
                 <div className="mt-3">
                   <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
                     <span>学习进度</span>
-                    <span>{item.progress}%</span>
+                    <span>{item.progress * 100}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
