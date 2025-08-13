@@ -1,3 +1,4 @@
+import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys'
 import { getGlobalIDBManager } from '@/hooks/useDatabase'
 import type { CardPackEntity, PracticeEntity, VocabularyEntity, WordPackEntity } from '@/schemas'
 import { cardPackSchema, practiceSchema, vocabularySchema, wordPackSchema } from '@/schemas'
@@ -15,6 +16,7 @@ export interface DataSyncPayload {
   cardPacks: CardPackEntity[]
   vocabularies: VocabularyEntity[]
   practices: PracticeEntity[]
+  currentWordPackId: number | null
 }
 
 export class DataSyncService {
@@ -32,6 +34,9 @@ export class DataSyncService {
       practiceRepo.findAll(),
     ])
 
+    const currentWordPackIdStr = localStorage.getItem(LOCAL_STORAGE_KEYS.CURRENT_WORD_PACK_ID)
+    const currentWordPackId = currentWordPackIdStr ? Number(currentWordPackIdStr) : null
+
     return {
       meta: {
         version: 1,
@@ -41,6 +46,7 @@ export class DataSyncService {
       cardPacks,
       vocabularies,
       practices,
+      currentWordPackId,
     }
   }
 
@@ -70,6 +76,15 @@ export class DataSyncService {
         }
       }
     )
+
+    if (payload.currentWordPackId !== null) {
+      localStorage.setItem(
+        LOCAL_STORAGE_KEYS.CURRENT_WORD_PACK_ID,
+        payload.currentWordPackId.toString()
+      )
+    } else {
+      localStorage.removeItem(LOCAL_STORAGE_KEYS.CURRENT_WORD_PACK_ID)
+    }
   }
 }
 

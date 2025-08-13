@@ -2,6 +2,7 @@ import { useLocalStorage } from '@uidotdev/usehooks'
 import { isNil } from 'lodash'
 import { useEffect, useState } from 'react'
 
+import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys'
 import { wordPackService } from '@/services/wordPackService'
 import type { WordPack } from '@/types'
 
@@ -11,11 +12,9 @@ interface UseCurrentWordPackResult {
   setCurrentWordPackId: (id: number | null) => void
 }
 
-const STORAGE_KEY = 'tango-current-wordpack-id'
-
 export const useCurrentWordPack = (): UseCurrentWordPackResult => {
   const [currentWordPackId, setCurrentWordPackId] = useLocalStorage<number | null>(
-    STORAGE_KEY,
+    LOCAL_STORAGE_KEYS.CURRENT_WORD_PACK_ID,
     null
   )
   const [currentWordPack, setCurrentWordPack] = useState<WordPack | null>(null)

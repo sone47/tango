@@ -2,6 +2,7 @@ import { useLocalStorage } from '@uidotdev/usehooks'
 import { cloneDeep } from 'lodash'
 import { useEffect } from 'react'
 
+import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys'
 import { defaultSettings } from '@/constants/settings'
 import { getVoicesByLanguage } from '@/utils/speechUtils'
 
@@ -60,7 +61,10 @@ function migrateSettings(stored: Partial<AppSettings> | undefined): AppSettings 
 
 export function useSettings() {
   const runtimeDefaults = buildRuntimeDefaults()
-  const [settings, setSettings] = useLocalStorage<AppSettings>('tango-settings', runtimeDefaults)
+  const [settings, setSettings] = useLocalStorage<AppSettings>(
+    LOCAL_STORAGE_KEYS.SETTINGS,
+    runtimeDefaults
+  )
 
   // 通用兼容：将存量本地配置与默认配置做一次迁移合并
   useEffect(() => {
