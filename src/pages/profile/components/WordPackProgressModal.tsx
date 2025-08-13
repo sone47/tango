@@ -1,3 +1,4 @@
+import { round } from 'lodash'
 import { BookOpen } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -96,7 +97,7 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
                 <div className="mt-3">
                   <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
                     <span>学习进度</span>
-                    <span>{item.progress * 100}%</span>
+                    <span>{round(item.progress * 100, 2)}%</span>
                   </div>
                   <Progress value={item.progress} />
                 </div>

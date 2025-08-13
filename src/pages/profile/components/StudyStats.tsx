@@ -1,3 +1,4 @@
+import { round } from 'lodash'
 import { Calendar, Package, TrendingUp } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -75,7 +76,7 @@ const StudyStats = () => {
           />
           <StatCard
             title="词包进度"
-            value={progressLoading ? '-' : `${currentWordPackProgress * 100}%`}
+            value={progressLoading ? '-' : `${round(currentWordPackProgress * 100, 2)}%`}
             icon={Package}
             color="blue"
             onClick={wordPackProgressModal.open}
