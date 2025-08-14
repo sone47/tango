@@ -1,7 +1,11 @@
 import { motion } from 'framer-motion'
-import { LucideIcon, RotateCcw, Shuffle } from 'lucide-react'
+import { LucideIcon, PartyPopper, RotateCcw, Shuffle } from 'lucide-react'
+import { useRef, useState } from 'react'
 
 import Button from '@/components/Button'
+import { Confetti, ConfettiRef } from '@/components/magicui/confetti'
+import Typography from '@/components/Typography'
+import { useSettings } from '@/hooks/useSettings'
 import { usePracticeStore } from '@/stores/practiceStore'
 import type { CardPack, CardRevealState, Word } from '@/types'
 
@@ -82,9 +86,21 @@ const PracticeContent = ({
   onReset,
   onShuffle,
 }: PracticeContentProps) => {
-  const { revealState, updateState } = usePracticeStore()
+  const { settings } = useSettings()
 
-  // 未选择卡包状态
+  const confettiRef = useRef<ConfettiRef>(null)
+
+  const { revealState, updateState } = usePracticeStore()
+  const [isShuffle, setIsShuffle] = useState(settings.practice.isShuffle)
+
+  const handleRestart = () => {
+    if (isShuffle) {
+      onShuffle()
+    } else {
+      onReset()
+    }
+  }
+
   if (!selectedCardPack) {
     return (
       <EmptyState
@@ -101,42 +117,40 @@ const PracticeContent = ({
     )
   }
 
-  // 完成状态
   if (currentWordIndex >= shuffledWords.length) {
     return (
-      <EmptyState
-        icon="🎉"
-        title="恭喜完成！"
-        description="你已经完成了所有卡片的练习"
-        iconBgColor="bg-green-100"
-        actions={[
-          {
-            label: '重新洗牌',
-            onClick: onShuffle,
-            icon: Shuffle,
-            rounded: 'full',
-            size: 'md',
-          },
-          {
-            label: '重新开始',
-            onClick: onReset,
-            icon: RotateCcw,
-            rounded: 'full',
-            className: 'bg-green-500 hover:bg-green-600',
-            size: 'md',
-          },
-          {
-            label: '选择其他卡包',
-            onClick: onSelectCardPack,
-            variant: 'secondary',
-            size: 'md',
-          },
-        ]}
-      />
+      <div className="relative flex flex-col items-center justify-center gap-4 h-full">
+        <PartyPopper className="w-10 h-10" />
+        <div className="flex flex-col items-center">
+          <Typography.Title level={5}>恭喜！</Typography.Title>
+          <Typography.Title level={6} className="!text-gray-600">
+            你已经完成了所有卡片的练习！
+          </Typography.Title>
+          <Confetti ref={confettiRef} className="absolute left-0 top-0 z-0 size-full" />
+        </div>
+
+        <div className="flex flex-col gap-3 w-full px-16">
+          <div className="relative flex items-center gap-2">
+            <Button
+              className="flex-1"
+              variant="primary"
+              size="lg"
+              icon={RotateCcw}
+              onClick={handleRestart}
+            >
+              重新开始
+            </Button>
+            <Shuffle
+              className="absolute -right-2 top-1/2 translate-x-full -translate-y-1/2 w-5 h-5 cursor-pointer"
+              color={isShuffle ? 'var(--color-blue-600)' : 'var(--color-gray-400)'}
+              onClick={() => setIsShuffle(!isShuffle)}
+            />
+          </div>
+        </div>
+      </div>
     )
   }
 
-  // 正常学习状态
   const currentWord = shuffledWords[currentWordIndex]
 
   const handleRevealStateChange = (newRevealState: CardRevealState) => {

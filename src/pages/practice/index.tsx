@@ -115,13 +115,12 @@ export default function PracticeTab() {
     if (selectedCardPack) {
       const vocabularyIds = selectedCardPack.words.map((word) => word.id)
       const practices = await practiceService.getPracticesByVocabularyIds(vocabularyIds)
-      const finalWords = processWords(selectedCardPack.words, practices, 0, true)
+      const finalWords = processWords(selectedCardPack.words, practices, proficiency, true)
 
       updateState({
         shuffledWords: finalWords,
         currentWordIndex: 0,
         studiedWords: [],
-        proficiency: 0,
       })
       resetRevealState()
     }

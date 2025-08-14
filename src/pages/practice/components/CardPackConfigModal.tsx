@@ -88,7 +88,7 @@ const CardPackConfigModal = ({
           <Button
             variant="primary"
             onClick={() => onConfirm(isShuffle, proficiency)}
-            className="w-full"
+            className="flex-1"
             disabled={!filteredWordsCount}
           >
             开始学习
