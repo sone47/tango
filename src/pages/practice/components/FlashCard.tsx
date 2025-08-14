@@ -94,14 +94,14 @@ const FlashCard = ({
 
   const handleSwipeUp = () => {
     const newProficiency = Math.min(100, proficiency + 14)
-    toast.success('已掌握', 1000)
+    toast.success(`已掌握 ${newProficiency}%`, 1000)
 
     goToNextCard(newProficiency)
   }
 
   const handleSwipeDown = () => {
     const newProficiency = Math.max(0, proficiency - 14)
-    toast.error('未掌握', 800)
+    toast.error('未掌握', 600)
 
     goToNextCard(newProficiency)
   }
