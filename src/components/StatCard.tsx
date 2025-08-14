@@ -51,7 +51,7 @@ const StatCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      className={`${getGradientColor(color)} p-4 rounded-xl text-left w-full`}
+      className={`${getGradientColor(color)} p-4 rounded-xl text-left`}
       onClick={onClick}
       whileTap={onClick ? { scale: 0.95 } : undefined}
     >
