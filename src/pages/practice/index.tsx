@@ -33,7 +33,9 @@ export default function PracticeTab() {
   } = usePracticeStore()
 
   useEffect(() => {
-    updateState({ showCardPackSelector: true })
+    if (!selectedCardPack) {
+      updateState({ showCardPackSelector: true })
+    }
 
     fetchWordPacks()
   }, [])
