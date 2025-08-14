@@ -1,5 +1,5 @@
 import { languageOptions } from '@/constants/settings'
-import type { SpeechSettings } from '@/hooks/useSettings'
+import { SpeechSettings } from '@/types/settings'
 
 export function getAvailableVoices(): SpeechSynthesisVoice[] {
   const voices = speechSynthesis.getVoices()
