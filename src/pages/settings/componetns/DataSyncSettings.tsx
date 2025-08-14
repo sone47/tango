@@ -5,6 +5,8 @@ import Button from '@/components/Button'
 import Drawer, { useDrawer } from '@/components/Drawer'
 import Input from '@/components/Input'
 import Select from '@/components/Select'
+import Textarea from '@/components/Textarea'
+import { Separator } from '@/components/ui/separator'
 import { useSettings } from '@/hooks/useSettings'
 import SettingItem from '@/pages/settings/componetns/SettingItem'
 import { TransferSettings } from '@/types/settings'
@@ -24,7 +26,40 @@ export default function DataSyncSettings() {
   }
 
   const handleAddServer = () => {
-    console.log('add server')
+    setIceServers([...iceServers, { urls: [], username: '', credential: '' }])
+  }
+
+  const handleRemoveServer = (server: TransferSettings['iceServers'][number]) => {
+    // TODO 删除到最后一个服务器提示
+    setIceServers(iceServers.filter((s) => s !== server))
+  }
+
+  const handleServerChange = (server: TransferSettings['iceServers'][number], urls: string[]) => {
+    setIceServers(iceServers.map((s) => (s === server ? { ...s, urls } : s)))
+  }
+
+  const handleUsernameChange = (
+    server: TransferSettings['iceServers'][number],
+    username: string
+  ) => {
+    setIceServers(iceServers.map((s) => (s === server ? { ...s, username } : s)))
+  }
+
+  const handleCredentialChange = (
+    server: TransferSettings['iceServers'][number],
+    credential: string
+  ) => {
+    setIceServers(iceServers.map((s) => (s === server ? { ...s, credential } : s)))
+  }
+
+  const handleConfirm = () => {
+    // TODO 输入格式检查
+    updateTransferSettings({ iceServers })
+    configDrawer.setIsOpen(false)
+  }
+
+  const handleCancel = () => {
+    configDrawer.setIsOpen(false)
   }
 
   return (
@@ -49,7 +84,9 @@ export default function DataSyncSettings() {
         <SettingItem title="ICE/TURN 服务器">
           <div className="flex items-center justify-end gap-2 w-full">
             <Drawer
-              contentClassName="h-full"
+              className="h-full"
+              contentClassName="flex flex-col gap-4"
+              footerClassName="border-t bg-card-foreground/5"
               trigger={
                 <Button size="sm" variant="outline" className="w-1/2">
                   配置
@@ -58,22 +95,54 @@ export default function DataSyncSettings() {
               cancelText="取消"
               confirmText="确定"
               confirmVariant="outline"
-              cancelVariant="secondary"
+              cancelVariant="ghost"
               showConfirm
               showCancel
               title="配置 ICE/TURN 服务器"
               open={configDrawer.isOpen}
               onOpenChange={configDrawer.setIsOpen}
+              onConfirm={handleConfirm}
+              onCancel={handleCancel}
             >
-              <div className="flex flex-col gap-2">
-                <Input placeholder="请输入服务器地址，多个地址用英文逗号分隔" />
-                <Input placeholder="请输入用户名" />
-                <Input placeholder="请输入密码" />
+              <div className="flex flex-col gap-4">
+                {iceServers.map((server, index) => (
+                  <>
+                    <div key={index} className="flex flex-col gap-2">
+                      <Textarea
+                        placeholder="请输入服务器地址，多个地址用换行分隔"
+                        value={server.urls?.join('\n')}
+                        onChange={(e) => handleServerChange(server, e.target.value.split('\n'))}
+                      />
+                      <Input
+                        placeholder="请输入用户名"
+                        value={server.username}
+                        onChange={(e) => handleUsernameChange(server, e.target.value)}
+                      />
+                      <Input
+                        placeholder="请输入密码"
+                        value={server.credential}
+                        onChange={(e) => handleCredentialChange(server, e.target.value)}
+                      />
+                    </div>
+
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      className="w-full"
+                      onClick={() => handleRemoveServer(server)}
+                    >
+                      删除服务器
+                    </Button>
+
+                    <Separator />
+                  </>
+                ))}
               </div>
               <Button size="sm" variant="outline" className="w-full" onClick={handleAddServer}>
                 添加服务器
               </Button>
             </Drawer>
+
             <Drawer
               trigger={
                 <HelpCircle
@@ -88,28 +157,6 @@ export default function DataSyncSettings() {
               编辑中...
             </Drawer>
           </div>
-          {/* <Input
-            size="sm"
-            defaultValue={
-              Array.isArray(settings.transfer?.iceServers)
-                ? settings.transfer.iceServers
-                    .map((s) => (typeof s.urls === 'string' ? s.urls : s.urls[0]))
-                    .join(',')
-                : ''
-            }
-            onBlur={(e) => {
-              const value = e.target.value.trim()
-              const urls = value
-                ? value
-                    .split(',')
-                    .map((v) => v.trim())
-                    .filter(Boolean)
-                : ['stun:stun.l.google.com:19302']
-              updateTransferSettings({ iceServers: urls.map((u) => ({ urls: u })) })
-            }}
-            placeholder="stun:stun.l.google.com:19302, turn:example.com:3478"
-            className="w-full"
-          /> */}
         </SettingItem>
       </div>
     </SettingItem>
