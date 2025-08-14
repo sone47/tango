@@ -54,6 +54,7 @@ export default function SettingsPage() {
             </SettingItem>
             <SettingItem title="卡面隐藏">
               <ToggleGroup
+                size="sm"
                 type="multiple"
                 variant="outline"
                 options={hiddenInCardOptions}
@@ -138,7 +139,7 @@ export default function SettingsPage() {
             </SettingItem>
 
             <Button
-              variant="primary"
+              variant="outline"
               size="sm"
               icon={Play}
               // TODO 用户可自行填写测试语音
@@ -170,7 +171,6 @@ export default function SettingsPage() {
 
             <SettingItem title="ICE/TURN 服务器" description="可填写多个，用英文逗号分隔">
               <Input
-                variant="ghost"
                 size="sm"
                 defaultValue={
                   Array.isArray(settings.transfer?.iceServers)
@@ -196,11 +196,9 @@ export default function SettingsPage() {
           </div>
         </SettingItem>
 
-        <Card>
-          <Button variant="secondary" size="sm" onClick={resetSettings} className="w-full">
-            重置所有设置
-          </Button>
-        </Card>
+        <Button variant="outline" size="sm" onClick={resetSettings} className="w-full">
+          重置所有设置
+        </Button>
       </div>
     </Page>
   )
