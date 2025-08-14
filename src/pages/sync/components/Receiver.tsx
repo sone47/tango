@@ -1,5 +1,5 @@
 import { CircleCheck, Download, LoaderCircle, LucideIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@/components/Button'
@@ -31,6 +31,16 @@ export default function Receiver() {
       iconClassName?: string
     }[]
   >([])
+
+  const hasValidServerConfig = useMemo(() => {
+    const iceServers = settings.transfer?.iceServers
+    if (!iceServers || iceServers.length === 0) return false
+
+    return iceServers.some(
+      (server) =>
+        server.urls && server.urls.length > 0 && server.urls.some((url) => url.trim() !== '')
+    )
+  }, [settings.transfer?.iceServers])
 
   useEffect(() => {
     clearLogs()
@@ -212,23 +222,36 @@ export default function Receiver() {
               ))}
             </div>
           ) : (
-            <div className="w-full flex gap-2">
-              <Input
-                size="sm"
-                className="flex-1"
-                value={remotePeerId}
-                onChange={(e) => setRemotePeerId(e.target.value)}
-                placeholder="请输入配对 ID"
-              />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleConnect}
-                disabled={!remotePeerId.trim() || connected}
-                loading={connectLoading}
-              >
-                {connectLoading ? '配对中...' : '确认配对'}
-              </Button>
+            <div className="w-full space-y-1">
+              <div className="flex gap-2">
+                <Input
+                  size="sm"
+                  className="flex-1"
+                  value={remotePeerId}
+                  onChange={(e) => setRemotePeerId(e.target.value)}
+                  placeholder="请输入配对 ID"
+                  disabled={!hasValidServerConfig}
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleConnect}
+                  disabled={!remotePeerId.trim() || connected || !hasValidServerConfig}
+                  loading={connectLoading}
+                >
+                  {connectLoading ? '配对中...' : '确认配对'}
+                </Button>
+              </div>
+              {!hasValidServerConfig && (
+                <>
+                  <Typography.Text type="secondary" size="xs">
+                    请先配置 ICE/TURN 服务器才能使用配对功能
+                  </Typography.Text>
+                  <Button variant="link" size="xs" onClick={() => navigate('/settings')}>
+                    去配置
+                  </Button>
+                </>
+              )}
             </div>
           )}
 

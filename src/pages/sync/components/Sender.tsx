@@ -1,5 +1,6 @@
 import { Upload } from 'lucide-react'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'
 import Button from '@/components/Button'
@@ -14,6 +15,7 @@ import { type LogEntry, webrtcTransferService } from '@/services/webrtcTransferS
 import DebugLogger from './DebugLogger'
 
 export default function Sender() {
+  const navigate = useNavigate()
   const { settings } = useSettings()
   const sendSuccessAlertDialog = useAlertDialog()
   const copyIdAlertDialog = useAlertDialog()
@@ -25,6 +27,16 @@ export default function Sender() {
   const [exportLoading, setExportLoading] = useState(false)
   const [createLoading, setCreateLoading] = useState(false)
   const [logs, setLogs] = useState<LogEntry[]>([])
+
+  const hasValidServerConfig = useMemo(() => {
+    const iceServers = settings.transfer?.iceServers
+    if (!iceServers || iceServers.length === 0) return false
+
+    return iceServers.some(
+      (server) =>
+        server.urls && server.urls.length > 0 && server.urls.some((url) => url.trim() !== '')
+    )
+  }, [settings.transfer?.iceServers])
 
   useEffect(() => {
     clearLogs()
@@ -48,11 +60,7 @@ export default function Sender() {
   const createPeer = async () => {
     handleBeforeCreatePeer()
 
-    const iceServers = (
-      settings.transfer?.iceServers?.length
-        ? settings.transfer.iceServers
-        : [{ urls: 'stun:stun.l.google.com:19302' }]
-    ) as RTCIceServer[]
+    const iceServers = settings.transfer.iceServers
 
     webrtcTransferService.onOffer((offer) => {
       setMyPeerId(offer.peerId)
@@ -203,12 +211,24 @@ export default function Sender() {
           size="sm"
           onClick={createPeer}
           loading={createLoading}
+          disabled={!hasValidServerConfig}
         >
           {createLoading ? '生成配对信息中...' : '开始配对'}
         </Button>
-        <Typography.Text type="secondary" size="xs">
-          与其他设备配对，将全部词包和学习进度同步至其他设备
-        </Typography.Text>
+        {hasValidServerConfig ? (
+          <Typography.Text type="secondary" size="xs">
+            与其他设备配对，将全部词包和学习进度同步至其他设备
+          </Typography.Text>
+        ) : (
+          <>
+            <Typography.Text type="secondary" size="xs">
+              请先配置 ICE/TURN 服务器才能使用配对功能
+            </Typography.Text>
+            <Button variant="link" size="xs" onClick={() => navigate('/settings')}>
+              去配置
+            </Button>
+          </>
+        )}
       </>
     )
   }
