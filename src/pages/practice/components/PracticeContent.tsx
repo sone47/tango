@@ -111,6 +111,7 @@ const PracticeContent = ({
           {
             label: '开始学习',
             onClick: onSelectCardPack,
+            className: 'text-md',
           },
         ]}
       />
