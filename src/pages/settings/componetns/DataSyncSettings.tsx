@@ -6,11 +6,13 @@ import Drawer, { useDrawer } from '@/components/Drawer'
 import Input from '@/components/Input'
 import Select from '@/components/Select'
 import Textarea from '@/components/Textarea'
+import toast from '@/components/Toast'
 import { Separator } from '@/components/ui/separator'
 import { useSettings } from '@/hooks/useSettings'
 import DataSyncConfigGuide from '@/pages/settings/componetns/DataSyncConfigGuide'
 import SettingItem from '@/pages/settings/componetns/SettingItem'
 import { TransferSettings } from '@/types/settings'
+import { testConnection, validateServers } from '@/utils/webrtc'
 
 export default function DataSyncSettings() {
   const { settings, updateTransferSettings } = useSettings()
@@ -54,13 +56,32 @@ export default function DataSyncSettings() {
   }
 
   const handleConfirm = () => {
-    // TODO 输入格式检查
-    updateTransferSettings({ iceServers })
-    configDrawer.setIsOpen(false)
+    try {
+      validateServers(iceServers)
+
+      updateTransferSettings({ iceServers })
+      configDrawer.setIsOpen(false)
+
+      toast.success('服务器配置已保存')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : '服务器配置不正确')
+    }
   }
 
   const handleCancel = () => {
     configDrawer.setIsOpen(false)
+  }
+
+  const handleTestConnection = async (server: TransferSettings['iceServers'][number]) => {
+    const dismissToast = toast.loading('正在测试连接...')
+    try {
+      await testConnection(server)
+      toast.success('服务器连接测试成功！可以正常获取网络候选')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : '连接测试失败')
+    } finally {
+      dismissToast()
+    }
   }
 
   return (
@@ -110,7 +131,7 @@ export default function DataSyncSettings() {
                   <>
                     <div key={index} className="flex flex-col gap-2">
                       <Textarea
-                        placeholder="请输入服务器地址，多个地址用换行分隔"
+                        placeholder={`请输入服务器地址，多个地址用换行分隔。如：\nstun:stun.l.google.com:19302\nturn:your-server.com:3478`}
                         value={server.urls?.join('\n')}
                         onChange={(e) => handleServerChange(server, e.target.value.split('\n'))}
                       />
@@ -126,14 +147,54 @@ export default function DataSyncSettings() {
                       />
                     </div>
 
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      className="w-full"
-                      onClick={() => handleRemoveServer(server)}
-                    >
-                      删除服务器
-                    </Button>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1"
+                          disabled={!server.urls?.length}
+                          onClick={() => {
+                            navigator.clipboard.writeText(JSON.stringify(server))
+                            toast.success('复制成功')
+                          }}
+                        >
+                          复制服务器信息
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1"
+                          onClick={() => {
+                            navigator.clipboard.readText().then((text) => {
+                              const copiedServer = JSON.parse(text)
+                              setIceServers(
+                                iceServers.map((s) => (s === server ? copiedServer : s))
+                              )
+                            })
+                          }}
+                        >
+                          粘贴服务器信息
+                        </Button>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full"
+                        disabled={!server.urls?.length}
+                        onClick={() => handleTestConnection(server)}
+                      >
+                        测试连接
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        className="w-full"
+                        onClick={() => handleRemoveServer(server)}
+                      >
+                        删除服务器
+                      </Button>
+                    </div>
 
                     <Separator />
                   </>

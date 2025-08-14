@@ -57,7 +57,7 @@ const ToastComponent = ({ toast, onClose }: { toast: ToastItem; onClose: () => v
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -50, scale: 0.9 }}
       transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-      className={`fixed top-20 left-1/2 transform -translate-x-1/2 z-50 ${getBackgroundColor()} border rounded-2xl px-4 py-3 shadow-lg backdrop-blur-sm flex items-center gap-2 min-w-[100px] max-w-[300px]`}
+      className={`fixed top-20 left-1/2 transform -translate-x-1/2 z-999 ${getBackgroundColor()} border rounded-2xl px-4 py-3 shadow-lg backdrop-blur-sm flex items-center gap-2 min-w-[100px] max-w-[300px]`}
       onClick={toast.type !== 'loading' ? onClose : undefined}
     >
       {getIcon()}

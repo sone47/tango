@@ -70,13 +70,19 @@ export function Drawer({
   modal = true,
 }: DrawerProps) {
   const handleConfirm = () => {
-    onConfirm?.()
-    onOpenChange?.(false)
+    if (onConfirm) {
+      onConfirm()
+    } else {
+      onOpenChange?.(false)
+    }
   }
 
   const handleCancel = () => {
-    onCancel?.()
-    onOpenChange?.(false)
+    if (onCancel) {
+      onCancel()
+    } else {
+      onOpenChange?.(false)
+    }
   }
 
   let content = (
