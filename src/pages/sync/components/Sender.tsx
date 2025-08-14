@@ -175,7 +175,7 @@ export default function Sender() {
       <div className="space-y-3">
         {connected ? (
           <Button
-            variant="outline"
+            variant="primary"
             size="sm"
             icon={Upload}
             loading={sending}
@@ -207,7 +207,7 @@ export default function Sender() {
       <>
         <Button
           className="w-full"
-          variant="outline"
+          variant="primary"
           size="sm"
           onClick={createPeer}
           loading={createLoading}
@@ -263,8 +263,8 @@ export default function Sender() {
         open={sendSuccessAlertDialog.isOpen}
         onOpenChange={sendSuccessAlertDialog.setIsOpen}
         title="数据已发送"
-        confirmText="关闭连接"
-        cancelText="继续与其他设备配对"
+        confirmText="完成数据同步"
+        cancelText="继续同步数据"
         onConfirm={() => {
           sendSuccessAlertDialog.hide()
 
@@ -277,7 +277,7 @@ export default function Sender() {
         open={copyIdAlertDialog.isOpen}
         onOpenChange={copyIdAlertDialog.setIsOpen}
         title="配对 ID 已复制"
-        description={`请将 ID （${myPeerId}）输入数据同步-接收端配对 ID 输入框，即可完成配对`}
+        description={`请将配对 ID 粘贴至目标设备的“数据同步-接收”页`}
         showCancel={false}
         onConfirm={() => {
           copyIdAlertDialog.hide()
@@ -288,7 +288,7 @@ export default function Sender() {
         open={copyUrlAlertDialog.isOpen}
         onOpenChange={copyUrlAlertDialog.setIsOpen}
         title="配对链接已复制"
-        description={`请将链接（${shareUrl}）发送给另一台设备，点击链接即可完成配对`}
+        description={`请在目标设备的浏览器中打开复制的链接`}
         showCancel={false}
         onConfirm={() => {
           copyUrlAlertDialog.hide()

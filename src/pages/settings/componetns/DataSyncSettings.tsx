@@ -132,9 +132,7 @@ export default function DataSyncSettings() {
                     <div key={index} className="flex flex-col gap-2">
                       <Textarea
                         placeholder={`请输入服务器地址，多个地址用换行分隔。如：\nstun:stun.l.google.com:19302\nturn:your-server.com:3478`}
-                        value={
-                          typeof server.urls === 'string' ? server.urls : server.urls?.join('\n')
-                        }
+                        value={server.urls?.join('\n')}
                         onChange={(e) => handleServerChange(server, e.target.value.split('\n'))}
                       />
                       <Input
