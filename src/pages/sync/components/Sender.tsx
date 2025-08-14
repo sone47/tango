@@ -167,7 +167,7 @@ export default function Sender() {
       <div className="space-y-3">
         {connected ? (
           <Button
-            variant="primary"
+            variant="outline"
             size="sm"
             icon={Upload}
             loading={sending}
@@ -199,7 +199,7 @@ export default function Sender() {
       <>
         <Button
           className="w-full"
-          variant="primary"
+          variant="outline"
           size="sm"
           onClick={createPeer}
           loading={createLoading}
@@ -243,8 +243,8 @@ export default function Sender() {
         open={sendSuccessAlertDialog.isOpen}
         onOpenChange={sendSuccessAlertDialog.setIsOpen}
         title="数据已发送"
-        showCancel={false}
         confirmText="关闭连接"
+        cancelText="继续与其他设备配对"
         onConfirm={() => {
           sendSuccessAlertDialog.hide()
 

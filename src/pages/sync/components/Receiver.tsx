@@ -119,6 +119,8 @@ export default function Receiver() {
     } catch (error) {
       console.error(error)
       toast.error('连接失败')
+
+      setConnectLoading(false)
     }
   }
 
@@ -212,7 +214,6 @@ export default function Receiver() {
           ) : (
             <div className="w-full flex gap-2">
               <Input
-                variant="ghost"
                 size="sm"
                 className="flex-1"
                 value={remotePeerId}
@@ -220,6 +221,7 @@ export default function Receiver() {
                 placeholder="请输入配对 ID"
               />
               <Button
+                variant="outline"
                 size="sm"
                 onClick={handleConnect}
                 disabled={!remotePeerId.trim() || connected}
