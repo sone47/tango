@@ -8,6 +8,7 @@ import Select from '@/components/Select'
 import Textarea from '@/components/Textarea'
 import { Separator } from '@/components/ui/separator'
 import { useSettings } from '@/hooks/useSettings'
+import DataSyncConfigGuide from '@/pages/settings/componetns/DataSyncConfigGuide'
 import SettingItem from '@/pages/settings/componetns/SettingItem'
 import { TransferSettings } from '@/types/settings'
 
@@ -154,7 +155,7 @@ export default function DataSyncSettings() {
               open={helpDrawer.isOpen}
               onOpenChange={helpDrawer.setIsOpen}
             >
-              编辑中...
+              <DataSyncConfigGuide />
             </Drawer>
           </div>
         </SettingItem>
