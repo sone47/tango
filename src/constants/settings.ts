@@ -15,13 +15,7 @@ export const defaultSettings = {
     importStrategy: 'overwrite' as const,
     iceServers: [
       {
-        urls: [
-          'turn:stun.evan-brass.net',
-          'turn:stun.evan-brass.net?transport=tcp',
-          'stun:stun.evan-brass.net',
-        ],
-        username: 'guest',
-        credential: 'password',
+        urls: ['stun:stun.l.google.com:19302'],
       },
     ],
   },
