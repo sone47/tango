@@ -4,28 +4,8 @@ import { useEffect } from 'react'
 
 import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys'
 import { defaultSettings } from '@/constants/settings'
+import type { AppSettings, PracticeSettings, SpeechSettings } from '@/types/settings'
 import { getVoicesByLanguage } from '@/utils/speechUtils'
-
-export interface PracticeSettings {
-  isShuffle: boolean
-}
-
-export interface SpeechSettings {
-  language: string
-  rate: number // 0.1 - 10
-  pitch: number // 0 - 2
-  volume: number // 0 - 1
-  voice?: string
-}
-
-export interface AppSettings {
-  practice: PracticeSettings
-  speech: SpeechSettings
-  transfer: {
-    importStrategy: 'overwrite' | 'merge'
-    iceServers: Array<{ urls: string | string[]; username?: string; credential?: string }>
-  }
-}
 
 function buildRuntimeDefaults(): AppSettings {
   return {

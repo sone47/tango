@@ -8,6 +8,7 @@ import Page from '@/components/Page'
 import Select from '@/components/Select'
 import Slider from '@/components/Slider'
 import Switch from '@/components/Switch'
+import ToggleGroup from '@/components/ToggleGroup'
 import { languageOptions } from '@/constants/settings'
 import { useSettings } from '@/hooks/useSettings'
 import SettingItem from '@/pages/settings/componetns/SettingItem'
@@ -21,6 +22,11 @@ export default function SettingsPage() {
     updateTransferSettings,
     resetSettings,
   } = useSettings()
+  const hiddenInCardOptions = [
+    { value: 'phonetic', label: '音标' },
+    { value: 'word', label: '单词' },
+    { value: 'definition', label: '释义' },
+  ]
 
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
   const [rate, setRate] = useState(settings.speech.rate)
@@ -39,12 +45,23 @@ export default function SettingsPage() {
     <Page title="设置">
       <div className="space-y-6">
         <SettingItem title="练习设置" icon={BookCheck} isCard>
-          <SettingItem title="开始时自动洗牌">
-            <Switch
-              checked={settings.practice.isShuffle}
-              onChange={(checked) => updatePracticeSettings({ isShuffle: checked })}
-            />
-          </SettingItem>
+          <div className="space-y-4 w-full">
+            <SettingItem title="开始时自动洗牌">
+              <Switch
+                checked={settings.practice.isShuffle}
+                onChange={(checked) => updatePracticeSettings({ isShuffle: checked })}
+              />
+            </SettingItem>
+            <SettingItem title="卡面隐藏">
+              <ToggleGroup
+                type="multiple"
+                variant="outline"
+                options={hiddenInCardOptions}
+                values={settings.practice.hiddenInCard}
+                onValuesChange={(values) => updatePracticeSettings({ hiddenInCard: values as any })}
+              />
+            </SettingItem>
+          </div>
         </SettingItem>
 
         <SettingItem title="语音设置" icon={Headphones} isCard>

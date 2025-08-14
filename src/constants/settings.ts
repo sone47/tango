@@ -1,6 +1,9 @@
+import type { AppSettings } from '@/types/settings'
+
 export const defaultSettings = {
   practice: {
     isShuffle: true,
+    hiddenInCard: ['phonetic', 'word', 'definition'],
   },
   speech: {
     language: 'zh-CN',
@@ -22,7 +25,7 @@ export const defaultSettings = {
       },
     ],
   },
-}
+} as AppSettings
 
 // TODO https://github.com/TiagoDanin/Windows-Locale
 export const languageOptions = [
