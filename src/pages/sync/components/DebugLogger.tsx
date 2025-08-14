@@ -3,9 +3,9 @@ import { useState } from 'react'
 
 import Button from '@/components/Button'
 import toast from '@/components/Toast'
-import { Textarea } from '@/components/ui/textarea'
 import { type LogEntry } from '@/services/webrtcTransferService'
 import { DateUtils } from '@/utils/date'
+import Textarea from '@/components/Textarea'
 
 interface DebugLoggerProps {
   logs: LogEntry[]

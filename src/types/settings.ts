@@ -13,7 +13,7 @@ export interface SpeechSettings {
 
 export interface TransferSettings {
   importStrategy: 'overwrite' | 'merge'
-  iceServers: Array<{ urls: string | string[]; username?: string; credential?: string }>
+  iceServers: Array<{ urls: string[]; username?: string; credential?: string }>
 }
 
 export interface AppSettings {

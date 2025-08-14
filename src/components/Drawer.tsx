@@ -10,6 +10,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
+import { cn } from '@/lib/utils'
 
 import Button, { type ButtonProps } from './Button'
 
@@ -32,6 +33,7 @@ export interface DrawerProps {
   confirmDisabled?: boolean
   cancelVariant?: ButtonProps['variant']
   confirmVariant?: ButtonProps['variant']
+  className?: string
   contentClassName?: string
   headerClassName?: string
   footerClassName?: string
@@ -59,6 +61,7 @@ export function Drawer({
   confirmDisabled = false,
   confirmVariant = 'default',
   cancelVariant = 'outline',
+  className,
   contentClassName,
   headerClassName,
   footerClassName,
@@ -77,7 +80,7 @@ export function Drawer({
   }
 
   let content = (
-    <DrawerContent className={contentClassName}>
+    <DrawerContent className={className}>
       {(title || description) && (
         <DrawerHeader className={headerClassName}>
           {title && <DrawerTitle>{title}</DrawerTitle>}
@@ -85,7 +88,9 @@ export function Drawer({
         </DrawerHeader>
       )}
 
-      {children && <div className="flex-1 overflow-auto p-4">{children}</div>}
+      {children && (
+        <div className={cn('flex-1 overflow-auto p-4', contentClassName)}>{children}</div>
+      )}
 
       {(footer || showCancel || showConfirm || showCloseButton) && (
         <DrawerFooter className={footerClassName}>
