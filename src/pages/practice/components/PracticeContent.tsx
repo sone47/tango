@@ -16,7 +16,6 @@ interface PracticeContentProps {
   shuffledWords: Word[]
   currentWordIndex: number
   onSelectCardPack: () => void
-  onWordStudy: () => void
   onReset: () => void
   onShuffle: () => void
 }
@@ -82,7 +81,6 @@ const PracticeContent = ({
   shuffledWords,
   currentWordIndex,
   onSelectCardPack,
-  onWordStudy,
   onReset,
   onShuffle,
 }: PracticeContentProps) => {
@@ -164,7 +162,6 @@ const PracticeContent = ({
         word={currentWord}
         revealState={revealState}
         onRevealStateChange={handleRevealStateChange}
-        onNextCard={onWordStudy}
         isFirstCard={currentWordIndex === 0}
         currentIndex={currentWordIndex}
         totalCount={shuffledWords.length}

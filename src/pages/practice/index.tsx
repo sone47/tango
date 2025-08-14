@@ -29,7 +29,6 @@ export default function PracticeTab() {
     tempSelectedCardPack,
     showHistoryPool,
     updateState,
-    resetRevealState,
   } = usePracticeStore()
 
   useEffect(() => {
@@ -77,7 +76,6 @@ export default function PracticeTab() {
         showCardPackConfig: false,
         proficiency,
       })
-      resetRevealState()
     }
   }
 
@@ -86,14 +84,6 @@ export default function PracticeTab() {
       tempSelectedCardPack: null,
       showCardPackConfig: false,
     })
-  }
-
-  const handleWordStudy = () => {
-    updateState({
-      studiedWords: [...studiedWords, shuffledWords[currentWordIndex]],
-      currentWordIndex: currentWordIndex + 1,
-    })
-    resetRevealState()
   }
 
   const handleCardPackReset = async () => {
@@ -107,7 +97,6 @@ export default function PracticeTab() {
         currentWordIndex: 0,
         studiedWords: [],
       })
-      resetRevealState()
     }
   }
 
@@ -122,7 +111,6 @@ export default function PracticeTab() {
         currentWordIndex: 0,
         studiedWords: [],
       })
-      resetRevealState()
     }
   }
 
@@ -139,7 +127,6 @@ export default function PracticeTab() {
         shuffledWords={shuffledWords}
         currentWordIndex={currentWordIndex}
         onSelectCardPack={() => updateState({ showCardPackSelector: true })}
-        onWordStudy={handleWordStudy}
         onReset={handleCardPackReset}
         onShuffle={handleCardPackShuffle}
       />

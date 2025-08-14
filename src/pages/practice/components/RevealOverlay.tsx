@@ -145,7 +145,7 @@ const RevealOverlay = ({
           }}
         >
           <div className={`flex items-center ${colors.text} font-medium relative`}>
-            {showGuide && (
+            {showGuide && !isRevealed && (
               <>
                 {/* 滑动轨迹 */}
                 <motion.div

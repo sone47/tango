@@ -17,7 +17,6 @@ interface PracticeState {
 
 interface PracticeActions {
   updateState: (updates: Partial<PracticeState>) => void
-  resetRevealState: () => void
   resetPracticeState: () => void
 }
 
@@ -38,12 +37,6 @@ export const usePracticeStore = create<PracticeState & PracticeActions>((set) =>
   ...initialState,
 
   updateState: (updates) => set((state) => ({ ...state, ...updates })),
-
-  resetRevealState: () =>
-    set((state) => ({
-      ...state,
-      revealState: { phonetic: false, word: false, definition: false },
-    })),
 
   resetPracticeState: () => set(initialState),
 }))

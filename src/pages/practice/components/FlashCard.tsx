@@ -1,12 +1,13 @@
 import { motion } from 'framer-motion'
 import { Volume2 } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import Button from '@/components/Button'
 import ProficiencySlider from '@/components/ProficiencySlider'
 import toast from '@/components/Toast'
 import { useSettings } from '@/hooks/useSettings'
 import { practiceService } from '@/services/practiceService'
+import { usePracticeStore } from '@/stores/practiceStore'
 import type { CardRevealState, Word } from '@/types'
 import { textToSpeech } from '@/utils/speechUtils'
 
@@ -18,7 +19,6 @@ interface FlashCardProps {
   word: Word
   revealState: CardRevealState
   onRevealStateChange: (state: CardRevealState) => void
-  onNextCard: () => void
   isFirstCard?: boolean
   currentIndex?: number
   totalCount?: number
@@ -28,49 +28,62 @@ const FlashCard = ({
   word,
   revealState,
   onRevealStateChange,
-  onNextCard,
   isFirstCard = false,
   currentIndex,
   totalCount,
 }: FlashCardProps) => {
+  const cardItemNames = ['phonetic', 'word', 'definition'] as const
+
   const { settings } = useSettings()
+  const { updateState, studiedWords, currentWordIndex, shuffledWords } = usePracticeStore()
 
   const [isFlipped, setIsFlipped] = useState(false)
   const [proficiency, setProficiency] = useState(0)
 
-  const handleWordChange = useCallback(async () => {
-    const practice = await practiceService.getPracticeByVocabularyId(word.id)
-    setProficiency(practice?.proficiency ?? 0)
-  }, [word.id])
-
-  useEffect(() => {
-    handleWordChange()
-  }, [handleWordChange])
-
-  // 使用ref来避免拖拽过程中的状态冲突
   const isDraggingRef = useRef<Record<keyof CardRevealState, boolean>>({
     phonetic: false,
     word: false,
     definition: false,
   })
 
-  const allRevealed = revealState.phonetic && revealState.word && revealState.definition
+  useEffect(() => {
+    practiceService.getPracticeByVocabularyId(word.id).then((practice) => {
+      setProficiency(practice?.proficiency ?? 0)
+    })
+
+    resetRevealState()
+  }, [word.id])
+
+  const isAllRevealed = cardItemNames.every((name) => revealState[name])
+  const guideItemName = cardItemNames.find((name) => settings.practice.hiddenInCard.includes(name))
 
   const goToNextCard = async (newProficiency: number) => {
     practiceService.updatePractice(word.id, { proficiency: newProficiency })
 
-    onNextCard()
+    updateState({
+      studiedWords: [...studiedWords, shuffledWords[currentWordIndex]],
+      currentWordIndex: currentWordIndex + 1,
+    })
+    resetRevealState()
     setIsFlipped(false)
   }
 
+  const resetRevealState = () => {
+    updateState({
+      revealState: Object.fromEntries(
+        cardItemNames.map((name) => [name, !settings.practice.hiddenInCard.includes(name)])
+      ) as Record<(typeof cardItemNames)[number], boolean>,
+    })
+  }
+
   const handleCardFlip = () => {
-    if (allRevealed) {
+    if (isAllRevealed) {
       setIsFlipped(!isFlipped)
     }
   }
 
   const handleDoubleClick = () => {
-    if (!allRevealed) {
+    if (!isAllRevealed) {
       onRevealStateChange({
         phonetic: true,
         word: true,
@@ -110,7 +123,7 @@ const FlashCard = ({
   }
 
   const handleProficiencyChange = (value: number) => {
-    if (!allRevealed) return
+    if (!isAllRevealed) return
     setProficiency(value)
   }
 
@@ -148,7 +161,7 @@ const FlashCard = ({
       {/* 卡片容器 */}
       <div className="relative flex-1 perspective-1000 min-h-0">
         <VerticalSwipeHandler
-          enabled={allRevealed}
+          enabled={isAllRevealed}
           onSwipeUp={handleSwipeUp}
           onSwipeDown={handleSwipeDown}
           className="absolute inset-0 w-full h-full"
@@ -179,7 +192,7 @@ const FlashCard = ({
                   colorScheme="blue"
                   onDragStart={() => handleRevealDragStart('phonetic')}
                   onDragEnd={(offsetX) => handleRevealDragEnd('phonetic', offsetX)}
-                  showGuide={isFirstCard && !revealState.phonetic}
+                  showGuide={isFirstCard && guideItemName === 'phonetic'}
                 >
                   <div className="flex items-center justify-center gap-2 h-12">
                     <span className="text-xl font-medium text-gray-800">{word.phonetic}</span>
@@ -200,6 +213,7 @@ const FlashCard = ({
                   colorScheme="purple"
                   onDragStart={() => handleRevealDragStart('word')}
                   onDragEnd={(offsetX) => handleRevealDragEnd('word', offsetX)}
+                  showGuide={isFirstCard && guideItemName === 'word'}
                 >
                   <div className="flex items-center justify-center h-16">
                     <span className="text-3xl font-bold text-gray-900">{word.word}</span>
@@ -212,6 +226,7 @@ const FlashCard = ({
                   colorScheme="emerald"
                   onDragStart={() => handleRevealDragStart('definition')}
                   onDragEnd={(offsetX) => handleRevealDragEnd('definition', offsetX)}
+                  showGuide={isFirstCard && guideItemName === 'definition'}
                 >
                   <div className="flex items-center justify-center h-12">
                     <span className="text-lg text-gray-700">{word.definition}</span>
@@ -225,7 +240,7 @@ const FlashCard = ({
                 animate={{ opacity: 1, y: 0 }}
                 className="text-center text-xs text-gray-500 mb-2 flex-shrink-0 space-y-1"
               >
-                {allRevealed ? (
+                {isAllRevealed ? (
                   <>
                     <div>点击卡片查看例句</div>
                     <div>上滑「已掌握」· 下滑「未掌握」</div>
@@ -288,13 +303,13 @@ const FlashCard = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className={`mt-2 bg-white/80 backdrop-blur-sm rounded-2xl p-2 transition-opacity duration-300 flex-shrink-0 ${
-          !allRevealed ? 'opacity-50' : 'opacity-100'
+          !isAllRevealed ? 'opacity-50' : 'opacity-100'
         }`}
       >
         <ProficiencySlider
           value={proficiency}
           onChange={handleProficiencyChange}
-          disabled={!allRevealed}
+          disabled={!isAllRevealed}
           size="md"
         />
       </motion.div>
