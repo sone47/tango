@@ -11,7 +11,7 @@ export class RecommendedPackService {
       const packs: RecommendedPack[] = await response.json()
       return packs
     } catch (error) {
-      console.error('获取推荐词包失败:', error)
+      console.error('获取词包库失败:', error)
       return []
     }
   }
@@ -31,7 +31,7 @@ export class RecommendedPackService {
 
       return file
     } catch (error) {
-      console.error('下载推荐词包失败:', error)
+      console.error('下载词包失败:', error)
       throw new Error(`下载失败: ${pack.name}`)
     }
   }

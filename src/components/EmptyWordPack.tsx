@@ -28,7 +28,7 @@ export default function EmptyWordPack({ showImportButton }: EmptyWordPackProps) 
       {showImportButton && (
         <div className="flex flex-col justify-center gap-2">
           <Button variant="primary" onClick={handleImportRecommendedCardPack}>
-            导入推荐词包
+            从词包库导入
           </Button>
           <Button variant="secondary" onClick={handleImportCustomCardPack}>
             导入自定义词包

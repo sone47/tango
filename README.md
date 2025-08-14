@@ -42,7 +42,7 @@ src/
 │   ├── practice/           # 练习页面
 │   ├── profile/            # 个人中心
 │   ├── wordpack-management/ # 词包管理
-│   ├── recommended-packs/  # 推荐词包
+│   ├── recommended-packs/  # 词包库
 |   └── settings/           # 设置
 ├── services/               # 业务服务层
 │   ├── wordPackService.ts  # 词包服务

@@ -123,7 +123,7 @@ const ImportSection = () => {
         onClick={handleRecommendedPacksClick}
         className="text-gray-600 hover:text-gray-800"
       >
-        推荐词包
+        词包库
       </Button>
     </div>
   )

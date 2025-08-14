@@ -132,7 +132,7 @@ const RecommendedPacksPage = () => {
   }
 
   return (
-    <Page title="推荐词包">
+    <Page title="词包库">
       {renderContent()}
       <SuccessModal
         isOpen={successImportedModalOpen}
