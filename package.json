@@ -41,7 +41,7 @@
     "framer-motion": "^12.15.0",
     "idb": "^8.0.3",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.511.0",
+    "lucide-react": "^0.539.0",
     "peerjs": "^1.5.5",
     "postcss": "^8.5.4",
     "react": "^19.1.0",

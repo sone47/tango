@@ -11,7 +11,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 
-import Button from './Button'
+import Button, { type ButtonProps } from './Button'
 
 export interface DrawerProps {
   open?: boolean
@@ -30,15 +30,8 @@ export interface DrawerProps {
   showCancel?: boolean
   showConfirm?: boolean
   confirmDisabled?: boolean
-  confirmVariant?:
-    | 'default'
-    | 'destructive'
-    | 'outline'
-    | 'secondary'
-    | 'ghost'
-    | 'link'
-    | 'primary'
-    | 'danger'
+  cancelVariant?: ButtonProps['variant']
+  confirmVariant?: ButtonProps['variant']
   contentClassName?: string
   headerClassName?: string
   footerClassName?: string
@@ -65,6 +58,7 @@ export function Drawer({
   showConfirm = false,
   confirmDisabled = false,
   confirmVariant = 'default',
+  cancelVariant = 'outline',
   contentClassName,
   headerClassName,
   footerClassName,
@@ -82,7 +76,7 @@ export function Drawer({
     onOpenChange?.(false)
   }
 
-  const content = (
+  let content = (
     <DrawerContent className={contentClassName}>
       {(title || description) && (
         <DrawerHeader className={headerClassName}>
@@ -97,17 +91,17 @@ export function Drawer({
         <DrawerFooter className={footerClassName}>
           {footer || (
             <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
-              {showCancel && (
-                <DrawerClose asChild>
-                  <Button variant="outline" onClick={handleCancel}>
-                    {cancelText}
-                  </Button>
-                </DrawerClose>
-              )}
               {showConfirm && (
                 <Button variant={confirmVariant} onClick={handleConfirm} disabled={confirmDisabled}>
                   {confirmText}
                 </Button>
+              )}
+              {showCancel && (
+                <DrawerClose asChild>
+                  <Button variant={cancelVariant} onClick={handleCancel}>
+                    {cancelText}
+                  </Button>
+                </DrawerClose>
               )}
               {showCloseButton && !showCancel && !showConfirm && (
                 <DrawerClose asChild>
@@ -122,18 +116,11 @@ export function Drawer({
   )
 
   if (trigger) {
-    return (
-      <DrawerPrimitive
-        open={open}
-        onOpenChange={onOpenChange}
-        direction={direction}
-        shouldScaleBackground={shouldScaleBackground}
-        preventScrollRestoration={preventScrollRestoration}
-        modal={modal}
-      >
+    content = (
+      <>
         <DrawerTrigger asChild>{trigger}</DrawerTrigger>
         {content}
-      </DrawerPrimitive>
+      </>
     )
   }
 

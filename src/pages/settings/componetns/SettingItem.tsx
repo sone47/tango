@@ -2,6 +2,7 @@ import type { LucideIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 
 import Card from '@/components/Card'
+import { cn } from '@/lib/utils'
 
 interface SettingItemProps {
   title: string
@@ -18,6 +19,7 @@ export default function SettingItem({
   icon: Icon,
   children,
   isCard = false,
+  className,
 }: SettingItemProps) {
   const titleElement = isCard ? null : (
     <div className="flex items-center gap-3">
@@ -34,7 +36,7 @@ export default function SettingItem({
   )
 
   const content = (
-    <div className="flex items-center justify-between gap-3 w-full">
+    <div className={cn('flex items-center justify-between gap-3 w-full', className)}>
       {titleElement}
       <div className="flex justify-end flex-1">{children}</div>
     </div>

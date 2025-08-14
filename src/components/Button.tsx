@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 
 import { Button as ShadcnButton } from './ui/button'
 
-interface ButtonProps extends React.ComponentProps<'button'> {
+export interface ButtonProps extends React.ComponentProps<'button'> {
   children?: ReactNode
   variant?:
     | 'default'
