@@ -1,1 +1,1 @@
-{"name":"TanGo","short_name":"tango","description":"一緒に単語を覚えましょう","start_url":"/tango/","display":"standalone","background_color":"#ffffff","theme_color":"#ffffff","lang":"en","scope":"/tango/","icons":[{"src":"logos/logo.svg","sizes":"any","type":"image/svg+xml"}]}
+{"name":"TanGo","short_name":"tango","description":"一緒に単語を覚えましょう","start_url":"/tango/","display":"standalone","background_color":"transparent","theme_color":"transparent","lang":"en","scope":"/tango/","icons":[{"src":"logos/logo.svg","sizes":"any","type":"image/svg+xml"}]}
