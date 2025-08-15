@@ -36,13 +36,12 @@ function MainApp() {
     navigate(tabs.find((t) => t.id === tab)?.path || '/')
   }
 
+  const ActiveComponent = tabs.find((t) => t.id === activeTab)?.component || PracticeTab
+
   return (
     <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col mobile-safe-area">
       <div className="flex-1 overflow-hidden">
-        <Routes>
-          <Route path="/" element={<PracticeTab />} />
-          <Route path="/profile" element={<ProfileTab />} />
-        </Routes>
+        <ActiveComponent />
       </div>
       <TabBar tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
