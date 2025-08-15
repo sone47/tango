@@ -2,10 +2,10 @@ import { isNil } from 'lodash'
 import { FileText, Star, Upload } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 
 import Button from '@/components/Button'
 import Card from '@/components/Card'
-import toast from '@/components/Toast'
 import { colors } from '@/constants/styles'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { useModalState } from '@/hooks/useModalState'
@@ -51,7 +51,6 @@ const ImportSection = () => {
     if (!file) return
 
     setIsUploading(true)
-    const hideLoading = toast.loading(`正在导入「${file.name}」...`)
 
     try {
       const importResult = await wordPackService.importFromExcel(file)
@@ -65,7 +64,6 @@ const ImportSection = () => {
       console.error('文件处理失败:', error)
       toast.error('上传失败')
     } finally {
-      hideLoading()
       setIsUploading(false)
       event.target.value = ''
     }
@@ -142,25 +140,23 @@ const ImportSection = () => {
           </div>
         </div>
 
-        <label
-          htmlFor="file-upload"
-          className={`flex items-center justify-center gap-3 w-full py-2 ${
-            isUploading
-              ? 'bg-gray-400 cursor-not-allowed'
-              : `${colors.gradients.greenButton} cursor-pointer hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]`
-          } text-white rounded-md transition-all duration-200`}
-        >
-          <Upload size={18} className={isUploading ? 'animate-pulse' : ''} />
-          <span>{isUploading ? '正在导入...' : '上传 Excel 文件'}</span>
+        <label className="w-full cursor-pointer">
+          <input
+            type="file"
+            accept=".xlsx,.xls"
+            onChange={handleFileUpload}
+            disabled={isUploading}
+            className="hidden"
+          />
+          <Button
+            variant="primary"
+            icon={Upload}
+            className="w-full pointer-events-none"
+            loading={isUploading}
+          >
+            {isUploading ? '正在导入...' : '上传 Excel 文件'}
+          </Button>
         </label>
-        <input
-          id="file-upload"
-          type="file"
-          accept=".xlsx,.xls"
-          onChange={handleFileUpload}
-          disabled={isUploading}
-          className="hidden"
-        />
       </Card>
 
       {uploadResult && (

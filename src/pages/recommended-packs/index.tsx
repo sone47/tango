@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
 import { Download, Star } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 import Button from '@/components/Button'
 import Loading from '@/components/Loading'
 import Page from '@/components/Page'
-import toast from '@/components/Toast'
 import Typography from '@/components/Typography'
 import { colors } from '@/constants/styles'
 import { recommendedPackService } from '@/services/recommendedPackService'
@@ -38,11 +38,8 @@ const RecommendedPacksPage = () => {
   }
 
   const handleImportPack = async (pack: RecommendedPack, index: number) => {
-    let hideLoading: (() => void) | null = null
-
     try {
       setImportingIndex(index)
-      hideLoading = toast.loading(`正在导入「${pack.name}」...`)
 
       const file = await recommendedPackService.downloadRecommendedPack(pack)
       const importResult = await wordPackService.importFromExcel(file, pack.name)
@@ -54,10 +51,11 @@ const RecommendedPacksPage = () => {
         throw new Error(importResult.message)
       }
     } catch (error) {
-      console.error('导入推荐词包失败:', error)
-      toast.error('导入失败')
+      console.error('导入失败:', error)
+      toast.error('导入失败', {
+        description: error instanceof Error ? error.message : '未知错误',
+      })
     } finally {
-      hideLoading?.()
       setImportingIndex(null)
     }
   }

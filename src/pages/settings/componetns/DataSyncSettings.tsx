@@ -1,12 +1,12 @@
 import { HelpCircle, Share2 } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import Button from '@/components/Button'
 import Drawer, { useDrawer } from '@/components/Drawer'
 import Input from '@/components/Input'
 import Select from '@/components/Select'
 import Textarea from '@/components/Textarea'
-import toast from '@/components/Toast'
 import { Separator } from '@/components/ui/separator'
 import { useSettings } from '@/hooks/useSettings'
 import DataSyncConfigGuide from '@/pages/settings/componetns/DataSyncConfigGuide'
@@ -73,15 +73,11 @@ export default function DataSyncSettings() {
   }
 
   const handleTestConnection = async (server: TransferSettings['iceServers'][number]) => {
-    const dismissToast = toast.loading('正在测试连接...')
-    try {
-      await testConnection(server)
-      toast.success('服务器连接测试成功！可以正常获取网络候选')
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : '连接测试失败')
-    } finally {
-      dismissToast()
-    }
+    toast.promise(testConnection(server), {
+      loading: '正在测试连接...',
+      success: '服务器连接测试成功！可以正常获取网络候选',
+      error: (error) => (error instanceof Error ? error.message : '连接测试失败'),
+    })
   }
 
   return (

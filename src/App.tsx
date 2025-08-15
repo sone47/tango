@@ -5,6 +5,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import ErrorDisplay from '@/components/ErrorDisplay'
 import Loading from '@/components/Loading'
 import TabBar, { type TabConfig } from '@/components/TabBar'
+import { Toaster } from '@/components/ui/sonner'
 import { DB_NAME, DB_VERSION } from '@/constants/database'
 import { useDatabase } from '@/hooks/useDatabase'
 import PracticeTab from '@/pages/practice'
@@ -67,13 +68,16 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/wordpack-management" element={<WordPackManagePage />} />
-      <Route path="/recommended-packs" element={<RecommendedPacksPage />} />
-      <Route path="/settings" element={<SettingsPage />} />
-      <Route path="/sync" element={<SyncPage />} />
-      <Route path="/*" element={<MainApp />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/wordpack-management" element={<WordPackManagePage />} />
+        <Route path="/recommended-packs" element={<RecommendedPacksPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/sync" element={<SyncPage />} />
+        <Route path="/*" element={<MainApp />} />
+      </Routes>
+      <Toaster richColors theme="system" position="top-right" mobileOffset={60} />
+    </>
   )
 }
 

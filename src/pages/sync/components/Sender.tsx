@@ -1,11 +1,11 @@
 import { Upload } from 'lucide-react'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 
 import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'
 import Button from '@/components/Button'
 import Card from '@/components/Card'
-import toast from '@/components/Toast'
 import Typography from '@/components/Typography'
 import { Separator } from '@/components/ui/separator'
 import { useSettings } from '@/hooks/useSettings'
@@ -86,10 +86,7 @@ export default function Sender() {
     })
 
     webrtcTransferService.onClose(() => {
-      toast.show({
-        type: 'info',
-        content: '配对已断开',
-      })
+      toast.warning('配对已断开')
 
       setConnected(false)
     })

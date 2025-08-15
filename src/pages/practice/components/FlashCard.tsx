@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 import { Volume2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
 
 import Button from '@/components/Button'
 import ProficiencySlider from '@/components/ProficiencySlider'
-import toast from '@/components/Toast'
 import { useSettings } from '@/hooks/useSettings'
 import { practiceService } from '@/services/practiceService'
 import { usePracticeStore } from '@/stores/practiceStore'
@@ -94,14 +94,18 @@ const FlashCard = ({
 
   const handleSwipeUp = () => {
     const newProficiency = Math.min(100, proficiency + 14)
-    toast.success(`已掌握 ${newProficiency}%`, 1000)
+    toast.success(`已掌握 ${newProficiency}%`, {
+      duration: 1000,
+    })
 
     goToNextCard(newProficiency)
   }
 
   const handleSwipeDown = () => {
     const newProficiency = Math.max(0, proficiency - 14)
-    toast.error('未掌握', 600)
+    toast.error('未掌握', {
+      duration: 600,
+    })
 
     goToNextCard(newProficiency)
   }

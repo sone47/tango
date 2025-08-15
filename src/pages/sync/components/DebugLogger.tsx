@@ -1,11 +1,11 @@
 import { Copy, Eye, EyeOff, Trash2 } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import Button from '@/components/Button'
-import toast from '@/components/Toast'
+import Textarea from '@/components/Textarea'
 import { type LogEntry } from '@/services/webrtcTransferService'
 import { DateUtils } from '@/utils/date'
-import Textarea from '@/components/Textarea'
 
 interface DebugLoggerProps {
   logs: LogEntry[]

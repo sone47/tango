@@ -144,7 +144,8 @@ const ExcelTemplateViewer = ({ formatFields, className = '' }: ExcelTemplateView
       </AnimatePresence>
 
       <Button
-        variant="primary"
+        variant="outline"
+        size="sm"
         onClick={handleCopyHeaders}
         icon={copySuccess ? Check : Copy}
         className="w-full"
