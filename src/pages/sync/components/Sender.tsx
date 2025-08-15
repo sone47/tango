@@ -83,6 +83,8 @@ export default function Sender() {
     webrtcTransferService.onError((err) => {
       console.error(err)
       toast.error(`配对失败: ${err.message}`)
+
+      setCreateLoading(false)
     })
 
     webrtcTransferService.onClose(() => {
