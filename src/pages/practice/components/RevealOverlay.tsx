@@ -114,7 +114,7 @@ const RevealOverlay = ({
 
       {showOverlay && !shouldHide && (
         <motion.div
-          className={`absolute inset-0 ${colors.bg} rounded-md flex items-center justify-center cursor-grab active:cursor-grabbing reveal-overlay border ${colors.border}`}
+          className={`absolute inset-0 ${colors.bg} rounded-md flex items-center justify-center cursor-grab active:cursor-grabbing reveal-overlay`}
           drag={!isSliding ? 'x' : false}
           dragConstraints={{ left: -200, right: 200 }}
           dragElastic={0.2}

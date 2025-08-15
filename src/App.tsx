@@ -2,6 +2,7 @@ import { BookOpen, User } from 'lucide-react'
 import { useEffect } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
+import NotFound from '@/components/404'
 import ErrorDisplay from '@/components/ErrorDisplay'
 import Loading from '@/components/Loading'
 import TabBar, { type TabConfig } from '@/components/TabBar'
@@ -74,7 +75,9 @@ function App() {
         <Route path="/recommended-packs" element={<RecommendedPacksPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/sync" element={<SyncPage />} />
-        <Route path="/*" element={<MainApp />} />
+        <Route path="/" element={<MainApp />} />
+        <Route path="/profile" element={<MainApp />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster richColors theme="system" position="top-right" mobileOffset={60} />
     </>
