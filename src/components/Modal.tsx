@@ -57,10 +57,14 @@ const Modal = ({
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               className={`bg-white rounded-3xl shadow-2xl ${getMaxWidthClass(maxWidth)} w-full max-h-[80vh] overflow-hidden ${className}`}
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              transition={{ type: 'spring', duration: 0.5 }}
+              initial={{ opacity: 0, scale: 0.5, y: 0, transition: { duration: 0 } }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                transition: { type: 'spring', duration: 0.3 },
+              }}
+              exit={{ opacity: 0, scale: 0.5, y: 0, transition: { duration: 0 } }}
             >
               {/* 标题栏 */}
               {(title || Icon || showCloseButton) && (
