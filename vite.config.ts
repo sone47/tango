@@ -11,6 +11,9 @@ function pathResolve(dir: string) {
 const pwaOptions: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
   strategies: 'generateSW',
+  devOptions: {
+    enabled: true,
+  },
   workbox: {
     globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff,woff2}'],
     runtimeCaching: [
