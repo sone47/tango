@@ -71,7 +71,7 @@ const CardPackConfigModal = ({
               onChange={setProficiency}
               showLabel={false}
               showValue={false}
-              size="md"
+              size="lg"
             />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
               <span>0%</span>
