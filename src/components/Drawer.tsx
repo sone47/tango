@@ -99,7 +99,7 @@ export function Drawer({
       )}
 
       {(footer || showCancel || showConfirm || showCloseButton) && (
-        <DrawerFooter className={footerClassName}>
+        <DrawerFooter className={cn('pb-6', footerClassName)}>
           {footer || (
             <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
               {showConfirm && (

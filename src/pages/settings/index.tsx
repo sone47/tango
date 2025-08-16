@@ -16,7 +16,7 @@ export default function SettingsPage() {
         <SpeechSettings />
         <DataSyncSettings />
 
-        <Button variant="outline" size="sm" onClick={resetSettings} className="w-full">
+        <Button variant="outline" size="md" onClick={resetSettings} className="w-full">
           重置所有设置
         </Button>
       </div>

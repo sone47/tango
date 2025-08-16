@@ -109,8 +109,9 @@ export default function SpeechSettings() {
           footer={
             <Button
               className="w-full"
-              variant="outline"
+              variant="primary"
               icon={Play}
+              disabled={!voiceText}
               onClick={() => textToSpeech(voiceText, settings.speech)}
             >
               播放测试语音
