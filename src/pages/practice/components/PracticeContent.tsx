@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion'
-import { LucideIcon, PartyPopper, RotateCcw, Shuffle } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { LucideIcon, PartyPopper } from 'lucide-react'
+import { useRef } from 'react'
 
 import Button from '@/components/Button'
 import { Confetti, ConfettiRef } from '@/components/magicui/confetti'
 import Typography from '@/components/Typography'
-import { useSettings } from '@/hooks/useSettings'
 import { usePracticeStore } from '@/stores/practiceStore'
 import type { CardPack, CardRevealState, Word } from '@/types'
 
@@ -16,8 +15,6 @@ interface PracticeContentProps {
   shuffledWords: Word[]
   currentWordIndex: number
   onSelectCardPack: () => void
-  onReset: () => void
-  onShuffle: () => void
 }
 
 interface EmptyStateProps {
@@ -81,23 +78,10 @@ const PracticeContent = ({
   shuffledWords,
   currentWordIndex,
   onSelectCardPack,
-  onReset,
-  onShuffle,
 }: PracticeContentProps) => {
-  const { settings } = useSettings()
-
   const confettiRef = useRef<ConfettiRef>(null)
 
   const { revealState, updateState } = usePracticeStore()
-  const [isShuffle, setIsShuffle] = useState(settings.practice.isShuffle)
-
-  const handleRestart = () => {
-    if (isShuffle) {
-      onShuffle()
-    } else {
-      onReset()
-    }
-  }
 
   if (!selectedCardPack) {
     return (
@@ -128,23 +112,10 @@ const PracticeContent = ({
           <Confetti ref={confettiRef} className="absolute left-0 top-0 z-0 size-full" />
         </div>
 
-        <div className="flex flex-col gap-3 w-full px-16">
-          <div className="relative flex items-center gap-2">
-            <Button
-              className="flex-1"
-              variant="primary"
-              size="lg"
-              icon={RotateCcw}
-              onClick={handleRestart}
-            >
-              重新开始
-            </Button>
-            <Shuffle
-              className="absolute -right-2 top-1/2 translate-x-full -translate-y-1/2 w-5 h-5 cursor-pointer"
-              color={isShuffle ? 'var(--color-blue-600)' : 'var(--color-gray-400)'}
-              onClick={() => setIsShuffle(!isShuffle)}
-            />
-          </div>
+        <div className="relative flex flex-col w-full px-16">
+          <Button className="text-md" variant="primary" size="lg" onClick={onSelectCardPack}>
+            继续学习
+          </Button>
         </div>
       </div>
     )

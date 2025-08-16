@@ -18,7 +18,6 @@ export default function PracticeTab() {
 
   const {
     selectedCardPack,
-    proficiency,
     currentWordIndex,
     shuffledWords,
     showCardPackSelector,
@@ -84,34 +83,6 @@ export default function PracticeTab() {
     })
   }
 
-  const handleCardPackReset = async () => {
-    if (selectedCardPack) {
-      const vocabularyIds = selectedCardPack.words.map((word) => word.id)
-      const practices = await practiceService.getPracticesByVocabularyIds(vocabularyIds)
-      const finalWords = processWords(selectedCardPack.words, practices, proficiency, false)
-
-      updateState({
-        shuffledWords: finalWords,
-        currentWordIndex: 0,
-        studiedWords: [],
-      })
-    }
-  }
-
-  const handleCardPackShuffle = async () => {
-    if (selectedCardPack) {
-      const vocabularyIds = selectedCardPack.words.map((word) => word.id)
-      const practices = await practiceService.getPracticesByVocabularyIds(vocabularyIds)
-      const finalWords = processWords(selectedCardPack.words, practices, proficiency, true)
-
-      updateState({
-        shuffledWords: finalWords,
-        currentWordIndex: 0,
-        studiedWords: [],
-      })
-    }
-  }
-
   return (
     <div className="h-full flex flex-col">
       <PracticeHeader
@@ -125,8 +96,6 @@ export default function PracticeTab() {
         shuffledWords={shuffledWords}
         currentWordIndex={currentWordIndex}
         onSelectCardPack={() => updateState({ showCardPackSelector: true })}
-        onReset={handleCardPackReset}
-        onShuffle={handleCardPackShuffle}
       />
 
       <CardPackSelector
