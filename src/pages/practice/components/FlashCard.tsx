@@ -19,7 +19,6 @@ interface FlashCardProps {
   word: Word
   revealState: CardRevealState
   onRevealStateChange: (state: CardRevealState) => void
-  isFirstCard?: boolean
   currentIndex?: number
   totalCount?: number
 }
@@ -28,7 +27,6 @@ const FlashCard = ({
   word,
   revealState,
   onRevealStateChange,
-  isFirstCard = false,
   currentIndex,
   totalCount,
 }: FlashCardProps) => {
@@ -39,6 +37,7 @@ const FlashCard = ({
 
   const [isFlipped, setIsFlipped] = useState(false)
   const [proficiency, setProficiency] = useState(0)
+  const [isManualUpdateProficiency, setIsManualUpdateProficiency] = useState(false)
 
   const isDraggingRef = useRef<Record<keyof CardRevealState, boolean>>({
     phonetic: false,
@@ -54,18 +53,19 @@ const FlashCard = ({
     resetRevealState()
   }, [word.id])
 
+  const isFirstCard = currentIndex === 0
   const isAllRevealed = cardItemNames.every((name) => revealState[name])
   const guideItemName = cardItemNames.find((name) => settings.practice.hiddenInCard.includes(name))
 
-  const goToNextCard = async (newProficiency: number) => {
-    practiceService.updatePractice(word.id, { proficiency: newProficiency })
-
+  const goToNextCard = async () => {
     updateState({
       studiedWords: [...studiedWords, shuffledWords[currentWordIndex]],
       currentWordIndex: currentWordIndex + 1,
     })
+
     resetRevealState()
     setIsFlipped(false)
+    setIsManualUpdateProficiency(false)
   }
 
   const resetRevealState = () => {
@@ -93,21 +93,33 @@ const FlashCard = ({
   }
 
   const handleSwipeUp = () => {
-    const newProficiency = Math.min(100, proficiency + 14)
+    const newProficiency = Math.min(100, proficiency + (isManualUpdateProficiency ? 0 : 14))
+
+    autoUpdateProficiency(newProficiency)
+
     toast.success(`已掌握 ${newProficiency}%`, {
       duration: 1000,
     })
 
-    goToNextCard(newProficiency)
+    goToNextCard()
   }
 
   const handleSwipeDown = () => {
-    const newProficiency = Math.max(0, proficiency - 14)
+    const newProficiency = Math.max(0, proficiency - (isManualUpdateProficiency ? 0 : 14))
+
+    autoUpdateProficiency(newProficiency)
+
     toast.error('未掌握', {
       duration: 600,
     })
 
-    goToNextCard(newProficiency)
+    goToNextCard()
+  }
+
+  const autoUpdateProficiency = (newProficiency: number) => {
+    if (isManualUpdateProficiency) return
+
+    practiceService.updatePractice(word.id, { proficiency: newProficiency })
   }
 
   const handleRevealDragStart = (field: keyof CardRevealState) => {
@@ -129,6 +141,13 @@ const FlashCard = ({
   const handleProficiencyChange = (value: number) => {
     if (!isAllRevealed) return
     setProficiency(value)
+  }
+
+  const handleProficiencyChangeComplete = (value: number) => {
+    if (!isAllRevealed) return
+
+    setIsManualUpdateProficiency(true)
+    practiceService.updatePractice(word.id, { proficiency: value })
   }
 
   const handlePlayAudio = (text?: string, audioUrl?: string) => {
@@ -303,20 +322,14 @@ const FlashCard = ({
       </div>
 
       {/* 熟练度控制 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className={`mt-2 bg-white/80 backdrop-blur-sm rounded-2xl p-2 transition-opacity duration-300 flex-shrink-0 ${
-          !isAllRevealed ? 'opacity-50' : 'opacity-100'
-        }`}
-      >
-        <ProficiencySlider
-          value={proficiency}
-          onChange={handleProficiencyChange}
-          disabled={!isAllRevealed}
-          size="md"
-        />
-      </motion.div>
+      <ProficiencySlider
+        value={proficiency}
+        onChange={handleProficiencyChange}
+        onChangeComplete={handleProficiencyChangeComplete}
+        disabled={!isAllRevealed}
+        size="lg"
+        className="mt-2 bg-white/80 backdrop-blur-sm rounded-2xl p-4 transition-opacity duration-300 flex-shrink-0 flex flex-col gap-4"
+      />
     </motion.div>
   )
 }

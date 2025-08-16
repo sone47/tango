@@ -56,7 +56,7 @@ const ProficiencySlider = ({
   return (
     <div className={className}>
       {(showLabel || showValue) && (
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between">
           {showLabel && (
             <span
               className={`font-medium ${disabled ? 'text-gray-400' : 'text-gray-700'} ${getTextSize(size)}`}

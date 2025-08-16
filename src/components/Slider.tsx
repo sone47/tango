@@ -1,3 +1,7 @@
+import * as SliderPrimitive from '@radix-ui/react-slider'
+
+import { cn } from '@/lib/utils'
+
 interface SliderProps {
   value: number
   onChange: (value: number) => void
@@ -23,24 +27,37 @@ const Slider = ({
   disabled = false,
   size = 'md',
   className = '',
-  color = '#6b7280',
+  color,
   formatValue,
   showValue = false,
 }: SliderProps) => {
-  const getSliderHeight = (size: string) => {
+  const displayValue = formatValue ? formatValue(value) : value.toString()
+
+  const getTrackSizeClasses = (size: 'sm' | 'md' | 'lg') => {
     switch (size) {
       case 'sm':
-        return 'h-1'
+        return 'data-[orientation=horizontal]:h-1 data-[orientation=vertical]:w-1'
+      case 'md':
+        return 'data-[orientation=horizontal]:h-1.5 data-[orientation=vertical]:w-1.5'
       case 'lg':
-        return 'h-3'
+        return 'data-[orientation=horizontal]:h-2 data-[orientation=vertical]:w-2'
       default:
-        return 'h-2'
+        return 'data-[orientation=horizontal]:h-1.5 data-[orientation=vertical]:w-1.5'
     }
   }
 
-  const fillPercentage = ((value - min) / (max - min)) * 100
-
-  const displayValue = formatValue ? formatValue(value) : value.toString()
+  const getThumbSizeClasses = (size: 'sm' | 'md' | 'lg') => {
+    switch (size) {
+      case 'sm':
+        return 'size-3'
+      case 'md':
+        return 'size-4'
+      case 'lg':
+        return 'size-5'
+      default:
+        return 'size-4'
+    }
+  }
 
   const renderValueDisplay = () => {
     if (!showValue) return null
@@ -53,30 +70,48 @@ const Slider = ({
   }
 
   const sliderElement = (
-    <input
-      type="range"
+    <SliderPrimitive.Root
+      data-slot="slider"
+      value={[value]}
+      onValueChange={(value: number[]) => onChange(value[0])}
+      onValueCommit={(value: number[]) => onChangeComplete?.(value[0])}
       min={min}
       max={max}
-      step={step}
-      value={value}
-      onChange={(e) => onChange(Number(e.target.value))}
-      onMouseUp={(e) => onChangeComplete?.(Number((e.target as HTMLInputElement).value))}
-      onTouchEnd={(e) => onChangeComplete?.(Number((e.target as HTMLInputElement).value))}
       disabled={disabled}
-      className={`
-        w-full bg-gray-200 rounded-full appearance-none slider transition-opacity
-        ${getSliderHeight(size)}
-        ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
-        ${className}
-      `}
-      style={{
-        background: `linear-gradient(to right, ${color} ${fillPercentage}%, #e5e7eb ${fillPercentage}%)`,
-      }}
-    />
+      step={step}
+      className={cn(
+        'relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col',
+        className
+      )}
+    >
+      <SliderPrimitive.Track
+        data-slot="slider-track"
+        className={cn(
+          'bg-muted relative grow overflow-hidden rounded-full data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5',
+          getTrackSizeClasses(size)
+        )}
+      >
+        <SliderPrimitive.Range
+          data-slot="slider-range"
+          className={cn(
+            'bg-primary absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full'
+          )}
+          style={{ backgroundColor: disabled ? undefined : color }}
+        />
+      </SliderPrimitive.Track>
+      <SliderPrimitive.Thumb
+        data-slot="slider-thumb"
+        className={cn(
+          'border-primary bg-background ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50',
+          getThumbSizeClasses(size)
+        )}
+        style={{ borderColor: disabled ? undefined : color }}
+      />
+    </SliderPrimitive.Root>
   )
 
   return (
-    <div className="flex-1 relative min-h-[44px] flex items-center">
+    <div className="flex-1 relative flex items-center">
       {sliderElement}
       {renderValueDisplay()}
     </div>

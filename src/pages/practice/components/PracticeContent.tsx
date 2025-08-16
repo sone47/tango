@@ -162,7 +162,6 @@ const PracticeContent = ({
         word={currentWord}
         revealState={revealState}
         onRevealStateChange={handleRevealStateChange}
-        isFirstCard={currentWordIndex === 0}
         currentIndex={currentWordIndex}
         totalCount={shuffledWords.length}
       />

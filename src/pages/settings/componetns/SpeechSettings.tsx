@@ -69,7 +69,6 @@ export default function SpeechSettings() {
             formatValue={(v) => `${v.toFixed(1)}x`}
             showValue={true}
             size="md"
-            color="var(--color-blue-600)"
           />
         </SettingItem>
 
@@ -84,7 +83,6 @@ export default function SpeechSettings() {
             formatValue={(v) => v.toFixed(1)}
             showValue={true}
             size="md"
-            color="var(--color-blue-600)"
           />
         </SettingItem>
 
@@ -99,7 +97,6 @@ export default function SpeechSettings() {
             formatValue={(v) => `${Math.round(v * 100)}%`}
             showValue={true}
             size="md"
-            color="var(--color-blue-600)"
           />
         </SettingItem>
 
