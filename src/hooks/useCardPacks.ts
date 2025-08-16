@@ -1,19 +1,17 @@
 import { isNil } from 'lodash'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { cardPackService } from '@/services/cardPackService'
 import type { CardPack } from '@/types'
-
-import { useCurrentWordPack } from './useCurrentWordPack'
 
 interface UseCardPacksResult {
   cardPacks: (CardPack & { progress: number })[]
   loading: boolean
   error: string | null
+  fetchCardPacks: (wordPackId: number | null) => Promise<void>
 }
 
 export const useCardPacks = (): UseCardPacksResult => {
-  const { currentWordPackId } = useCurrentWordPack()
   const [cardPacks, setCardPacks] = useState<(CardPack & { progress: number })[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -40,11 +38,8 @@ export const useCardPacks = (): UseCardPacksResult => {
     }
   }
 
-  useEffect(() => {
-    fetchCardPacks(currentWordPackId)
-  }, [currentWordPackId])
-
   return {
+    fetchCardPacks,
     cardPacks,
     loading,
     error,

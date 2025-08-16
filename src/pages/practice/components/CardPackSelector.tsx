@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { BookOpen, ListX } from 'lucide-react'
-import { ReactElement } from 'react'
+import { ReactElement, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@/components/Button'
@@ -9,6 +9,7 @@ import Loading from '@/components/Loading'
 import Modal from '@/components/Modal'
 import Typography from '@/components/Typography'
 import { colors, spacing } from '@/constants/styles'
+import { useCardPacks } from '@/hooks/useCardPacks'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { useWordPackStore } from '@/stores/wordPackStore'
 import type { CardPack } from '@/types'
@@ -17,21 +18,19 @@ interface CardPackSelectorProps {
   isOpen: boolean
   onClose: () => void
   onSelectCardPack: (cardPack: CardPack) => void
-  cardPacks: (CardPack & { progress: number })[]
-  loading?: boolean
 }
 
-const CardPackSelector = ({
-  isOpen,
-  onClose,
-  onSelectCardPack,
-  cardPacks,
-  loading = false,
-}: CardPackSelectorProps) => {
+const CardPackSelector = ({ isOpen, onClose, onSelectCardPack }: CardPackSelectorProps) => {
+  const navigate = useNavigate()
+  const { cardPacks, loading, fetchCardPacks } = useCardPacks()
   const { hasData } = useWordPackStore()
   const { currentWordPack } = useCurrentWordPack()
 
-  const navigate = useNavigate()
+  useEffect(() => {
+    if (isOpen && currentWordPack) {
+      fetchCardPacks(currentWordPack.id)
+    }
+  }, [isOpen, currentWordPack])
 
   const handleSelectWordPack = () => {
     navigate('/wordpack-management')

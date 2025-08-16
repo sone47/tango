@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 
-import { useCardPacks } from '@/hooks/useCardPacks'
 import { cardPackService } from '@/services/cardPackService'
 import { practiceService } from '@/services/practiceService'
 import { usePracticeStore } from '@/stores/practiceStore'
@@ -15,7 +14,6 @@ import PracticeContent from './components/PracticeContent'
 import PracticeHeader from './components/PracticeHeader'
 
 export default function PracticeTab() {
-  const { cardPacks, loading: cardPacksLoading } = useCardPacks()
   const { fetchWordPacks } = useWordPackStore()
 
   const {
@@ -135,8 +133,6 @@ export default function PracticeTab() {
         isOpen={showCardPackSelector}
         onClose={() => updateState({ showCardPackSelector: false })}
         onSelectCardPack={handleCardPackSelect}
-        cardPacks={cardPacks}
-        loading={cardPacksLoading}
       />
 
       <HistoryPool
