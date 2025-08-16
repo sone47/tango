@@ -1,5 +1,5 @@
 import { isNil } from 'lodash'
-import { FileText, Star, Upload } from 'lucide-react'
+import { FileText, LibraryBig, Star, Upload } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -114,13 +114,7 @@ const ImportSection = () => {
         </div>
         <h2 className="text-lg font-semibold text-gray-900">导入词包</h2>
       </div>
-      <Button
-        variant="ghost"
-        size="sm"
-        icon={Star}
-        onClick={handleRecommendedPacksClick}
-        className="text-gray-600 hover:text-gray-800"
-      >
+      <Button variant="ghost" size="sm" icon={LibraryBig} onClick={handleRecommendedPacksClick}>
         词包库
       </Button>
     </div>

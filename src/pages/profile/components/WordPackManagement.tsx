@@ -48,13 +48,7 @@ const ProgressSection = () => {
         </div>
         <h2 className="text-lg font-semibold text-gray-900">当前词包</h2>
       </div>
-      <Button
-        variant="ghost"
-        size="sm"
-        icon={MoreHorizontal}
-        onClick={handleViewMore}
-        className="text-gray-600 hover:text-gray-800"
-      >
+      <Button variant="ghost" size="sm" icon={MoreHorizontal} onClick={handleViewMore}>
         查看更多
       </Button>
     </div>
