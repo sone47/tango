@@ -1,5 +1,5 @@
 import { isNil } from 'lodash'
-import { FileText, LibraryBig, Star, Upload } from 'lucide-react'
+import { FileText, LibraryBig, Upload } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
