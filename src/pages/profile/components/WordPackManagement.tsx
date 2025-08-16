@@ -1,16 +1,43 @@
 import { MoreHorizontal, Package } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { ReactElement } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 import Button from '@/components/Button'
 import Card from '@/components/Card'
-
-import WordPackSelector from './WordPackSelector'
+import EmptyWordPack from '@/components/EmptyWordPack'
+import Typography from '@/components/Typography'
+import WordPackItem from '@/components/WordPackItem'
+import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
+import { useWordPackStore } from '@/stores/wordPackStore'
 
 const ProgressSection = () => {
   const navigate = useNavigate()
+  const wordPackStore = useWordPackStore()
+  const { currentWordPack } = useCurrentWordPack()
 
   const handleViewMore = () => {
     navigate('/wordpack-management')
+  }
+
+  let content: ReactElement | null = null
+  if (!wordPackStore.hasData) {
+    content = <EmptyWordPack showImportButton={false} />
+  }
+
+  if (currentWordPack) {
+    content = <WordPackItem wordPack={currentWordPack} isSelected />
+  } else {
+    content = (
+      <Typography.Text type="secondary" className="text-md">
+        未选择词包，请前往
+        <Link to="/wordpack-management">
+          <Button variant="link" className="p-0 text-md">
+            词包管理页
+          </Button>
+        </Link>
+        选择词包
+      </Typography.Text>
+    )
   }
 
   const customTitle = (
@@ -19,7 +46,7 @@ const ProgressSection = () => {
         <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-100 text-purple-600">
           <Package size={20} />
         </div>
-        <h2 className="text-lg font-semibold text-gray-900">词包管理</h2>
+        <h2 className="text-lg font-semibold text-gray-900">当前词包</h2>
       </div>
       <Button
         variant="ghost"
@@ -33,11 +60,7 @@ const ProgressSection = () => {
     </div>
   )
 
-  return (
-    <Card title={customTitle}>
-      <WordPackSelector />
-    </Card>
-  )
+  return <Card title={customTitle}>{content}</Card>
 }
 
 export default ProgressSection

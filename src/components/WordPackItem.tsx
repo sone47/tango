@@ -7,8 +7,8 @@ import { toLocaleDateString } from '@/utils/date'
 
 interface WordPackItemProps {
   wordPack: WordPack
-  isSelected: boolean
-  onClick: (wordPack: WordPack) => void
+  isSelected?: boolean
+  onClick?: (wordPack: WordPack) => void
   showSelectedBadge?: boolean
 }
 
@@ -20,7 +20,7 @@ const WordPackItem = ({
 }: WordPackItemProps) => {
   return (
     <motion.button
-      onClick={() => onClick(wordPack)}
+      onClick={() => onClick?.(wordPack)}
       className={`w-full p-4 rounded-2xl text-left transition-all ${
         isSelected
           ? `${colors.gradients.blueActive} border-2 border-blue-300 shadow-lg`
@@ -43,7 +43,7 @@ const WordPackItem = ({
           </div>
         </div>
         {isSelected && showSelectedBadge && (
-          <div className="text-blue-600 text-sm font-medium">当前选择</div>
+          <div className="text-blue-600 text-sm font-medium">当前词包</div>
         )}
       </div>
     </motion.button>
