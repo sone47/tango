@@ -11,7 +11,7 @@ const ProgressIndicator = ({
   variant = 'light',
   className = '',
 }: ProgressIndicatorProps) => {
-  const baseClasses = 'absolute top-4 right-4'
+  const baseClasses = 'absolute top-4 left-4'
   const variantClasses = {
     light: 'bg-gray-100/80 backdrop-blur-sm text-gray-600',
     dark: 'bg-white/80 backdrop-blur-sm text-gray-600',
