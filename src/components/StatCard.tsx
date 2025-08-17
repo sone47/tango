@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import type { LucideIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 
@@ -12,7 +11,6 @@ interface StatCardProps {
   onClick?: () => void
   suffix?: string
   prefix?: string
-  delay?: number
   children?: ReactNode
 }
 
@@ -24,11 +22,8 @@ const StatCard = ({
   onClick,
   suffix = '',
   prefix = '',
-  delay = 0,
   children,
 }: StatCardProps) => {
-  const Component = onClick ? motion.button : motion.div
-
   const getGradientColor = (colorKey: keyof typeof colors.icon) => {
     const gradientMap = {
       blue: colors.gradients.blue,
@@ -47,14 +42,7 @@ const StatCard = ({
   }
 
   return (
-    <Component
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay }}
-      className={`${getGradientColor(color)} p-4 rounded-xl text-left`}
-      onClick={onClick}
-      whileTap={onClick ? { scale: 0.95 } : undefined}
-    >
+    <button className={`${getGradientColor(color)} p-4 rounded-xl text-left`} onClick={onClick}>
       <div className="flex items-center gap-2 mb-2">
         <Icon size={16} className={colors.icon[color].split(' ')[1]} />
         <span className={`text-sm font-medium ${getTextColor(color, 'medium')}`}>{title}</span>
@@ -65,7 +53,7 @@ const StatCard = ({
         {suffix}
       </p>
       {children}
-    </Component>
+    </button>
   )
 }
 

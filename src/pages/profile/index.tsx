@@ -1,10 +1,7 @@
-import { motion } from 'framer-motion'
 import { useEffect } from 'react'
 
-import { PROFILE_ANIMATIONS } from '@/constants/motion'
 import { useWordPackStore } from '@/stores/wordPackStore'
 
-import AnimatedSection from './components/AnimatedSection'
 import ImportSection from './components/ImportSection'
 import ProfileHeader from './components/ProfileHeader'
 import StudyStats from './components/StudyStats'
@@ -25,20 +22,10 @@ const ProfileTab = () => {
   }, [viewId])
 
   return (
-    <motion.div
-      className="h-full bg-gradient-to-br from-blue-50 to-indigo-100"
-      initial={PROFILE_ANIMATIONS.container.initial}
-      animate={PROFILE_ANIMATIONS.container.animate}
-      transition={PROFILE_ANIMATIONS.container.transition}
-    >
-      <motion.div
-        className="fixed w-full top-0 z-1"
-        initial={PROFILE_ANIMATIONS.header.initial}
-        animate={PROFILE_ANIMATIONS.header.animate}
-        transition={PROFILE_ANIMATIONS.header.transition}
-      >
+    <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="fixed w-full top-0 z-1">
         <ProfileHeader />
-      </motion.div>
+      </div>
 
       <div
         className="h-full overflow-auto p-4 space-y-6 profile-scroll-container"
@@ -47,24 +34,18 @@ const ProfileTab = () => {
         }}
       >
         <div id="stats">
-          <AnimatedSection delay={0.08}>
-            <StudyStats />
-          </AnimatedSection>
+          <StudyStats />
         </div>
 
         <div id="word-pack-management">
-          <AnimatedSection delay={0.16}>
-            <WordPackManagement />
-          </AnimatedSection>
+          <WordPackManagement />
         </div>
 
         <div id="import">
-          <AnimatedSection delay={0.24}>
-            <ImportSection />
-          </AnimatedSection>
+          <ImportSection />
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
