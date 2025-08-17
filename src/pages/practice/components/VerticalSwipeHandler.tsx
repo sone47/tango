@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 interface VerticalSwipeHandlerProps {
   children: ReactNode
   enabled: boolean
+  onSwipeUpProcess: () => void
+  onSwipeDownProcess: () => void
+  onSwipeReset?: () => void
   onSwipeUp: () => void
   onSwipeDown: () => void
   distanceThreshold?: number
@@ -22,6 +25,9 @@ interface SwipeState {
 const VerticalSwipeHandler = ({
   children,
   enabled,
+  onSwipeUpProcess,
+  onSwipeDownProcess,
+  onSwipeReset,
   onSwipeUp,
   onSwipeDown,
   distanceThreshold = 100,
@@ -38,13 +44,23 @@ const VerticalSwipeHandler = ({
 
   const { isDragging, dragOffset, isExiting, shouldSnapBack } = swipeState
 
+  useEffect(() => {
+    if (Math.abs(dragOffset) > 20) {
+      if (dragOffset > 0) {
+        onSwipeDownProcess()
+      } else {
+        onSwipeUpProcess()
+      }
+    } else {
+      onSwipeReset?.()
+    }
+  }, [dragOffset, onSwipeUpProcess, onSwipeDownProcess, onSwipeReset])
+
   const handleVerticalSwipe = (offsetY: number, velocityY: number) => {
     if (!enabled || isExiting) return
 
-    const isSwipeUp =
-      offsetY < -distanceThreshold || (offsetY < -30 && velocityY < -velocityThreshold)
-    const isSwipeDown =
-      offsetY > distanceThreshold || (offsetY > 30 && velocityY > velocityThreshold)
+    const isSwipeUp = offsetY < -distanceThreshold || velocityY < -velocityThreshold
+    const isSwipeDown = offsetY > distanceThreshold || velocityY > velocityThreshold
 
     if (isSwipeUp || isSwipeDown) {
       // 立即开始退出动画，不回弹

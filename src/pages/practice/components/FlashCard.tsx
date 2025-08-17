@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
 import { Volume2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
 
 import Button from '@/components/Button'
 import ProficiencySlider from '@/components/ProficiencySlider'
 import { useSettings } from '@/hooks/useSettings'
+import { cn } from '@/lib/utils'
 import { practiceService } from '@/services/practiceService'
 import { usePracticeStore } from '@/stores/practiceStore'
 import type { CardRevealState, Word } from '@/types'
@@ -23,6 +23,12 @@ interface FlashCardProps {
   totalCount?: number
 }
 
+enum SwipePrompt {
+  None = 0,
+  Correct = 1,
+  Incorrect = 2,
+}
+
 const FlashCard = ({
   word,
   revealState,
@@ -38,6 +44,7 @@ const FlashCard = ({
   const [isFlipped, setIsFlipped] = useState(false)
   const [proficiency, setProficiency] = useState(0)
   const [isManualUpdateProficiency, setIsManualUpdateProficiency] = useState(false)
+  const [swipePrompt, setSwipePrompt] = useState<SwipePrompt>(SwipePrompt.None)
 
   const isDraggingRef = useRef<Record<keyof CardRevealState, boolean>>({
     phonetic: false,
@@ -92,14 +99,27 @@ const FlashCard = ({
     }
   }
 
+  const handleSwipeUpProcess = () => {
+    if (swipePrompt === SwipePrompt.Correct) return
+    setSwipePrompt(SwipePrompt.Correct)
+  }
+
+  const handleSwipeDownProcess = () => {
+    if (swipePrompt === SwipePrompt.Incorrect) return
+    setSwipePrompt(SwipePrompt.Incorrect)
+  }
+
+  const handleSwipeReset = () => {
+    if (swipePrompt === SwipePrompt.None) return
+
+    setSwipePrompt(SwipePrompt.None)
+  }
+
   const handleSwipeUp = () => {
     const newProficiency = Math.min(100, proficiency + (isManualUpdateProficiency ? 0 : 14))
 
     autoUpdateProficiency(newProficiency)
-
-    toast.success(`已掌握 ${newProficiency}%`, {
-      duration: 1000,
-    })
+    setSwipePrompt(SwipePrompt.None)
 
     setTimeout(() => {
       goToNextCard()
@@ -110,10 +130,7 @@ const FlashCard = ({
     const newProficiency = Math.max(0, proficiency - (isManualUpdateProficiency ? 0 : 14))
 
     autoUpdateProficiency(newProficiency)
-
-    toast.error('未掌握', {
-      duration: 600,
-    })
+    setSwipePrompt(SwipePrompt.None)
 
     setTimeout(() => {
       goToNextCard()
@@ -191,12 +208,22 @@ const FlashCard = ({
           enabled={isAllRevealed}
           onSwipeUp={handleSwipeUp}
           onSwipeDown={handleSwipeDown}
+          onSwipeUpProcess={handleSwipeUpProcess}
+          onSwipeDownProcess={handleSwipeDownProcess}
+          onSwipeReset={handleSwipeReset}
           className="absolute inset-0 w-full h-full"
         >
           <motion.div
-            className={`w-full h-full transform-style-preserve-3d transition-transform duration-500 ${
-              isFlipped ? 'rotate-y-180' : ''
-            }`}
+            className={cn(
+              'w-full h-full transform-style-preserve-3d transition-all duration-200 rounded-3xl box-content',
+              isFlipped ? 'rotate-y-180' : '',
+              swipePrompt === SwipePrompt.Correct
+                ? 'border-2 border-green-300 shadow-[0_0_20px_rgba(34,197,94,0.3)]'
+                : '',
+              swipePrompt === SwipePrompt.Incorrect
+                ? 'border-2 border-red-300 shadow-[0_0_20px_rgba(239,68,68,0.3)]'
+                : ''
+            )}
             onClick={handleCardFlip}
             onDoubleClick={handleDoubleClick}
           >
