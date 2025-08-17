@@ -65,7 +65,7 @@ const CardPackConfigModal = ({
           <Typography.Text type="secondary" size="sm" weight="medium" className="text-gray-700">
             选择熟练度 ≤ {proficiency}% 的单词
           </Typography.Text>
-          <div>
+          <div className="flex flex-col gap-2">
             <ProficiencySlider
               value={proficiency}
               onChange={setProficiency}
@@ -73,7 +73,7 @@ const CardPackConfigModal = ({
               showValue={false}
               size="lg"
             />
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
+            <div className="flex justify-between text-xs text-gray-500">
               <span>0%</span>
               <span>50%</span>
               <span>100%</span>

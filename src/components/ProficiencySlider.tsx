@@ -1,3 +1,5 @@
+import { cn } from '@/lib/utils'
+
 import Slider from './Slider'
 
 interface ProficiencySliderProps {
@@ -54,7 +56,12 @@ const ProficiencySlider = ({
   }
 
   return (
-    <div className={className}>
+    <div
+      className={cn(
+        'backdrop-blur-sm rounded-2xl transition-opacity duration-300 flex-shrink-0 flex flex-col gap-4',
+        className
+      )}
+    >
       {(showLabel || showValue) && (
         <div className="flex items-center justify-between">
           {showLabel && (

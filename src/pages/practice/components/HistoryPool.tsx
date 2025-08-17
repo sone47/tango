@@ -104,7 +104,7 @@ const HistoryPool = ({ isOpen, onClose, studiedWords }: HistoryPoolProps) => {
                 value={practiceData[currentWord.id] ?? 0}
                 onChange={updateProficiency}
                 onChangeComplete={handleProficiencyChangeComplete}
-                size="md"
+                size="lg"
               />
             </div>
           )}

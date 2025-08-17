@@ -328,7 +328,7 @@ const FlashCard = ({
         onChangeComplete={handleProficiencyChangeComplete}
         disabled={!isAllRevealed}
         size="lg"
-        className="mt-2 bg-white/80 backdrop-blur-sm rounded-2xl p-4 transition-opacity duration-300 flex-shrink-0 flex flex-col gap-4"
+        className="mt-2 bg-white/80 p-4"
       />
     </motion.div>
   )
