@@ -96,7 +96,7 @@ const Slider = ({
           className={cn(
             'bg-primary absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full'
           )}
-          style={{ backgroundColor: disabled ? undefined : color }}
+          style={{ backgroundColor: color }}
         />
       </SliderPrimitive.Track>
       <SliderPrimitive.Thumb
@@ -105,7 +105,7 @@ const Slider = ({
           'border-primary bg-background ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50',
           getThumbSizeClasses(size)
         )}
-        style={{ borderColor: disabled ? undefined : color }}
+        style={{ borderColor: color }}
       />
     </SliderPrimitive.Root>
   )
