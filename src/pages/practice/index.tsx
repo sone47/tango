@@ -85,17 +85,12 @@ export default function PracticeTab() {
 
   return (
     <div className="h-full flex flex-col">
-      <PracticeHeader
-        selectedCardPack={selectedCardPack}
-        onSelectCardPack={() => updateState({ showCardPackSelector: true })}
-        onShowHistoryPool={() => updateState({ showHistoryPool: true })}
-      />
+      <PracticeHeader />
 
       <PracticeContent
         selectedCardPack={selectedCardPack}
         shuffledWords={shuffledWords}
         currentWordIndex={currentWordIndex}
-        onSelectCardPack={() => updateState({ showCardPackSelector: true })}
       />
 
       <CardPackSelector
@@ -110,7 +105,7 @@ export default function PracticeTab() {
         studiedWords={studiedWords}
       />
 
-      {showCardPackConfig && tempSelectedCardPack && (
+      {tempSelectedCardPack && (
         <CardPackConfigModal
           isOpen={showCardPackConfig}
           cardPack={tempSelectedCardPack}

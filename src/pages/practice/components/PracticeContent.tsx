@@ -14,7 +14,6 @@ interface PracticeContentProps {
   selectedCardPack: CardPack | null
   shuffledWords: Word[]
   currentWordIndex: number
-  onSelectCardPack: () => void
 }
 
 interface EmptyStateProps {
@@ -77,11 +76,14 @@ const PracticeContent = ({
   selectedCardPack,
   shuffledWords,
   currentWordIndex,
-  onSelectCardPack,
 }: PracticeContentProps) => {
   const confettiRef = useRef<ConfettiRef>(null)
 
   const { revealState, updateState } = usePracticeStore()
+
+  const handleShowCardPackSelector = () => {
+    updateState({ showCardPackSelector: true })
+  }
 
   if (!selectedCardPack) {
     return (
@@ -92,7 +94,7 @@ const PracticeContent = ({
         actions={[
           {
             label: '开始学习',
-            onClick: onSelectCardPack,
+            onClick: handleShowCardPackSelector,
             className: 'text-md',
           },
         ]}
@@ -107,14 +109,21 @@ const PracticeContent = ({
         <div className="flex flex-col items-center">
           <Typography.Title level={5}>恭喜！</Typography.Title>
           <Typography.Title level={6} className="!text-gray-600">
-            你已经完成了所有卡片的练习！
+            你已经完成了本次学习！
           </Typography.Title>
           <Confetti ref={confettiRef} className="absolute left-0 top-0 z-0 size-full" />
         </div>
 
-        <div className="relative flex flex-col w-full px-16">
-          <Button className="text-md" variant="primary" size="lg" onClick={onSelectCardPack}>
+        <div className="relative flex flex-col gap-4 w-full px-16 text-md">
+          <Button variant="primary" size="lg" onClick={handleShowCardPackSelector}>
             继续学习
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => updateState({ showHistoryPool: true })}
+          >
+            查看本次学习记录
           </Button>
         </div>
       </div>

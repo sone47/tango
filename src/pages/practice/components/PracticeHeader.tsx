@@ -1,39 +1,29 @@
 import { History, Menu } from 'lucide-react'
 
 import Button from '@/components/Button'
-import type { CardPack } from '@/types'
+import { usePracticeStore } from '@/stores/practiceStore'
 
-interface PracticeHeaderProps {
-  selectedCardPack: CardPack | null
-  onSelectCardPack: () => void
-  onShowHistoryPool: () => void
-}
+const PracticeHeader = () => {
+  const { selectedCardPack, currentWordIndex, shuffledWords, updateState } = usePracticeStore()
 
-const PracticeHeader = ({
-  selectedCardPack,
-  onSelectCardPack,
-  onShowHistoryPool,
-}: PracticeHeaderProps) => {
-  if (!selectedCardPack) return null
+  if (!selectedCardPack || currentWordIndex >= shuffledWords.length) return null
 
   return (
     <div className="flex items-center justify-between p-4 bg-white/70 backdrop-blur-sm">
-      {/* 卡包选择按钮 */}
       <Button
         variant="secondary"
         size="sm"
-        onClick={onSelectCardPack}
+        onClick={() => updateState({ showCardPackSelector: true })}
         icon={Menu}
         className="shadow-lg"
       >
         切换卡包
       </Button>
 
-      {/* 历史卡池按钮 */}
       <Button
         variant="primary"
         size="sm"
-        onClick={onShowHistoryPool}
+        onClick={() => updateState({ showHistoryPool: true })}
         icon={History}
         className="shadow-md"
       >
