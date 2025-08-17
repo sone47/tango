@@ -24,8 +24,8 @@ const VerticalSwipeHandler = ({
   enabled,
   onSwipeUp,
   onSwipeDown,
-  distanceThreshold = 150,
-  velocityThreshold = 300,
+  distanceThreshold = 100,
+  velocityThreshold = 200,
   exitDuration = 300,
   className = '',
 }: VerticalSwipeHandlerProps) => {
@@ -42,44 +42,23 @@ const VerticalSwipeHandler = ({
     if (!enabled || isExiting) return
 
     const isSwipeUp =
-      offsetY < -distanceThreshold || (offsetY < -50 && velocityY < -velocityThreshold)
+      offsetY < -distanceThreshold || (offsetY < -30 && velocityY < -velocityThreshold)
     const isSwipeDown =
-      offsetY > distanceThreshold || (offsetY > 50 && velocityY > velocityThreshold)
+      offsetY > distanceThreshold || (offsetY > 30 && velocityY > velocityThreshold)
 
     if (isSwipeUp || isSwipeDown) {
       // 立即开始退出动画，不回弹
       setSwipeState((prev) => ({ ...prev, isExiting: true, shouldSnapBack: false }))
 
-      // 延迟执行回调，让退出动画完成
-      setTimeout(() => {
-        if (isSwipeUp) {
-          onSwipeUp()
-        } else {
-          onSwipeDown()
-        }
-        // 重置状态
-        setSwipeState({
-          isDragging: false,
-          dragOffset: 0,
-          isExiting: false,
-          shouldSnapBack: false,
-        })
-      }, exitDuration)
+      if (isSwipeUp) {
+        onSwipeUp()
+      } else {
+        onSwipeDown()
+      }
     } else {
       // 没有达到阈值，需要回弹
       setSwipeState((prev) => ({ ...prev, dragOffset: 0, shouldSnapBack: true }))
-
-      // 延迟重置回弹状态
-      setTimeout(() => {
-        setSwipeState((prev) => ({ ...prev, shouldSnapBack: false }))
-      }, 300)
     }
-  }
-
-  // 计算退出动画的目标位置
-  const getExitTarget = () => {
-    if (!isExiting) return 0
-    return dragOffset > 0 ? 400 : -400
   }
 
   return (
@@ -94,7 +73,7 @@ const VerticalSwipeHandler = ({
         animate={
           !isDragging
             ? {
-                y: isExiting ? getExitTarget() : shouldSnapBack ? 0 : dragOffset,
+                y: dragOffset,
                 opacity: isExiting ? 0 : Math.max(0.4, 1 - Math.abs(dragOffset) / 300),
                 scale: isExiting ? 0.8 : Math.max(0.85, 1 - Math.abs(dragOffset) / 600),
               }

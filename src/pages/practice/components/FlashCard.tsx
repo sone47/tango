@@ -101,7 +101,9 @@ const FlashCard = ({
       duration: 1000,
     })
 
-    goToNextCard()
+    setTimeout(() => {
+      goToNextCard()
+    }, 500)
   }
 
   const handleSwipeDown = () => {
@@ -113,7 +115,9 @@ const FlashCard = ({
       duration: 600,
     })
 
-    goToNextCard()
+    setTimeout(() => {
+      goToNextCard()
+    }, 500)
   }
 
   const autoUpdateProficiency = (newProficiency: number) => {
@@ -276,7 +280,6 @@ const FlashCard = ({
 
             {/* 背面 */}
             <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl shadow-2xl p-4 flex flex-col">
-              {/* 学习进度 - 背面 */}
               {currentIndex !== undefined && totalCount !== undefined && (
                 <ProgressIndicator
                   currentIndex={currentIndex}
