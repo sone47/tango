@@ -16,7 +16,7 @@ const TabButton = ({ id, icon: Icon, label, isActive, onClick }: TabButtonProps)
     <motion.button
       onClick={() => onClick(id)}
       className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${
-        isActive ? 'text-primary-600 bg-primary-50' : 'text-gray-500 hover:text-gray-700'
+        isActive ? 'text-primary' : 'text-gray-500 hover:text-gray-700'
       }`}
       whileTap={{ scale: 0.95 }}
     >
