@@ -113,7 +113,8 @@ const FlashCardHeader = ({
         open={editDrawer.isOpen}
         onOpenChange={editDrawer.setIsOpen}
         title="编辑词汇"
-        className="max-h-[90vh]"
+        className="!max-h-[90vh]"
+        contentClassName="pb-6"
         showCloseButton={false}
       >
         {word && (
