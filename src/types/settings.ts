@@ -1,6 +1,7 @@
 export interface PracticeSettings {
   isShuffle: boolean
   hiddenInCard: ('phonetic' | 'word' | 'definition')[]
+  isAutoPlayAudio: boolean
 }
 
 export interface SpeechSettings {

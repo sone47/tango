@@ -24,6 +24,12 @@ export default function PracticeSettings() {
             onChange={(checked) => updatePracticeSettings({ isShuffle: checked })}
           />
         </SettingItem>
+        <SettingItem title="开始时自动播放单词语音">
+          <Switch
+            checked={settings.practice.isAutoPlayAudio}
+            onChange={(checked) => updatePracticeSettings({ isAutoPlayAudio: checked })}
+          />
+        </SettingItem>
         <SettingItem title="卡面隐藏">
           <ToggleGroup
             size="sm"

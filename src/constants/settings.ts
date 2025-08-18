@@ -4,6 +4,7 @@ export const defaultSettings = {
   practice: {
     isShuffle: true,
     hiddenInCard: ['phonetic', 'word', 'definition'],
+    isAutoPlayAudio: true,
   },
   speech: {
     language: 'zh-CN',

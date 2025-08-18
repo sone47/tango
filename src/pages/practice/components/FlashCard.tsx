@@ -29,6 +29,8 @@ enum SwipePrompt {
   Incorrect = 2,
 }
 
+const cardItemNames = ['phonetic', 'word', 'definition'] as const
+
 const FlashCard = ({
   word,
   revealState,
@@ -36,8 +38,6 @@ const FlashCard = ({
   currentIndex,
   totalCount,
 }: FlashCardProps) => {
-  const cardItemNames = ['phonetic', 'word', 'definition'] as const
-
   const { settings } = useSettings()
   const { updateState, studiedWords, currentWordIndex, shuffledWords } = usePracticeStore()
 
@@ -52,12 +52,18 @@ const FlashCard = ({
     definition: false,
   })
 
+  const playButtonRef = useRef<HTMLButtonElement>(null)
+
   useEffect(() => {
     practiceService.getPracticeByVocabularyId(word.id).then((practice) => {
       setProficiency(practice?.proficiency ?? 0)
     })
 
     resetRevealState()
+
+    if (settings.practice.isAutoPlayAudio) {
+      playButtonRef.current?.click()
+    }
   }, [word.id])
 
   const isFirstCard = currentIndex === 0
@@ -252,6 +258,7 @@ const FlashCard = ({
                     <span className="text-xl font-medium text-gray-800">{word.phonetic}</span>
                     {(word.phonetic || word.word) && (
                       <Button
+                        ref={playButtonRef}
                         onClick={handlePlayPhoneticAudio}
                         variant="ghost"
                         size="sm"
