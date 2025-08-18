@@ -305,7 +305,7 @@ export class Repository<T extends Record<string, any>> {
   /**
    * 保存数据（创建或更新）
    */
-  async save(data: T): Promise<T> {
+  async save(data: Omit<T, 'id'>): Promise<T> {
     const db = this.manager.getDB()
     const isUpdate = 'id' in data && data.id !== undefined
     const entityWithTimestamps = this.addTimestamps(data as T, isUpdate)

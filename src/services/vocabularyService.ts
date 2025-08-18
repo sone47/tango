@@ -59,6 +59,60 @@ export class VocabularyService {
       return 0
     }
   }
+
+  async updateVocabulary(
+    vocabularyId: number,
+    data: Partial<VocabularyEntity>
+  ): Promise<VocabularyEntity | null> {
+    try {
+      const existingVocabulary = await this.vocabularyRepo.findById(vocabularyId)
+      if (!existingVocabulary) {
+        console.error('词汇不存在:', vocabularyId)
+        return null
+      }
+
+      const updatedData = {
+        ...existingVocabulary,
+        ...data,
+        id: vocabularyId,
+        updatedAt: new Date().toISOString(),
+      }
+
+      const updatedVocabulary = await this.vocabularyRepo.save(updatedData)
+      return updatedVocabulary
+    } catch (error) {
+      console.error('更新词汇失败:', error)
+      return null
+    }
+  }
+
+  async createVocabulary(
+    data: Omit<VocabularyEntity, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<VocabularyEntity | null> {
+    try {
+      const newVocabulary = {
+        ...data,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+
+      const savedVocabulary = await this.vocabularyRepo.save(newVocabulary)
+      return savedVocabulary
+    } catch (error) {
+      console.error('创建词汇失败:', error)
+      return null
+    }
+  }
+
+  async deleteVocabulary(vocabularyId: number): Promise<boolean> {
+    try {
+      const result = await this.vocabularyRepo.delete(vocabularyId)
+      return result
+    } catch (error) {
+      console.error('删除词汇失败:', error)
+      return false
+    }
+  }
 }
 
 export const vocabularyService = new VocabularyService()
