@@ -185,7 +185,7 @@ const FlashCard = ({
   const handlePlayPhoneticAudio = (event: React.MouseEvent) => {
     event.stopPropagation()
 
-    handlePlayAudio(word.phonetic, word.wordAudio)
+    handlePlayAudio(word.word || word.phonetic, word.wordAudio)
   }
 
   const handlePlayExampleAudio = (event: React.MouseEvent) => {
@@ -250,7 +250,7 @@ const FlashCard = ({
                 >
                   <div className="flex items-center justify-center gap-2 h-12">
                     <span className="text-xl font-medium text-gray-800">{word.phonetic}</span>
-                    {word.phonetic && (
+                    {(word.phonetic || word.word) && (
                       <Button
                         onClick={handlePlayPhoneticAudio}
                         variant="ghost"
