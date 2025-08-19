@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import Button from '@/components/Button'
-import { colors } from '@/constants/styles'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { useModalState } from '@/hooks/useModalState'
 import { ImportResult, wordPackService } from '@/services/wordPackService'
@@ -101,7 +100,7 @@ const ImportSection = () => {
 
   return (
     <>
-      <div className={`${colors.gradients.green} p-4 rounded-xl mb-4`}>
+      <div className="bg-muted p-4 rounded-xl mb-4">
         <ExcelTemplateViewer formatFields={formatFields} />
       </div>
 

@@ -22,11 +22,6 @@ export default function DataSyncSettings() {
   )
 
   const configDrawer = useDrawer()
-  const helpDrawer = useDrawer()
-
-  const handleHelpClick = () => {
-    helpDrawer.setIsOpen(true)
-  }
 
   const handleAddServer = () => {
     setIceServers([...iceServers, { urls: [], username: '', credential: '' }])
@@ -202,15 +197,8 @@ export default function DataSyncSettings() {
             </Drawer>
 
             <Drawer
-              trigger={
-                <HelpCircle
-                  className="w-5 h-5 text-secondary-foreground cursor-pointer"
-                  onClick={handleHelpClick}
-                />
-              }
+              trigger={<HelpCircle className="w-5 h-5 text-secondary-foreground cursor-pointer" />}
               title="配置 ICE/TURN 服务器说明"
-              open={helpDrawer.isOpen}
-              onOpenChange={helpDrawer.setIsOpen}
             >
               <DataSyncConfigGuide />
             </Drawer>
