@@ -90,12 +90,22 @@ const FlashCard = ({
   }
 
   const handleCardFlip = () => {
+    const hasOpenDrawer = document.querySelector('[data-slot="drawer-overlay"]')
+    if (hasOpenDrawer) {
+      return
+    }
+
     if (isAllRevealed) {
       setIsFlipped(!isFlipped)
     }
   }
 
   const handleDoubleClick = () => {
+    const hasOpenDrawer = document.querySelector('[data-slot="drawer-overlay"]')
+    if (hasOpenDrawer) {
+      return
+    }
+
     if (!isAllRevealed) {
       onRevealStateChange({
         phonetic: true,
@@ -351,7 +361,6 @@ const FlashCard = ({
         </VerticalSwipeHandler>
       </div>
 
-      {/* 熟练度控制 */}
       <ProficiencySlider
         value={proficiency}
         onChange={handleProficiencyChange}
