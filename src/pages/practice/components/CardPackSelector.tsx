@@ -69,14 +69,10 @@ const CardPackSelector = ({ isOpen, onClose, onSelectCardPack }: CardPackSelecto
     content = (
       <div className={spacing.listItems}>
         {cardPacks.map((cardPack) => (
-          <motion.button
+          <button
             key={cardPack.id}
             onClick={() => onSelectCardPack(cardPack)}
             className={`w-full p-4 ${colors.gradients.blue} rounded-2xl border border-blue-100 ${colors.gradients.blueHover} transition-colors text-left`}
-            initial={{ opacity: 0, x: -20 }}
-            viewport={{ once: true }}
-            whileInView={{ opacity: 1, x: 0, transition: { delay: 0.1 } }}
-            whileTap={{ scale: 0.98 }}
           >
             <div className="w-full">
               <div className="flex-1 flex items-center justify-between">
@@ -95,7 +91,7 @@ const CardPackSelector = ({ isOpen, onClose, onSelectCardPack }: CardPackSelecto
                 </div>
               </div>
             </div>
-          </motion.button>
+          </button>
         ))}
       </div>
     )
