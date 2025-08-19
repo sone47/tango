@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
 import { Volume2 } from 'lucide-react'
+import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 
 import Button from '@/components/Button'
@@ -209,7 +209,11 @@ const FlashCard = ({
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
       {/* 卡片容器 */}
-      <div className="relative flex-1 perspective-1000 min-h-0">
+      <div
+        className="z-1 flex-1 perspective-1000 min-h-0"
+        onClick={handleCardFlip}
+        onDoubleClick={handleDoubleClick}
+      >
         <VerticalSwipeHandler
           enabled={isAllRevealed}
           onSwipeUp={handleSwipeUp}
@@ -217,11 +221,10 @@ const FlashCard = ({
           onSwipeUpProcess={handleSwipeUpProcess}
           onSwipeDownProcess={handleSwipeDownProcess}
           onSwipeReset={handleSwipeReset}
-          className="absolute inset-0 w-full h-full"
         >
           <motion.div
             className={cn(
-              'flex flex-col w-full h-full transform-style-preserve-3d transition-all duration-200 rounded-3xl shadow-2xl p-4 box-border',
+              'flex flex-col h-full transform-style-preserve-3d transition-all duration-200 rounded-3xl shadow-2xl p-4',
               isFlipped ? 'rotate-y-180' : '',
               isFlipped ? 'bg-gradient-to-br from-blue-50 to-indigo-100' : 'bg-white',
               swipePrompt === SwipePrompt.Correct
@@ -231,8 +234,6 @@ const FlashCard = ({
                 ? 'border-2 border-red-300 shadow-[0_0_20px_rgba(239,68,68,0.3)]'
                 : ''
             )}
-            onClick={handleCardFlip}
-            onDoubleClick={handleDoubleClick}
           >
             {currentIndex !== undefined && totalCount !== undefined && (
               <FlashCardHeader
