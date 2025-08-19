@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
 import { LucideIcon, PartyPopper } from 'lucide-react'
+import { motion } from 'motion/react'
 import { useRef } from 'react'
 
 import Button from '@/components/Button'

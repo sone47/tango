@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
 import { Package } from 'lucide-react'
+import { motion } from 'motion/react'
 
 import { baseStyles, colors } from '@/constants/styles'
 import type { WordPack } from '@/types'

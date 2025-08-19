@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
 import { Pointer } from 'lucide-react'
+import { motion } from 'motion/react'
 import { ReactNode, useEffect, useState } from 'react'
 
 interface RevealOverlayProps {

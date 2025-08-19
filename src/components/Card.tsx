@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
 import type { LucideIcon } from 'lucide-react'
+import { motion } from 'motion/react'
 import type { ReactNode } from 'react'
 
 import { Card as UICard, CardContent, CardHeader } from '@/components/ui/card'

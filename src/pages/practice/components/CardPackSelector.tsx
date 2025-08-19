@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
 import { BookOpen, ListX } from 'lucide-react'
+import { motion } from 'motion/react'
 import { ReactElement, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 

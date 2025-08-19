@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
 import type { LucideIcon } from 'lucide-react'
+import { motion } from 'motion/react'
 import React from 'react'
 
 import {

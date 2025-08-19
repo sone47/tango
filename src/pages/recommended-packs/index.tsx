@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
 import { Download, Star } from 'lucide-react'
+import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
