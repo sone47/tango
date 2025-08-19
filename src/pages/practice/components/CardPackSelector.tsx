@@ -1,5 +1,6 @@
 import { BookOpen, ListX } from 'lucide-react'
 import { ReactElement, useEffect } from 'react'
+import { InView } from 'react-intersection-observer'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@/components/Button'
@@ -20,6 +21,7 @@ import type { CardPack } from '@/types'
 
 const CardPackSelector = () => {
   const navigate = useNavigate()
+
   const { cardPacks, loading, fetchCardPacks } = useCardPacks()
   const { hasData } = useWordPackStore()
   const { currentWordPack } = useCurrentWordPack()
@@ -50,6 +52,16 @@ const CardPackSelector = () => {
         showCardPackSelector: false,
         showCardPackConfig: true,
       })
+    }
+  }
+
+  const handleCardPackListInViewChange = (inView: boolean) => {
+    if (!latestCardPackId || !inView) return
+
+    const cardPackId = generateCardPackId(latestCardPackId)
+    const cardPackElement = document.getElementById(cardPackId)
+    if (cardPackElement) {
+      cardPackElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
   }
 
@@ -84,7 +96,12 @@ const CardPackSelector = () => {
 
   if (!content) {
     content = (
-      <div className={spacing.listItems}>
+      <InView
+        className={spacing.listItems}
+        as="div"
+        triggerOnce
+        onChange={handleCardPackListInViewChange}
+      >
         {cardPacks.map((cardPack) => (
           <button
             key={cardPack.id}
@@ -112,16 +129,8 @@ const CardPackSelector = () => {
             </div>
           </button>
         ))}
-      </div>
+      </InView>
     )
-
-    if (showCardPackSelector && latestCardPackId) {
-      const cardPackId = generateCardPackId(latestCardPackId)
-      const cardPackElement = document.getElementById(cardPackId)
-      if (cardPackElement) {
-        cardPackElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
-    }
   }
 
   return (
