@@ -137,6 +137,7 @@ export function Drawer({
 
   return (
     <DrawerPrimitive
+      noBodyStyles
       open={open}
       onOpenChange={onOpenChange}
       direction={direction}
