@@ -1,16 +1,14 @@
-// import { Edit, MoreHorizontal } from 'lucide-react'
-import { Edit } from 'lucide-react'
+import { Edit, MoreHorizontal } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
 import Button from '@/components/Button'
 import Drawer, { useDrawer } from '@/components/Drawer'
-// import DropdownMenu from '@/components/DropdownMenu'
+import DropdownMenu from '@/components/DropdownMenu'
 import VocabularyEditForm, { type VocabularyFormData } from '@/components/VocabularyEditForm'
 import { cn } from '@/lib/utils'
 import { vocabularyService } from '@/services/vocabularyService'
 import { usePracticeStore } from '@/stores/practiceStore'
-// import type { Word } from '@/types'
 
 interface FlashCardHeaderProps {
   currentIndex: number
@@ -38,14 +36,11 @@ const FlashCardHeader = ({
 
   const word = shuffledWords[currentWordIndex]
 
-  const handleEditWord = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-
-    if (!word) {
-      console.warn('没有可编辑的词汇数据')
-      return
-    }
-    editDrawer.open()
+  const handleEditWord = () => {
+    // hack: fix dropdown and drawer open simultaneously trigger failed issue
+    requestAnimationFrame(() => {
+      editDrawer.open()
+    })
   }
 
   const handleFormSubmit = async (data: VocabularyFormData) => {
@@ -83,15 +78,14 @@ const FlashCardHeader = ({
     editDrawer.close()
   }
 
-  // const menuItems = [
-  //   {
-  //     key: 'edit',
-  //     label: '编辑',
-  //     icon: Edit,
-  //     onClick: handleEditWord,
-  //     disabled: !word,
-  //   },
-  // ]
+  const menuItems = [
+    {
+      key: 'edit',
+      label: '编辑',
+      icon: Edit,
+      onClick: handleEditWord,
+    },
+  ]
 
   return (
     <>
@@ -99,14 +93,11 @@ const FlashCardHeader = ({
         <div className={`${variantClasses[variant]} px-3 py-1 rounded-full text-sm font-medium`}>
           {currentIndex + 1}/{totalCount}
         </div>
-        {/* <DropdownMenu items={menuItems}>
-        <Button variant="ghost" size="icon">
-          <MoreHorizontal className="size-4" />
-        </Button>
-      </DropdownMenu> */}
-        <Button variant="ghost" size="icon" onClick={handleEditWord}>
-          <Edit className="size-4" />
-        </Button>
+        <DropdownMenu items={menuItems}>
+          <Button variant="ghost" size="icon">
+            <MoreHorizontal className="size-4" />
+          </Button>
+        </DropdownMenu>
       </div>
 
       <Drawer
