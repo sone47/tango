@@ -1,11 +1,10 @@
 import { isNil } from 'lodash'
-import { FileText, LibraryBig, Upload } from 'lucide-react'
+import { Upload } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import Button from '@/components/Button'
-import Card from '@/components/Card'
 import { colors } from '@/constants/styles'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { useModalState } from '@/hooks/useModalState'
@@ -88,10 +87,6 @@ const ImportSection = () => {
     wordPackStore.fetchWordPacks()
   }
 
-  const handleRecommendedPacksClick = () => {
-    navigate('/recommended-packs')
-  }
-
   const handleUploadResultClose = () => {
     uploadResultModal.close()
     setUploadResult(null)
@@ -104,54 +99,29 @@ const ImportSection = () => {
     navigate('/')
   }
 
-  const cardTitle = (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <div
-          className={`w-10 h-10 rounded-xl bg-green-100 text-green-600 flex items-center justify-center`}
-        >
-          <Upload size={20} />
-        </div>
-        <h2 className="text-lg font-semibold text-gray-900">导入词包</h2>
-      </div>
-      <Button variant="ghost" size="sm" icon={LibraryBig} onClick={handleRecommendedPacksClick}>
-        词包库
-      </Button>
-    </div>
-  )
-
   return (
     <>
-      <Card title={cardTitle}>
-        <div className={`${colors.gradients.green} p-4 rounded-xl mb-4`}>
-          <div className="flex items-start gap-3">
-            <FileText size={20} className="text-green-600 mt-0.5 flex-shrink-0" />
-            <div className="min-w-0 flex-1">
-              <h4 className="font-medium text-green-800 mb-2">Excel 文件导入</h4>
+      <div className={`${colors.gradients.green} p-4 rounded-xl mb-4`}>
+        <ExcelTemplateViewer formatFields={formatFields} />
+      </div>
 
-              <ExcelTemplateViewer formatFields={formatFields} />
-            </div>
-          </div>
-        </div>
-
-        <label className="w-full cursor-pointer">
-          <input
-            type="file"
-            accept=".xlsx,.xls"
-            onChange={handleFileUpload}
-            disabled={isUploading}
-            className="hidden"
-          />
-          <Button
-            variant="primary"
-            icon={Upload}
-            className="w-full pointer-events-none"
-            loading={isUploading}
-          >
-            {isUploading ? '正在导入...' : '上传 Excel 文件'}
-          </Button>
-        </label>
-      </Card>
+      <label className="w-full cursor-pointer">
+        <input
+          type="file"
+          accept=".xlsx,.xls"
+          onChange={handleFileUpload}
+          disabled={isUploading}
+          className="hidden"
+        />
+        <Button
+          variant="primary"
+          icon={Upload}
+          className="w-full pointer-events-none"
+          loading={isUploading}
+        >
+          {isUploading ? '正在导入...' : '上传 Excel 文件'}
+        </Button>
+      </label>
 
       {uploadResult && (
         <UploadResultModal

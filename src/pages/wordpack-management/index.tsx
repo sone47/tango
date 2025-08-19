@@ -1,26 +1,20 @@
-import { motion } from 'motion/react'
 import { useEffect } from 'react'
 
+import Card from '@/components/Card'
 import EmptyWordPack from '@/components/EmptyWordPack'
 import Loading from '@/components/Loading'
 import Page from '@/components/Page'
-import WordPackItem from '@/components/WordPackItem'
-import { spacing } from '@/constants/styles'
-import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { useWordPackStore } from '@/stores/wordPackStore'
-import type { WordPack } from '@/types'
+
+import Footer from './components/Footer'
+import WordPackList from './components/WordPackList'
 
 const WordPackManagePage = () => {
-  const { currentWordPackId, setCurrentWordPackId } = useCurrentWordPack()
-  const { allWordPacks, loading, hasData, error, fetchWordPacks } = useWordPackStore()
+  const { loading, hasData, error, fetchWordPacks } = useWordPackStore()
 
   useEffect(() => {
     fetchWordPacks()
   }, [])
-
-  const handleWordPackSelect = (wordPack: WordPack) => {
-    setCurrentWordPackId(wordPack.id!)
-  }
 
   const renderContent = () => {
     if (loading) {
@@ -39,36 +33,12 @@ const WordPackManagePage = () => {
       )
     }
 
-    if (!hasData) {
-      return <EmptyWordPack showImportButton={false} />
-    }
-
     return (
-      <div className={spacing.listItems}>
-        {allWordPacks.map((wordPack, index) => {
-          const isSelected = wordPack.id === currentWordPackId
-
-          return (
-            <motion.div
-              key={wordPack.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: index * 0.08,
-                type: 'spring',
-                stiffness: 400,
-                damping: 17,
-              }}
-            >
-              <WordPackItem
-                wordPack={wordPack}
-                isSelected={isSelected}
-                onClick={handleWordPackSelect}
-                showSelectedBadge={true}
-              />
-            </motion.div>
-          )
-        })}
+      <div className="h-full flex flex-col gap-4 pb-4">
+        <Card className="flex-1 overflow-y-auto" contentClassName="h-full">
+          {hasData ? <WordPackList /> : <EmptyWordPack showImportButton={false} />}
+        </Card>
+        <Footer />
       </div>
     )
   }

@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 
 import { useWordPackStore } from '@/stores/wordPackStore'
 
-import ImportSection from './components/ImportSection'
 import ProfileHeader from './components/ProfileHeader'
 import StudyStats from './components/StudyStats'
 import WordPackManagement from './components/WordPackManagement'
@@ -39,10 +38,6 @@ const ProfileTab = () => {
 
         <div id="word-pack-management">
           <WordPackManagement />
-        </div>
-
-        <div id="import">
-          <ImportSection />
         </div>
       </div>
     </div>

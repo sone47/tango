@@ -7,10 +7,9 @@ import type { FormatField } from '@/types/excel'
 
 interface ExcelTemplateViewerProps {
   formatFields: FormatField[]
-  className?: string
 }
 
-const ExcelTemplateViewer = ({ formatFields, className = '' }: ExcelTemplateViewerProps) => {
+const ExcelTemplateViewer = ({ formatFields }: ExcelTemplateViewerProps) => {
   const [copySuccess, setCopySuccess] = useState(false)
   const [showTemplate, setShowTemplate] = useState(false)
 
@@ -51,19 +50,18 @@ const ExcelTemplateViewer = ({ formatFields, className = '' }: ExcelTemplateView
   }
 
   return (
-    <div className={`bg-white/60 rounded-lg p-3 ${className}`}>
+    <div>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Table size={16} className="text-green-600" />
           <span className="text-sm font-medium text-green-800">导入模板</span>
         </div>
 
-        {/* 查看/隐藏模板按钮 */}
         <Button
           variant="ghost"
           size="sm"
           onClick={toggleTemplate}
-          icon={showTemplate ? EyeOff : Eye}
+          icon={showTemplate ? Eye : EyeOff}
         >
           {showTemplate ? '隐藏模板' : '查看模板'}
         </Button>

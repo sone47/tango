@@ -1,7 +1,6 @@
-import { Package } from 'lucide-react'
 import { motion } from 'motion/react'
 
-import { baseStyles, colors } from '@/constants/styles'
+import { colors } from '@/constants/styles'
 import type { WordPack } from '@/types'
 import { toLocaleDateString } from '@/utils/date'
 
@@ -12,12 +11,7 @@ interface WordPackItemProps {
   showSelectedBadge?: boolean
 }
 
-const WordPackItem = ({
-  wordPack,
-  isSelected,
-  onClick,
-  showSelectedBadge = false,
-}: WordPackItemProps) => {
+const WordPackItem = ({ wordPack, isSelected, onClick }: WordPackItemProps) => {
   return (
     <motion.button
       onClick={() => onClick?.(wordPack)}
@@ -32,9 +26,6 @@ const WordPackItem = ({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className={`${baseStyles.iconContainer} ${colors.icon.purple}`}>
-            <Package size={20} />
-          </div>
           <div>
             <h3 className="font-semibold text-gray-900">{wordPack.name}</h3>
             <p className="text-sm text-gray-600">
@@ -42,9 +33,7 @@ const WordPackItem = ({
             </p>
           </div>
         </div>
-        {isSelected && showSelectedBadge && (
-          <div className="text-blue-600 text-sm font-medium">当前词包</div>
-        )}
+        {isSelected && <div className="text-blue-600 text-sm font-medium">当前词包</div>}
       </div>
     </motion.button>
   )

@@ -21,32 +21,34 @@ const ProgressSection = () => {
 
   let content: ReactElement | null = null
   if (!wordPackStore.hasData) {
-    content = <EmptyWordPack showImportButton={false} />
+    content = <EmptyWordPack showImportButton />
   }
 
-  if (currentWordPack) {
-    content = <WordPackItem wordPack={currentWordPack} isSelected />
-  } else {
-    content = (
-      <Typography.Text type="secondary" className="text-md">
-        未选择词包，请前往
-        <Link to="/wordpack-management">
-          <Button variant="link" className="p-0 text-md">
-            词包管理页
-          </Button>
-        </Link>
-        选择词包
-      </Typography.Text>
-    )
+  if (!content) {
+    if (currentWordPack) {
+      content = <WordPackItem wordPack={currentWordPack} isSelected />
+    } else {
+      content = (
+        <Typography.Text type="secondary" className="text-md">
+          未选择词包，请前往
+          <Link to="/wordpack-management">
+            <Button variant="link" className="p-0 text-md">
+              词包管理页
+            </Button>
+          </Link>
+          选择词包
+        </Typography.Text>
+      )
+    }
   }
 
   const customTitle = (
     <div className="flex items-center justify-between w-full">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-100 text-purple-600">
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-blue-100 text-blue-600">
           <Package size={20} />
         </div>
-        <h2 className="text-lg font-semibold text-gray-900">当前词包</h2>
+        <h2 className="text-lg font-semibold text-gray-900">词包管理</h2>
       </div>
       <Button variant="ghost" size="sm" icon={MoreHorizontal} onClick={handleViewMore}>
         查看更多

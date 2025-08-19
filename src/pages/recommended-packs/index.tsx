@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import Button from '@/components/Button'
+import Card from '@/components/Card'
 import Loading from '@/components/Loading'
 import Page from '@/components/Page'
 import Typography from '@/components/Typography'
@@ -84,7 +85,7 @@ const RecommendedPacksPage = () => {
     }
 
     return (
-      <div className="space-y-3">
+      <Card className="h-full overflow-y-auto" contentClassName="space-y-3">
         {recommendedPacks.map((pack, index) => (
           <motion.div
             key={index}
@@ -125,7 +126,7 @@ const RecommendedPacksPage = () => {
             </div>
           </motion.div>
         ))}
-      </div>
+      </Card>
     )
   }
 
