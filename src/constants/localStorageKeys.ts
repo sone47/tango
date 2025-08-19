@@ -1,5 +1,6 @@
 export const LOCAL_STORAGE_KEYS = {
   CURRENT_WORD_PACK_ID: 'tango-current-wordpack-id',
+  LATEST_DATA: 'tango-latest-data',
   SETTINGS: 'tango-settings',
 } as const
 

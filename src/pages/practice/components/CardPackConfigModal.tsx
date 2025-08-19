@@ -5,25 +5,21 @@ import Button from '@/components/Button'
 import Modal from '@/components/Modal'
 import ProficiencySlider from '@/components/ProficiencySlider'
 import Typography from '@/components/Typography'
+import { useLastestData } from '@/hooks/useLastestData'
 import { useSettings } from '@/hooks/useSettings'
 import { practiceService } from '@/services/practiceService'
+import { usePracticeStore } from '@/stores/practiceStore'
 import type { CardPack, Practice } from '@/types'
-import { filterWordsByProficiency } from '@/utils/practiceUtils'
+import { filterWordsByProficiency, processWords } from '@/utils/practiceUtils'
 
 interface CardPackConfigModalProps {
-  isOpen: boolean
   cardPack: CardPack
-  onConfirm: (shouldShuffle: boolean, proficiency: number) => void
-  onCancel: () => void
 }
 
-const CardPackConfigModal = ({
-  isOpen,
-  cardPack,
-  onConfirm,
-  onCancel,
-}: CardPackConfigModalProps) => {
+const CardPackConfigModal = ({ cardPack }: CardPackConfigModalProps) => {
   const { settings } = useSettings()
+  const { setLatestCardPackId } = useLastestData()
+  const { showCardPackConfig, updateState } = usePracticeStore()
 
   const [proficiency, setProficiency] = useState(100)
   const [filteredWordsCount, setFilteredWordsCount] = useState(0)
@@ -47,10 +43,33 @@ const CardPackConfigModal = ({
     setFilteredWordsCount(count)
   }, [proficiency, cardPack, practices])
 
+  const handleCardPackConfigConfirm = async (shouldShuffle: boolean, proficiency: number) => {
+    const finalWords = processWords(cardPack.words, practices, proficiency, shouldShuffle)
+
+    updateState({
+      selectedCardPack: cardPack,
+      shuffledWords: finalWords,
+      currentWordIndex: 0,
+      studiedWords: [],
+      tempSelectedCardPack: null,
+      showCardPackConfig: false,
+      proficiency,
+    })
+
+    setLatestCardPackId(cardPack.id)
+  }
+
+  const handleCardPackConfigCancel = () => {
+    updateState({
+      tempSelectedCardPack: null,
+      showCardPackConfig: false,
+    })
+  }
+
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={onCancel}
+      isOpen={showCardPackConfig}
+      onClose={handleCardPackConfigCancel}
       title="配置卡包"
       icon={Settings}
       iconColor="blue"
@@ -87,7 +106,7 @@ const CardPackConfigModal = ({
         <div className="flex items-center gap-4">
           <Button
             variant="primary"
-            onClick={() => onConfirm(isShuffle, proficiency)}
+            onClick={() => handleCardPackConfigConfirm(isShuffle, proficiency)}
             className="flex-1"
             disabled={!filteredWordsCount}
           >

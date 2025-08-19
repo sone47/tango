@@ -1,5 +1,4 @@
 import { BookOpen, ListX } from 'lucide-react'
-import { motion } from 'motion/react'
 import { ReactElement, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,29 +10,47 @@ import Typography from '@/components/Typography'
 import { colors, spacing } from '@/constants/styles'
 import { useCardPacks } from '@/hooks/useCardPacks'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
+import { useLastestData } from '@/hooks/useLastestData'
+import { cn } from '@/lib/utils'
+import { cardPackService } from '@/services/cardPackService'
+import { practiceService } from '@/services/practiceService'
+import { usePracticeStore } from '@/stores/practiceStore'
 import { useWordPackStore } from '@/stores/wordPackStore'
 import type { CardPack } from '@/types'
 
-interface CardPackSelectorProps {
-  isOpen: boolean
-  onClose: () => void
-  onSelectCardPack: (cardPack: CardPack) => void
-}
-
-const CardPackSelector = ({ isOpen, onClose, onSelectCardPack }: CardPackSelectorProps) => {
+const CardPackSelector = () => {
   const navigate = useNavigate()
   const { cardPacks, loading, fetchCardPacks } = useCardPacks()
   const { hasData } = useWordPackStore()
   const { currentWordPack } = useCurrentWordPack()
+  const { cardPackId: latestCardPackId } = useLastestData()
+  const { showCardPackSelector, updateState } = usePracticeStore()
 
   useEffect(() => {
-    if (isOpen && currentWordPack) {
+    if (showCardPackSelector && currentWordPack) {
       fetchCardPacks(currentWordPack.id)
     }
-  }, [isOpen, currentWordPack])
+  }, [showCardPackSelector, currentWordPack])
+
+  const generateCardPackId = (cardPackId: number) => {
+    return `card-pack-${cardPackId}`
+  }
 
   const handleSelectWordPack = () => {
     navigate('/wordpack-management')
+  }
+
+  const handleCardPackSelect = async (cardPack: CardPack) => {
+    const fullCardPack = await cardPackService.getCardPackWithWordsById(cardPack.id)
+    if (fullCardPack) {
+      await practiceService.createPracticesForWords(fullCardPack.words)
+
+      updateState({
+        tempSelectedCardPack: fullCardPack,
+        showCardPackSelector: false,
+        showCardPackConfig: true,
+      })
+    }
   }
 
   let content: ReactElement | null = null
@@ -71,36 +88,46 @@ const CardPackSelector = ({ isOpen, onClose, onSelectCardPack }: CardPackSelecto
         {cardPacks.map((cardPack) => (
           <button
             key={cardPack.id}
-            onClick={() => onSelectCardPack(cardPack)}
-            className={`w-full p-4 ${colors.gradients.blue} rounded-2xl border border-blue-100 ${colors.gradients.blueHover} transition-colors text-left`}
+            id={generateCardPackId(cardPack.id)}
+            onClick={() => handleCardPackSelect(cardPack)}
+            className={cn(
+              'w-full p-4 rounded-2xl border border-blue-100 transition-colors text-left',
+              colors.gradients.blue,
+              colors.gradients.blueHover,
+              cardPack.id === latestCardPackId && 'border-primary border-2'
+            )}
           >
-            <div className="w-full">
-              <div className="flex-1 flex items-center justify-between">
-                <div>
-                  <Typography.Title level={6} className="font-semibold">
-                    {cardPack.name}
-                  </Typography.Title>
-                  <Typography.Text type="secondary" size="sm">
-                    {cardPack.words.length} 个词汇
-                  </Typography.Text>
-                </div>
-                <div>
-                  <Typography.Text type="secondary" size="xs">
-                    已掌握 {(cardPack.progress * 100).toFixed(2)}%
-                  </Typography.Text>
-                </div>
+            <div className="w-full flex-1 flex items-center justify-between">
+              <div>
+                <Typography.Title level={6} className="font-semibold">
+                  {cardPack.name}
+                </Typography.Title>
+                <Typography.Text type="secondary" size="sm">
+                  {cardPack.words.length} 个词汇
+                </Typography.Text>
               </div>
+              <Typography.Text type="secondary" size="xs">
+                已掌握 {(cardPack.progress * 100).toFixed(2)}%
+              </Typography.Text>
             </div>
           </button>
         ))}
       </div>
     )
+
+    if (showCardPackSelector && latestCardPackId) {
+      const cardPackId = generateCardPackId(latestCardPackId)
+      const cardPackElement = document.getElementById(cardPackId)
+      if (cardPackElement) {
+        cardPackElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
   }
 
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={onClose}
+      isOpen={showCardPackSelector}
+      onClose={() => updateState({ showCardPackSelector: false })}
       title="选择卡包"
       icon={BookOpen}
       iconColor="blue"
