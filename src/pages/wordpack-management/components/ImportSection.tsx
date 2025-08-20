@@ -1,38 +1,22 @@
-import { isNil } from 'lodash'
 import { Upload } from 'lucide-react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import Button from '@/components/Button'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
-import { useModalState } from '@/hooks/useModalState'
 import { ImportResult, wordPackService } from '@/services/wordPackService'
-import { useWordPackStore } from '@/stores/wordPackStore'
 import type { FormatField } from '@/types/excel'
 
 import ExcelTemplateViewer from './ExcelTemplateViewer'
-import UploadResultModal from './UploadResultModal'
 
-const ImportSection = () => {
-  const navigate = useNavigate()
+interface ImportSectionProps {
+  onSuccess: (importResult: ImportResult) => void
+}
+
+const ImportSection = ({ onSuccess }: ImportSectionProps) => {
   const { setCurrentWordPackId, currentWordPack } = useCurrentWordPack()
-  const wordPackStore = useWordPackStore()
-  const [uploadResult, setUploadResult] = useState<{
-    fileName: string
-    isSuccess: boolean
-    message?: string
-    wordPackId?: number
-    stats?: {
-      cardPackCount: number
-      vocabularyCount: number
-    }
-    errors?: string[]
-  } | null>(null)
 
   const [isUploading, setIsUploading] = useState(false)
-
-  const uploadResultModal = useModalState()
 
   const formatFields: FormatField[] = [
     { label: '音标', example: 'べんきょう' },
@@ -54,8 +38,9 @@ const ImportSection = () => {
       const importResult = await wordPackService.importFromExcel(file)
 
       if (importResult.success) {
-        handleImportSuccess(file.name, importResult)
+        handleImportSuccess(importResult)
       } else {
+        console.error(importResult.errors)
         toast.error(`导入失败：${importResult.message || '未知错误'}`)
       }
     } catch (error) {
@@ -67,35 +52,12 @@ const ImportSection = () => {
     }
   }
 
-  const handleImportSuccess = (fileName: string, importResult: ImportResult) => {
+  const handleImportSuccess = (importResult: ImportResult) => {
     if (!currentWordPack) {
       setCurrentWordPackId(importResult.wordPackId!)
     }
 
-    setUploadResult({
-      fileName,
-      isSuccess: importResult.success,
-      message: importResult.message,
-      wordPackId: importResult.wordPackId,
-      stats: importResult.stats,
-      errors: importResult.errors,
-    })
-
-    uploadResultModal.open()
-
-    wordPackStore.fetchWordPacks()
-  }
-
-  const handleUploadResultClose = () => {
-    uploadResultModal.close()
-    setUploadResult(null)
-  }
-
-  const handleStartClick = () => {
-    if (!isNil(uploadResult?.wordPackId)) {
-      setCurrentWordPackId(uploadResult.wordPackId)
-    }
-    navigate('/')
+    onSuccess(importResult)
   }
 
   return (
@@ -121,19 +83,6 @@ const ImportSection = () => {
           {isUploading ? '正在导入...' : '上传 Excel 文件'}
         </Button>
       </label>
-
-      {uploadResult && (
-        <UploadResultModal
-          isOpen={uploadResultModal.isOpen}
-          onClose={handleUploadResultClose}
-          onStart={handleStartClick}
-          fileName={uploadResult.fileName}
-          isSuccess={uploadResult.isSuccess}
-          message={uploadResult.message}
-          stats={uploadResult.stats}
-          errors={uploadResult.errors}
-        />
-      )}
     </>
   )
 }

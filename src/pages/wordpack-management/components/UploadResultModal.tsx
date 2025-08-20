@@ -1,14 +1,16 @@
+import { isNil } from 'lodash'
 import { CheckCircle, Upload, XCircle } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 import Button from '@/components/Button'
 import Modal from '@/components/Modal'
+import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 
 interface UploadResultModalProps {
   isOpen: boolean
+  wordPackId?: number
   onClose: () => void
-  onStart: () => void
-  fileName: string
-  isSuccess: boolean
+  isSuccess?: boolean
   message?: string
   stats?: {
     cardPackCount: number
@@ -19,14 +21,23 @@ interface UploadResultModalProps {
 
 const UploadResultModal = ({
   isOpen,
+  wordPackId,
   onClose,
-  onStart,
-  fileName,
   isSuccess,
   message,
   stats,
   errors,
 }: UploadResultModalProps) => {
+  const navigate = useNavigate()
+  const { setCurrentWordPackId } = useCurrentWordPack()
+
+  const handleStartClick = () => {
+    if (!isNil(wordPackId)) {
+      setCurrentWordPackId(wordPackId)
+    }
+    navigate('/')
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -50,10 +61,6 @@ const UploadResultModal = ({
           </div>
 
           <div className="text-sm text-gray-600 space-y-2">
-            <p>
-              文件名: <span className="font-medium">{fileName}</span>
-            </p>
-
             {/* 显示消息 */}
             {message && <p className={isSuccess ? 'text-green-700' : 'text-red-700'}>{message}</p>}
 
@@ -91,7 +98,7 @@ const UploadResultModal = ({
         </div>
 
         <div className="pt-2">
-          <Button variant="primary" onClick={onStart} className="w-full">
+          <Button variant="primary" onClick={handleStartClick} className="w-full">
             开始学习
           </Button>
         </div>
