@@ -1,40 +1,46 @@
 import { Volume2 } from 'lucide-react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 
 import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'
 import Button from '@/components/Button'
 import Typography from '@/components/Typography'
+import { Badge } from '@/components/ui/badge'
 import { useSettings } from '@/hooks/useSettings'
+import { cn } from '@/lib/utils'
 import { Word } from '@/types'
+import { generateExample } from '@/utils/ai'
 import { textToSpeech } from '@/utils/speechUtils'
 
 interface FlashCardExampleSideProps {
   word: Word
+  className?: string
 }
 
-const FlashCardExampleSide = ({ word }: FlashCardExampleSideProps) => {
+const FlashCardExampleSide = ({ word, className }: FlashCardExampleSideProps) => {
   const navigate = useNavigate()
   const { settings } = useSettings()
   const generateDisabledDialog = useAlertDialog()
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [examples, setExamples] = useState(
+    word.example ? [{ example: word.example, translation: '', isAi: false }] : []
+  )
 
-  const handlePlayAudio = (text?: string, audioUrl?: string) => {
+  const aiApiKey = settings.advanced.aiApiKey.trim()
+
+  const handlePlayExampleAudio = (example: string, audioUrl?: string) => {
     if (audioUrl) {
       const audio = new Audio(audioUrl)
       audio.play()
     } else {
-      if (!text) return
+      if (!example) return
 
-      textToSpeech(text, settings.speech)
+      textToSpeech(example, settings.speech)
     }
   }
 
-  const handlePlayExampleAudio = (event: React.MouseEvent) => {
-    event.stopPropagation()
-
-    handlePlayAudio(word.example, word.exampleAudio)
-  }
-
-  const handleGenerateExample = (event: React.MouseEvent) => {
+  const handleGenerateExample = async (event: React.MouseEvent) => {
     event.stopPropagation()
 
     if (!checkGenerateEnabled()) {
@@ -42,41 +48,78 @@ const FlashCardExampleSide = ({ word }: FlashCardExampleSideProps) => {
       return
     }
 
-    console.log('generate example', settings.advanced.aiApiKey)
+    setIsGenerating(true)
+    const example = await generateExample(word.word, aiApiKey)
+    if (!example) {
+      toast.error('生成例句失败，请重试')
+      return
+    }
+
+    setExamples([...examples, { ...example, isAi: true }])
+    setIsGenerating(false)
   }
 
   const checkGenerateEnabled = () => {
-    return settings.advanced.aiApiKey.trim() !== ''
+    return !!aiApiKey
   }
 
   return (
     <>
-      <div className="flex-1 w-full backface-hidden rotate-y-180 flex flex-col">
-        <div className="flex-1 flex flex-col justify-center text-center gap-4">
-          <div className="flex items-center justify-center">
-            <Typography.Title level={5}>例句</Typography.Title>
-            {word.example && (
-              <Button
-                onClick={handlePlayExampleAudio}
-                variant="ghost"
-                size="sm"
-                icon={Volume2}
-              ></Button>
-            )}
-          </div>
-          <div className="bg-background/80 p-4 rounded-2xl">
-            {word.example ? (
-              <span className="text-secondary-foreground">{word.example}</span>
-            ) : (
-              <div className="text-center py-4">
-                <p className="text-gray-500 text-base">暂无例句</p>
-                <p className="text-gray-400 text-sm mt-2">该词汇还没有添加例句</p>
+      <div
+        className={cn('flex-1 w-full backface-hidden rotate-y-180 flex flex-col p-4', className)}
+      >
+        <div className="flex-1 flex flex-col justify-center text-center gap-3">
+          <Typography.Title level={5}>例句</Typography.Title>
+          {examples.length > 0 ? (
+            examples.map((example, index) => (
+              <div
+                key={index}
+                className="w-full flex items-start space-between gap-1 bg-background rounded-lg p-4"
+              >
+                <div className="flex-1 flex flex-col justify-start gap-2 text-left">
+                  <Typography.Text type="secondary" size="sm" className="!font-medium">
+                    {example.example}
+                  </Typography.Text>
+                  {example.translation && (
+                    <Typography.Text type="secondary" size="xs">
+                      {example.translation}
+                    </Typography.Text>
+                  )}
+                </div>
+                <div className="h-full flex flex-col items-center justify-between gap-1">
+                  <Button
+                    className="justify-start h-auto !p-0"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handlePlayExampleAudio(example.example, example.isAi ? '' : word.exampleAudio)
+                    }}
+                    variant="ghost"
+                    size="sm"
+                    icon={Volume2}
+                  ></Button>
+                  {example.isAi && (
+                    <Badge variant="secondary" className="font-medium">
+                      AI
+                    </Badge>
+                  )}
+                </div>
               </div>
-            )}
-          </div>
-          <Button variant="link" onClick={handleGenerateExample}>
-            更多例句
-          </Button>
+            ))
+          ) : (
+            <div className="text-center py-4 bg-background rounded-lg flex flex-col gap-2">
+              <p className="text-secondary-foreground text-base">暂无例句</p>
+              <p className="text-muted-foreground text-sm">该词汇还没有添加例句</p>
+            </div>
+          )}
+          {isGenerating ? (
+            <Button variant="link" onClick={handleGenerateExample} loading={isGenerating}>
+              生成中...
+            </Button>
+          ) : (
+            <Button variant="link" onClick={handleGenerateExample}>
+              {examples.length > 0 ? '更多例句' : '生成例句'}
+            </Button>
+          )}
         </div>
 
         <Typography.Text type="secondary" size="sm" className="text-center">

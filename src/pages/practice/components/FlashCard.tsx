@@ -223,7 +223,7 @@ const FlashCard = ({
         >
           <motion.div
             className={cn(
-              'flex flex-col h-full transform-style-preserve-3d transition-all duration-200 rounded-3xl shadow-2xl p-4',
+              'relative flex flex-col h-full transform-style-preserve-3d transition-all duration-200 rounded-3xl shadow-2xl p-4',
               isFlipped ? 'rotate-y-180' : '',
               isFlipped ? 'bg-gradient-to-br from-blue-50 to-indigo-100' : 'bg-white',
               swipePrompt === SwipePrompt.Correct
@@ -243,75 +243,73 @@ const FlashCard = ({
               />
             )}
 
-            {!isFlipped && (
-              <div className="flex-1 w-full backface-hidden flex flex-col">
-                {/* 内容区域 */}
-                <div className="flex-1 flex flex-col justify-center space-y-8 min-h-0">
-                  <RevealOverlay
-                    isRevealed={revealState.phonetic}
-                    label="音标"
-                    colorScheme="blue"
-                    onDragStart={() => handleRevealDragStart('phonetic')}
-                    onDragEnd={(offsetX) => handleRevealDragEnd('phonetic', offsetX)}
-                    showGuide={isFirstCard && guideItemName === 'phonetic'}
-                  >
-                    <div className="flex items-center justify-center gap-2 h-12">
-                      <span className="text-xl font-medium text-gray-800">{word.phonetic}</span>
-                      {(word.phonetic || word.word) && (
-                        <Button
-                          ref={playButtonRef}
-                          onClick={handlePlayPhoneticAudio}
-                          variant="ghost"
-                          size="sm"
-                          icon={Volume2}
-                        ></Button>
-                      )}
-                    </div>
-                  </RevealOverlay>
+            <div className="absolute top-0 left-0 w-full h-full p-4 backface-hidden flex flex-col">
+              {/* 内容区域 */}
+              <div className="flex-1 flex flex-col justify-center space-y-8 min-h-0">
+                <RevealOverlay
+                  isRevealed={revealState.phonetic}
+                  label="音标"
+                  colorScheme="blue"
+                  onDragStart={() => handleRevealDragStart('phonetic')}
+                  onDragEnd={(offsetX) => handleRevealDragEnd('phonetic', offsetX)}
+                  showGuide={isFirstCard && guideItemName === 'phonetic'}
+                >
+                  <div className="flex items-center justify-center gap-2 h-12">
+                    <span className="text-xl font-medium text-gray-800">{word.phonetic}</span>
+                    {(word.phonetic || word.word) && (
+                      <Button
+                        ref={playButtonRef}
+                        onClick={handlePlayPhoneticAudio}
+                        variant="ghost"
+                        size="sm"
+                        icon={Volume2}
+                      ></Button>
+                    )}
+                  </div>
+                </RevealOverlay>
 
-                  <RevealOverlay
-                    isRevealed={revealState.word}
-                    label="写法"
-                    colorScheme="purple"
-                    onDragStart={() => handleRevealDragStart('word')}
-                    onDragEnd={(offsetX) => handleRevealDragEnd('word', offsetX)}
-                    showGuide={isFirstCard && guideItemName === 'word'}
-                  >
-                    <div className="flex items-center justify-center h-16">
-                      <span className="text-3xl font-bold text-gray-900">{word.word}</span>
-                    </div>
-                  </RevealOverlay>
+                <RevealOverlay
+                  isRevealed={revealState.word}
+                  label="写法"
+                  colorScheme="purple"
+                  onDragStart={() => handleRevealDragStart('word')}
+                  onDragEnd={(offsetX) => handleRevealDragEnd('word', offsetX)}
+                  showGuide={isFirstCard && guideItemName === 'word'}
+                >
+                  <div className="flex items-center justify-center h-16">
+                    <span className="text-3xl font-bold text-gray-900">{word.word}</span>
+                  </div>
+                </RevealOverlay>
 
-                  <RevealOverlay
-                    isRevealed={revealState.definition}
-                    label="释义"
-                    colorScheme="emerald"
-                    onDragStart={() => handleRevealDragStart('definition')}
-                    onDragEnd={(offsetX) => handleRevealDragEnd('definition', offsetX)}
-                    showGuide={isFirstCard && guideItemName === 'definition'}
-                  >
-                    <div className="flex items-center justify-center h-12">
-                      <span className="text-lg text-gray-700">{word.definition}</span>
-                    </div>
-                  </RevealOverlay>
-                </div>
-
-                {/* 底部提示 */}
-                <div className="text-center text-xs text-gray-500 mb-2 flex-shrink-0 space-y-1">
-                  {isAllRevealed ? (
-                    <>
-                      <div>点击卡片查看例句</div>
-                      <div>上滑「已掌握」· 下滑「未掌握」</div>
-                    </>
-                  ) : (
-                    <div>双击卡片快速显示所有内容</div>
-                  )}
-                </div>
+                <RevealOverlay
+                  isRevealed={revealState.definition}
+                  label="释义"
+                  colorScheme="emerald"
+                  onDragStart={() => handleRevealDragStart('definition')}
+                  onDragEnd={(offsetX) => handleRevealDragEnd('definition', offsetX)}
+                  showGuide={isFirstCard && guideItemName === 'definition'}
+                >
+                  <div className="flex items-center justify-center h-12">
+                    <span className="text-lg text-gray-700">{word.definition}</span>
+                  </div>
+                </RevealOverlay>
               </div>
-            )}
+
+              {/* 底部提示 */}
+              <div className="text-center text-xs text-gray-500 mb-2 flex-shrink-0 space-y-1">
+                {isAllRevealed ? (
+                  <>
+                    <div>点击卡片查看例句</div>
+                    <div>上滑「已掌握」· 下滑「未掌握」</div>
+                  </>
+                ) : (
+                  <div>双击卡片快速显示所有内容</div>
+                )}
+              </div>
+            </div>
 
             {/* 背面 */}
-            {isFlipped && <FlashCardExampleSide word={word} />}
+            <FlashCardExampleSide word={word} className="absolute top-0 left-0 w-full h-full p-4" />
           </motion.div>
         </VerticalSwipeHandler>
       </div>
