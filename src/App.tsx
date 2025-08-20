@@ -9,6 +9,7 @@ import TabBar, { type TabConfig } from '@/components/TabBar'
 import { Toaster } from '@/components/ui/sonner'
 import { DB_NAME, DB_VERSION } from '@/constants/database'
 import { useDatabase } from '@/hooks/useDatabase'
+import AdvanceSettings from '@/pages/advance-settings'
 import PracticeTab from '@/pages/practice'
 import ProfileTab from '@/pages/profile'
 import RecommendedPacksPage from '@/pages/recommended-packs'
@@ -73,6 +74,7 @@ function App() {
         <Route path="/wordpack-management" element={<WordPackManagePage />} />
         <Route path="/recommended-packs" element={<RecommendedPacksPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/advance-settings" element={<AdvanceSettings />} />
         <Route path="/sync" element={<SyncPage />} />
         <Route path="/" element={<MainApp />} />
         <Route path="/profile" element={<MainApp />} />

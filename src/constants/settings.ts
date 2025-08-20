@@ -20,8 +20,8 @@ export const defaultSettings = {
       },
     ],
   },
-  ai: {
-    commonApiKey: '',
+  advanced: {
+    aiApiKey: '',
   },
 } as AppSettings
 

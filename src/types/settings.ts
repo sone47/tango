@@ -17,13 +17,13 @@ export interface TransferSettings {
   iceServers: Array<{ urls: string[]; username?: string; credential?: string }>
 }
 
-export interface AISettings {
-  commonApiKey: string
+export interface AdvancedSettings {
+  aiApiKey: string
 }
 
 export interface AppSettings {
   practice: PracticeSettings
   speech: SpeechSettings
   transfer: TransferSettings
-  ai: AISettings
+  advanced: AdvancedSettings
 }

@@ -42,11 +42,11 @@ const FlashCardExampleSide = ({ word }: FlashCardExampleSideProps) => {
       return
     }
 
-    console.log('generate example', settings.ai.commonApiKey)
+    console.log('generate example', settings.advanced.aiApiKey)
   }
 
   const checkGenerateEnabled = () => {
-    return settings.ai.commonApiKey.trim() !== ''
+    return settings.advanced.aiApiKey.trim() !== ''
   }
 
   return (
@@ -91,7 +91,7 @@ const FlashCardExampleSide = ({ word }: FlashCardExampleSideProps) => {
         description="请先在设置中配置 API Key，以便生成例句"
         confirmText="去设置"
         onConfirm={() => {
-          navigate('/settings')
+          navigate('/advance-settings')
         }}
       ></AlertDialog>
     </>
