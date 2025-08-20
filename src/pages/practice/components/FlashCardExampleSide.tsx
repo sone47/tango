@@ -91,7 +91,7 @@ const FlashCardExampleSide = ({ word }: FlashCardExampleSideProps) => {
         description="请先在设置中配置 API Key，以便生成例句"
         confirmText="去设置"
         onConfirm={() => {
-          navigate('/advance-settings')
+          navigate('/settings/advanced')
         }}
       ></AlertDialog>
     </>

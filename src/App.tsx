@@ -73,8 +73,10 @@ function App() {
       <Routes>
         <Route path="/wordpack-management" element={<WordPackManagePage />} />
         <Route path="/recommended-packs" element={<RecommendedPacksPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/advance-settings" element={<AdvanceSettings />} />
+        <Route path="settings">
+          <Route path="" element={<SettingsPage />} />
+          <Route path="advanced" element={<AdvanceSettings />} />
+        </Route>
         <Route path="/sync" element={<SyncPage />} />
         <Route path="/" element={<MainApp />} />
         <Route path="/profile" element={<MainApp />} />

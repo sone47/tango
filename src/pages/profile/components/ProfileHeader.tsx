@@ -1,4 +1,4 @@
-import { Bolt, RefreshCw } from 'lucide-react'
+import { RefreshCw, Settings } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@/components/Button'
@@ -32,7 +32,7 @@ const ProfileHeader = () => {
           variant="ghost"
           size="lg"
           className="!p-0"
-          icon={Bolt}
+          icon={Settings}
           onClick={handleSettingsClick}
         />
       </div>

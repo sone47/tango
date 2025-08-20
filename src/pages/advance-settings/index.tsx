@@ -23,7 +23,7 @@ export default function AdvanceSettings() {
   return (
     <Page title="高级设置">
       <div className="flex flex-col gap-4">
-        <SettingItem title="例句生成" isCard>
+        <SettingItem title="生成例句" isCard>
           <SettingItem title="API Key">
             <Input
               value={aiApiKey}
