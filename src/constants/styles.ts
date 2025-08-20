@@ -22,8 +22,8 @@ export const colors = {
 
 // 基础组件样式
 export const baseStyles = {
-  iconContainer: 'w-10 h-10 rounded-xl flex items-center justify-center',
-  iconContainerLarge: 'w-12 h-12 rounded-xl flex items-center justify-center',
+  iconContainer: 'size-8 rounded-lg flex items-center',
+  iconContainerLarge: 'size-10 rounded-lg flex items-center',
   card: 'bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg',
   button: 'rounded-xl font-medium transition-colors',
   buttonPrimary: 'px-4 py-2 bg-blue-600 text-white hover:bg-blue-700',

@@ -31,9 +31,15 @@ const Card = ({
 }: CardProps) => {
   const renderTitle = () => {
     return (
-      <div className="flex items-center gap-3">
+      <div className={cn('flex items-center', iconColor ? 'gap-3' : '')}>
         {Icon && (
-          <div className={`${baseStyles.iconContainer} ${iconColor ? colors.icon[iconColor] : ''}`}>
+          <div
+            className={cn(
+              baseStyles.iconContainer,
+              iconColor ? colors.icon[iconColor] : '',
+              iconColor ? 'justify-center' : 'justify-start'
+            )}
+          >
             <Icon size={20} />
           </div>
         )}
