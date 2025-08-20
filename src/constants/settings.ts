@@ -20,6 +20,9 @@ export const defaultSettings = {
       },
     ],
   },
+  ai: {
+    commonApiKey: '',
+  },
 } as AppSettings
 
 // TODO https://github.com/TiagoDanin/Windows-Locale

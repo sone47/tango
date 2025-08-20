@@ -18,6 +18,9 @@ function buildRuntimeDefaults(): AppSettings {
       importStrategy: defaultSettings.transfer.importStrategy,
       iceServers: cloneDeep(defaultSettings.transfer.iceServers),
     },
+    ai: {
+      ...defaultSettings.ai,
+    },
   }
 }
 
@@ -27,6 +30,7 @@ function migrateSettings(stored: Partial<AppSettings> | undefined): AppSettings 
     practice: { ...defaults.practice, ...(stored?.practice || {}) },
     speech: { ...defaults.speech, ...(stored?.speech || {}) },
     transfer: { ...defaults.transfer, ...(stored?.transfer || {}) },
+    ai: { ...defaults.ai, ...(stored?.ai || {}) },
   }
   // 二次兜底：voice 缺失时按语言回填
   if (!next.speech.voice) {
@@ -78,6 +82,7 @@ export function useSettings() {
       practice: { ...defaultSettings.practice },
       speech: { ...defaultSettings.speech },
       transfer: defaultSettings.transfer as unknown as AppSettings['transfer'],
+      ai: defaultSettings.ai,
     })
   }
 
