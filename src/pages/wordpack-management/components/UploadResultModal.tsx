@@ -91,7 +91,7 @@ const UploadResultModal = ({
                   错误详情
                 </Typography.Title>
                 <div className="max-h-40 overflow-y-auto">
-                  <ul className="flex flex-col items-start gap-1 text-xs text-destructive space-y-1 list-disc list-inside">
+                  <ul className="flex flex-col items-start gap-1 text-xs text-muted-foreground space-y-1 list-disc list-inside">
                     {errors.map((error, index) => (
                       <li key={index}>{error}</li>
                     ))}
@@ -102,11 +102,13 @@ const UploadResultModal = ({
           </div>
         </div>
 
-        <div className="pt-2">
-          <Button variant="primary" onClick={handleStartClick} className="w-full">
-            开始学习
-          </Button>
-        </div>
+        {isSuccess && (
+          <div className="pt-2">
+            <Button variant="primary" onClick={handleStartClick} className="w-full">
+              开始学习
+            </Button>
+          </div>
+        )}
       </div>
     </Modal>
   )

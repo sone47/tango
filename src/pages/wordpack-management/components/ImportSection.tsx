@@ -10,10 +10,10 @@ import type { FormatField } from '@/types/excel'
 import ExcelTemplateViewer from './ExcelTemplateViewer'
 
 interface ImportSectionProps {
-  onSuccess: (importResult: ImportResult) => void
+  onFinish: (importResult: ImportResult) => void
 }
 
-const ImportSection = ({ onSuccess }: ImportSectionProps) => {
+const ImportSection = ({ onFinish }: ImportSectionProps) => {
   const { setCurrentWordPackId, currentWordPack } = useCurrentWordPack()
 
   const [isUploading, setIsUploading] = useState(false)
@@ -37,12 +37,7 @@ const ImportSection = ({ onSuccess }: ImportSectionProps) => {
     try {
       const importResult = await wordPackService.importFromExcel(file)
 
-      if (importResult.success) {
-        handleImportSuccess(importResult)
-      } else {
-        console.error(importResult.errors)
-        toast.error(`导入失败：${importResult.message || '未知错误'}`)
-      }
+      handleImportFinish(importResult)
     } catch (error) {
       console.error('文件处理失败:', error)
       toast.error('上传失败')
@@ -52,12 +47,12 @@ const ImportSection = ({ onSuccess }: ImportSectionProps) => {
     }
   }
 
-  const handleImportSuccess = (importResult: ImportResult) => {
-    if (!currentWordPack) {
+  const handleImportFinish = (importResult: ImportResult) => {
+    if (importResult.success && !currentWordPack) {
       setCurrentWordPackId(importResult.wordPackId!)
     }
 
-    onSuccess(importResult)
+    onFinish(importResult)
   }
 
   return (

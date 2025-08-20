@@ -22,12 +22,14 @@ const Footer = () => {
     navigate('/recommended-packs')
   }
 
-  const handleImportSuccess = (importResult: ImportResult) => {
-    wordPackStore.fetchWordPacks()
+  const handleImportFinish = (importResult: ImportResult) => {
     setUploadResult(importResult)
-
-    importDrawer.close()
     uploadResultModal.open()
+    importDrawer.close()
+
+    if (importResult.success) {
+      wordPackStore.fetchWordPacks()
+    }
   }
 
   const handleUploadResultModalClose = () => {
@@ -53,7 +55,7 @@ const Footer = () => {
           </Button>
         }
       >
-        <ImportSection onSuccess={handleImportSuccess} />
+        <ImportSection onFinish={handleImportFinish} />
       </Drawer>
 
       <UploadResultModal
