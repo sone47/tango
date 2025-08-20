@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import Button from '@/components/Button'
 import Drawer, { useDrawer } from '@/components/Drawer'
@@ -11,12 +11,21 @@ import { useWordPackStore } from '@/stores/wordPackStore'
 import UploadResultModal from './UploadResultModal'
 
 const Footer = () => {
+  const location = useLocation()
   const navigate = useNavigate()
   const wordPackStore = useWordPackStore()
   const uploadResultModal = useModalState()
 
   const importDrawer = useDrawer()
   const [uploadResult, setUploadResult] = useState<ImportResult | null>(null)
+
+  useEffect(() => {
+    if (location.state?.action === 'import' && !importDrawer.isOpen) {
+      importDrawer.open()
+
+      location.state = undefined
+    }
+  }, [importDrawer, location])
 
   const handleImportFromLibrary = () => {
     navigate('/recommended-packs')
