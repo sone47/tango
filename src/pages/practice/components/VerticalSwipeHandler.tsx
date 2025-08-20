@@ -38,7 +38,7 @@ const VerticalSwipeHandler = ({
   const { dragOffset, isSwipingOut } = swipeState
 
   useEffect(() => {
-    if (Math.abs(dragOffset) >= distanceThreshold) {
+    if (Math.abs(dragOffset) >= distanceThreshold / 5) {
       if (dragOffset > 0) {
         onSwipeDownProcess()
       } else {
@@ -47,7 +47,7 @@ const VerticalSwipeHandler = ({
     } else {
       onSwipeReset?.()
     }
-  }, [dragOffset, distanceThreshold,, onSwipeUpProcess, onSwipeDownProcess, onSwipeReset])
+  }, [dragOffset, distanceThreshold, onSwipeUpProcess, onSwipeDownProcess, onSwipeReset])
 
   const handleVerticalSwipe = (offsetY: number) => {
     if (isSwipingOut) return
