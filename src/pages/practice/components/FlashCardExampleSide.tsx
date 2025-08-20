@@ -71,40 +71,50 @@ const FlashCardExampleSide = ({ word, className }: FlashCardExampleSideProps) =>
         <div className="flex-1 flex flex-col justify-center text-center gap-3">
           <Typography.Title level={5}>例句</Typography.Title>
           {examples.length > 0 ? (
-            examples.map((example, index) => (
-              <div
-                key={index}
-                className="w-full flex items-start space-between gap-1 bg-background rounded-lg p-4"
-              >
-                <div className="flex-1 flex flex-col justify-start gap-2 text-left">
-                  <Typography.Text type="secondary" size="sm" className="!font-medium">
-                    {example.example}
-                  </Typography.Text>
-                  {example.translation && (
-                    <Typography.Text type="secondary" size="xs">
-                      {example.translation}
+            <div
+              className="max-h-[200px] overflow-y-auto flex flex-col gap-3"
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            >
+              {examples.map((example, index) => (
+                <div
+                  key={index}
+                  className="w-full flex items-start space-between gap-1 bg-background rounded-lg p-4"
+                >
+                  <div className="flex-1 flex flex-col justify-start gap-2 text-left">
+                    <Typography.Text type="secondary" size="sm" className="!font-medium">
+                      {example.example}
                     </Typography.Text>
-                  )}
+                    {example.translation && (
+                      <Typography.Text type="secondary" size="xs">
+                        {example.translation}
+                      </Typography.Text>
+                    )}
+                  </div>
+                  <div className="h-full flex flex-col items-center justify-between gap-1">
+                    <Button
+                      className="justify-start h-auto !p-0"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handlePlayExampleAudio(
+                          example.example,
+                          example.isAi ? '' : word.exampleAudio
+                        )
+                      }}
+                      variant="ghost"
+                      size="sm"
+                      icon={Volume2}
+                    ></Button>
+                    {example.isAi && (
+                      <Badge variant="secondary" className="font-medium">
+                        AI
+                      </Badge>
+                    )}
+                  </div>
                 </div>
-                <div className="h-full flex flex-col items-center justify-between gap-1">
-                  <Button
-                    className="justify-start h-auto !p-0"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handlePlayExampleAudio(example.example, example.isAi ? '' : word.exampleAudio)
-                    }}
-                    variant="ghost"
-                    size="sm"
-                    icon={Volume2}
-                  ></Button>
-                  {example.isAi && (
-                    <Badge variant="secondary" className="font-medium">
-                      AI
-                    </Badge>
-                  )}
-                </div>
-              </div>
-            ))
+              ))}
+            </div>
           ) : (
             <div className="text-center py-4 bg-background rounded-lg flex flex-col gap-2">
               <p className="text-secondary-foreground text-base">暂无例句</p>
