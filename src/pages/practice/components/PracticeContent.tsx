@@ -1,4 +1,4 @@
-import { LucideIcon, PartyPopper } from 'lucide-react'
+import { LibraryBig, PartyPopper } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useRef } from 'react'
 
@@ -16,62 +16,6 @@ interface PracticeContentProps {
   currentWordIndex: number
 }
 
-interface EmptyStateProps {
-  icon: string
-  title: string
-  description: string
-  actions: Array<{
-    label: string
-    onClick: () => void
-    variant?: 'primary' | 'secondary'
-    size?: 'sm' | 'md' | 'lg'
-    rounded?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
-    icon?: LucideIcon
-    className?: string
-  }>
-  iconBgColor?: string
-}
-
-const EmptyState = ({
-  icon,
-  title,
-  description,
-  actions,
-  iconBgColor = 'bg-gray-200',
-}: EmptyStateProps) => {
-  return (
-    <div className="flex-1 flex flex-col items-center justify-center p-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col items-center justify-center"
-      >
-        <div
-          className={`w-32 h-32 ${iconBgColor} rounded-2xl mb-6 flex items-center justify-center`}
-        >
-          <span className="text-4xl">{icon}</span>
-        </div>
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">{title}</h2>
-        <p className="text-gray-600 mb-6 text-center">{description}</p>
-        <div className="flex flex-col gap-3">
-          {actions.map((action, index) => (
-            <Button
-              key={index}
-              variant={action.variant || 'primary'}
-              size={action.size || 'lg'}
-              onClick={action.onClick}
-              icon={action.icon}
-              className={action.className}
-            >
-              {action.label}
-            </Button>
-          ))}
-        </div>
-      </motion.div>
-    </div>
-  )
-}
-
 const PracticeContent = ({
   selectedCardPack,
   shuffledWords,
@@ -87,18 +31,27 @@ const PracticeContent = ({
 
   if (!selectedCardPack) {
     return (
-      <EmptyState
-        icon="📚"
-        title="未选择卡包"
-        description="点击下方按钮选择一个卡包开始学习"
-        actions={[
-          {
-            label: '开始学习',
-            onClick: handleShowCardPackSelector,
-            className: 'text-md',
-          },
-        ]}
-      />
+      <div className="flex-1 flex flex-col items-center justify-center p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col items-center justify-center gap-4"
+        >
+          <LibraryBig className="size-16 text-primary"></LibraryBig>
+          <div className="flex flex-col items-center justify-center gap-1">
+            <Typography.Title level={4}>未选择卡包</Typography.Title>
+            <Typography.Text type="secondary">点击下方按钮选择一个卡包开始学习</Typography.Text>
+          </div>
+          <Button
+            variant="primary"
+            size="lg"
+            className="w-full text-md"
+            onClick={handleShowCardPackSelector}
+          >
+            开始学习
+          </Button>
+        </motion.div>
+      </div>
     )
   }
 
