@@ -11,6 +11,7 @@ import { usePracticeStore } from '@/stores/practiceStore'
 import type { CardRevealState, Word } from '@/types'
 import { textToSpeech } from '@/utils/speechUtils'
 
+import FlashCardExampleSide from './FlashCardExampleSide'
 import FlashCardHeader from './FlashCardHeader'
 import RevealOverlay from './RevealOverlay'
 import VerticalSwipeHandler from './VerticalSwipeHandler'
@@ -89,30 +90,24 @@ const FlashCard = ({
     })
   }
 
-  const handleCardFlip = () => {
-    const hasOpenDrawer = document.querySelector('[data-slot="drawer-overlay"]')
-    if (hasOpenDrawer) {
+  const handleCardFlip = (e: React.MouseEvent) => {
+    if (!e.currentTarget.contains(e.target as Node) || !isAllRevealed) {
       return
     }
 
-    if (isAllRevealed) {
-      setIsFlipped(!isFlipped)
-    }
+    setIsFlipped(!isFlipped)
   }
 
-  const handleDoubleClick = () => {
-    const hasOpenDrawer = document.querySelector('[data-slot="drawer-overlay"]')
-    if (hasOpenDrawer) {
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    if (!e.currentTarget.contains(e.target as Node) || !isAllRevealed) {
       return
     }
 
-    if (!isAllRevealed) {
-      onRevealStateChange({
-        phonetic: true,
-        word: true,
-        definition: true,
-      })
-    }
+    onRevealStateChange({
+      phonetic: true,
+      word: true,
+      definition: true,
+    })
   }
 
   const handleSwipeUpProcess = () => {
@@ -204,15 +199,9 @@ const FlashCard = ({
     handlePlayAudio(word.word || word.phonetic, word.wordAudio)
   }
 
-  const handlePlayExampleAudio = (event: React.MouseEvent) => {
-    event.stopPropagation()
-
-    handlePlayAudio(word.example, word.exampleAudio)
-  }
-
   return (
     <motion.div
-      className="w-full max-w-sm mx-auto h-full flex flex-col gap-4"
+      className="w-full max-w-sm h-full flex flex-col gap-4"
       key={word.id}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -322,41 +311,7 @@ const FlashCard = ({
             )}
 
             {/* 背面 */}
-            {isFlipped && (
-              <div className="flex-1 w-full backface-hidden rotate-y-180 flex flex-col">
-                <div className="flex-1 flex flex-col justify-center min-h-0">
-                  <div className="text-center space-y-4">
-                    <div className="flex items-center justify-center">
-                      <h3 className="text-lg font-semibold text-gray-800">例句</h3>
-                      {word.example && (
-                        <Button
-                          onClick={handlePlayExampleAudio}
-                          variant="ghost"
-                          size="sm"
-                          icon={Volume2}
-                        ></Button>
-                      )}
-                    </div>
-                    <div className="bg-white/80 p-4 rounded-2xl">
-                      {word.example ? (
-                        <p className="text-base leading-relaxed text-gray-800">
-                          <span className="text-gray-500">{word.example}</span>
-                        </p>
-                      ) : (
-                        <div className="text-center py-4">
-                          <p className="text-gray-500 text-base">暂无例句</p>
-                          <p className="text-gray-400 text-sm mt-2">该词汇还没有添加例句</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-center text-sm text-gray-500 mb-2 flex-shrink-0">
-                  点击返回正面
-                </div>
-              </div>
-            )}
+            {isFlipped && <FlashCardExampleSide word={word} />}
           </motion.div>
         </VerticalSwipeHandler>
       </div>
