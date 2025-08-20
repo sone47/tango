@@ -29,6 +29,12 @@ export default function SpeechSettings() {
     loadVoices()
   }, [])
 
+  useEffect(() => {
+    setRate(settings.speech.rate)
+    setPitch(settings.speech.pitch)
+    setVolume(settings.speech.volume)
+  }, [settings.speech.rate, settings.speech.pitch, settings.speech.volume])
+
   return (
     <SettingItem title="语音设置" icon={Headphones} isCard>
       <div className="space-y-4 w-full">
