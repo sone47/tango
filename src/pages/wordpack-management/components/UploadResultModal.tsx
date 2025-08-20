@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import Button from '@/components/Button'
 import Modal from '@/components/Modal'
+import Typography from '@/components/Typography'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 
 interface UploadResultModalProps {
@@ -50,32 +51,34 @@ const UploadResultModal = ({
       <div className="text-center space-y-4">
         <div className="space-y-2">
           <div
-            className={`flex items-center justify-center gap-2 text-lg font-semibold ${isSuccess ? 'text-green-800' : 'text-red-800'}`}
+            className={`flex items-center justify-center gap-2 text-lg font-semibold ${isSuccess ? 'text-primary' : 'text-destructive'}`}
           >
             {isSuccess ? (
-              <CheckCircle size={20} className="text-green-600" />
+              <CheckCircle size={20} className="text-primary" />
             ) : (
-              <XCircle size={20} className="text-red-600" />
+              <XCircle size={20} className="text-destructive" />
             )}
             <h3>{isSuccess ? '导入成功' : '导入失败'}</h3>
           </div>
 
-          <div className="text-sm text-gray-600 space-y-2">
+          <div className="text-sm space-y-2">
             {/* 显示消息 */}
-            {message && <p className={isSuccess ? 'text-green-700' : 'text-red-700'}>{message}</p>}
+            {message && <p className="text-muted-foreground">{message}</p>}
 
             {/* 显示成功统计信息 */}
             {isSuccess && stats && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                <h4 className="font-medium text-green-800 mb-2">导入统计</h4>
+              <div className="bg-muted border rounded-lg p-3">
+                <Typography.Title level={6} className="mb-2">
+                  导入统计
+                </Typography.Title>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div className="text-center">
-                    <div className="font-medium text-green-600">{stats.cardPackCount}</div>
-                    <div className="text-gray-600">卡包</div>
+                    <div className="font-medium text-primary">{stats.cardPackCount}</div>
+                    <div className="text-muted-foreground">卡包</div>
                   </div>
                   <div className="text-center">
-                    <div className="font-medium text-green-600">{stats.vocabularyCount}</div>
-                    <div className="text-gray-600">词汇</div>
+                    <div className="font-medium text-primary">{stats.vocabularyCount}</div>
+                    <div className="text-muted-foreground">词汇</div>
                   </div>
                 </div>
               </div>
@@ -83,10 +86,12 @@ const UploadResultModal = ({
 
             {/* 显示错误信息 */}
             {!isSuccess && errors && errors.length > 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                <h4 className="font-medium text-red-800 mb-2">错误详情</h4>
+              <div className="bg-muted border rounded-lg p-3">
+                <Typography.Title level={6} className="mb-2">
+                  错误详情
+                </Typography.Title>
                 <div className="max-h-40 overflow-y-auto">
-                  <ul className="flex flex-col items-start gap-1 text-xs text-red-700 space-y-1 list-disc list-inside">
+                  <ul className="flex flex-col items-start gap-1 text-xs text-destructive space-y-1 list-disc list-inside">
                     {errors.map((error, index) => (
                       <li key={index}>{error}</li>
                     ))}
