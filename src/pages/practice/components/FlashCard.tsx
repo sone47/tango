@@ -46,6 +46,7 @@ const FlashCard = ({
   const [proficiency, setProficiency] = useState(0)
   const [isManualUpdateProficiency, setIsManualUpdateProficiency] = useState(false)
   const [swipePrompt, setSwipePrompt] = useState<SwipePrompt>(SwipePrompt.None)
+  const [isExampleScrolling, setIsExampleScrolling] = useState(false)
 
   const isDraggingRef = useRef<Record<keyof CardRevealState, boolean>>({
     phonetic: false,
@@ -199,6 +200,10 @@ const FlashCard = ({
     handlePlayAudio(word.word || word.phonetic, word.wordAudio)
   }
 
+  const handleExampleScroll = (isScrolling: boolean) => {
+    setIsExampleScrolling(isScrolling)
+  }
+
   return (
     <motion.div
       className="w-full max-w-sm h-full flex flex-col gap-4"
@@ -214,7 +219,7 @@ const FlashCard = ({
         onDoubleClick={handleDoubleClick}
       >
         <VerticalSwipeHandler
-          enabled={isAllRevealed}
+          enabled={isAllRevealed && !isExampleScrolling}
           onSwipeUp={handleSwipeUp}
           onSwipeDown={handleSwipeDown}
           onSwipeUpProcess={handleSwipeUpProcess}
@@ -308,7 +313,11 @@ const FlashCard = ({
               </div>
             </div>
 
-            <FlashCardExampleSide word={word} className="absolute top-0 left-0 w-full h-full p-4" />
+            <FlashCardExampleSide
+              word={word}
+              className="absolute top-0 left-0 w-full h-full p-4"
+              onScroll={handleExampleScroll}
+            />
           </motion.div>
         </VerticalSwipeHandler>
       </div>

@@ -1,5 +1,5 @@
 import { Volume2 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
@@ -16,18 +16,28 @@ import { textToSpeech } from '@/utils/speechUtils'
 interface FlashCardExampleSideProps {
   word: Word
   className?: string
+  onScroll: (isScrolling: boolean) => void
 }
 
-const FlashCardExampleSide = ({ word, className }: FlashCardExampleSideProps) => {
+const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSideProps) => {
   const navigate = useNavigate()
   const { settings } = useSettings()
   const generateDisabledDialog = useAlertDialog()
   const [isGenerating, setIsGenerating] = useState(false)
+  const [isScrolling, setIsScrolling] = useState(false)
   const [examples, setExamples] = useState(
     word.example ? [{ example: word.example, translation: '', isAi: false }] : []
   )
 
   const aiApiKey = settings.advanced.aiApiKey.trim()
+
+  useEffect(() => {
+    if (isScrolling) {
+      onScroll(true)
+    } else {
+      onScroll(false)
+    }
+  }, [isScrolling, onScroll])
 
   const handlePlayExampleAudio = (example: string, audioUrl?: string) => {
     if (audioUrl) {
@@ -83,6 +93,12 @@ const FlashCardExampleSide = ({ word, className }: FlashCardExampleSideProps) =>
               className="max-h-[200px] overflow-y-auto flex flex-col gap-3"
               onClick={(e) => {
                 e.stopPropagation()
+              }}
+              onTouchStart={() => {
+                setIsScrolling(true)
+              }}
+              onTouchEnd={() => {
+                setIsScrolling(false)
               }}
             >
               {examples.map((example, index) => (
