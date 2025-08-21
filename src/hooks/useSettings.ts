@@ -33,7 +33,10 @@ function migrateSettings(stored: Partial<AppSettings> | undefined): AppSettings 
     advanced: { ...defaults.advanced, ...(stored?.advanced || {}) },
   }
   // 二次兜底：voice 缺失时按语言回填
-  if (!next.speech.voice) {
+  if (
+    !next.speech.voice ||
+    !getVoicesByLanguage(next.speech.language).find((v) => v.value === next.speech.voice)
+  ) {
     next.speech.voice = getVoicesByLanguage(next.speech.language)[0]?.value as string
   }
   // iceServers 规范化
