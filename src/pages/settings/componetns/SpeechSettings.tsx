@@ -48,6 +48,8 @@ export default function SpeechSettings() {
         </SettingItem>
         <SettingItem title="语音">
           <Select
+            className="w-1/2"
+            triggerClassName="w-full"
             disabled={!settings.speech.language}
             size="sm"
             contentClassName="max-h-60 overflow-y-auto"
