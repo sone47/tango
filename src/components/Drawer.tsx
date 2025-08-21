@@ -18,7 +18,7 @@ export interface DrawerProps {
   open?: boolean
   onOpenChange?: (open: boolean) => void
   trigger?: React.ReactNode
-  title?: string
+  title?: string | React.ReactNode
   description?: string
   children?: React.ReactNode
   footer?: React.ReactNode

@@ -24,7 +24,7 @@ export default function SettingItem({
   const titleElement = isCard ? null : (
     <div className="flex items-center gap-3">
       {Icon && (
-        <div className={`w-8 h-8 rounded-lg flex items-center justify-center`}>
+        <div className={`size-8 rounded-lg flex items-center justify-center`}>
           <Icon size={16} />
         </div>
       )}
@@ -36,7 +36,7 @@ export default function SettingItem({
   )
 
   const content = (
-    <div className={cn('flex items-center justify-between gap-3 w-full', className)}>
+    <div className={cn('flex items-center justify-between gap-8 w-full', className)}>
       {titleElement}
       <div className="flex justify-end flex-1">{children}</div>
     </div>
