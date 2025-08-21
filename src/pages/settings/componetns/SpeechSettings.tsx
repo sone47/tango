@@ -15,7 +15,7 @@ import { getVoicesByLanguage } from '@/utils/speechUtils'
 export default function SpeechSettings() {
   const { settings, updateSpeechSettings } = useSettings()
   const drawer = useDrawer()
-  const { start, setText, isGlobalLoading } = useTTS('')
+  const { isGlobalLoading, start, setText } = useTTS('')
 
   const [voices, setVoices] = useState<{ value: string; label: string }[]>([])
   const [rate, setRate] = useState(settings.speech.rate)
@@ -28,6 +28,10 @@ export default function SpeechSettings() {
   useEffect(() => {
     setRate(settings.speech.rate)
   }, [settings.speech.rate])
+
+  useEffect(() => {
+    setText(voiceText)
+  }, [voiceText])
 
   return (
     <SettingItem title="语音设置" icon={Headphones} isCard>
@@ -78,10 +82,7 @@ export default function SpeechSettings() {
               icon={Play}
               disabled={!voiceText}
               loading={isGlobalLoading}
-              onClick={() => {
-                setText(voiceText)
-                start()
-              }}
+              onClick={start}
             >
               播放测试语音
             </Button>
@@ -93,7 +94,9 @@ export default function SpeechSettings() {
           <Textarea
             placeholder="请输入要测试的文本"
             value={voiceText}
-            onChange={(e) => setVoiceText(e.target.value)}
+            onChange={(e) => {
+              setVoiceText(e.target.value)
+            }}
           />
         </Drawer>
       </div>
