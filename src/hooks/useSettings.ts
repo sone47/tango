@@ -34,7 +34,7 @@ function migrateSettings(stored: Partial<AppSettings> | undefined): AppSettings 
   }
   // 二次兜底：voice 缺失时按语言回填
   if (!next.speech.voice) {
-    next.speech.voice = getVoicesByLanguage(next.speech.language)[0]?.name
+    next.speech.voice = getVoicesByLanguage(next.speech.language)[0]?.value as string
   }
   // iceServers 规范化
   if (!Array.isArray(next.transfer.iceServers) || next.transfer.iceServers.length === 0) {
@@ -68,7 +68,7 @@ export function useSettings() {
 
   const updateSpeechSettings = (speech: Partial<SpeechSettings>) => {
     if (speech.language) {
-      speech.voice = getVoicesByLanguage(speech.language)[0]?.name
+      speech.voice = getVoicesByLanguage(speech.language)[0]?.value as string
     }
 
     setSettings((prev) => ({

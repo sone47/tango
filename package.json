@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
+    "@lobehub/tts": "^2.0.1",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
     "@radix-ui/react-dialog": "^1.1.14",
@@ -69,7 +70,6 @@
     "@types/node": "^22.15.29",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.2",
-    "@types/xlsx": "^0.0.36",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",
     "@vitejs/plugin-react": "^4.4.1",

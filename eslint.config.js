@@ -10,7 +10,7 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules'] },
+  { ignores: ['dist', 'node_modules', 'dev-dist', 'build'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended, prettierConfig],
     files: ['**/*.{ts,tsx,js,jsx}'],

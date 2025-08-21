@@ -6,9 +6,7 @@ export interface PracticeSettings {
 
 export interface SpeechSettings {
   language: string
-  rate: number // 0.1 - 10
-  pitch: number // 0 - 2
-  volume: number // 0 - 1
+  rate: number // 0-2
   voice?: string
 }
 

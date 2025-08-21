@@ -1,15 +1,13 @@
-import { Volume2 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 
-import Button from '@/components/Button'
 import ProficiencySlider from '@/components/ProficiencySlider'
+import Speak from '@/components/Speak'
 import { useSettings } from '@/hooks/useSettings'
 import { cn } from '@/lib/utils'
 import { practiceService } from '@/services/practiceService'
 import { usePracticeStore } from '@/stores/practiceStore'
 import type { CardRevealState, Word } from '@/types'
-import { textToSpeech } from '@/utils/speechUtils'
 
 import FlashCardExampleSide from './FlashCardExampleSide'
 import FlashCardHeader from './FlashCardHeader'
@@ -54,18 +52,12 @@ const FlashCard = ({
     definition: false,
   })
 
-  const playButtonRef = useRef<HTMLButtonElement>(null)
-
   useEffect(() => {
     practiceService.getPracticeByVocabularyId(word.id).then((practice) => {
       setProficiency(practice?.proficiency ?? 0)
     })
 
     resetRevealState()
-
-    if (settings.practice.isAutoPlayAudio) {
-      playButtonRef.current?.click()
-    }
   }, [word.id])
 
   const isFirstCard = currentIndex === 0
@@ -183,23 +175,6 @@ const FlashCard = ({
     practiceService.updatePractice(word.id, { proficiency: value })
   }
 
-  const handlePlayAudio = (text?: string, audioUrl?: string) => {
-    if (audioUrl) {
-      const audio = new Audio(audioUrl)
-      audio.play()
-    } else {
-      if (!text) return
-
-      textToSpeech(text, settings.speech)
-    }
-  }
-
-  const handlePlayPhoneticAudio = (event: React.MouseEvent) => {
-    event.stopPropagation()
-
-    handlePlayAudio(word.word || word.phonetic, word.wordAudio)
-  }
-
   const handleExampleScroll = (isScrolling: boolean) => {
     setIsExampleScrolling(isScrolling)
   }
@@ -261,14 +236,12 @@ const FlashCard = ({
                 >
                   <div className="flex items-center justify-center gap-2 h-12">
                     <span className="text-xl font-medium text-gray-800">{word.phonetic}</span>
-                    {(word.phonetic || word.word) && (
-                      <Button
-                        ref={playButtonRef}
-                        onClick={handlePlayPhoneticAudio}
-                        variant="ghost"
-                        size="sm"
-                        icon={Volume2}
-                      ></Button>
+                    {word.word && (
+                      <Speak
+                        text={word.word}
+                        audioUrl={word.wordAudio}
+                        autoPlay={settings.practice.isAutoPlayAudio}
+                      />
                     )}
                   </div>
                 </RevealOverlay>

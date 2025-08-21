@@ -8,32 +8,26 @@ import Slider from '@/components/Slider'
 import Textarea from '@/components/Textarea'
 import { languageOptions } from '@/constants/settings'
 import { useSettings } from '@/hooks/useSettings'
+import { useTTS } from '@/hooks/useTTS'
 import SettingItem from '@/pages/settings/componetns/SettingItem'
-import { getVoicesByLanguage, textToSpeech, waitForVoicesReady } from '@/utils/speechUtils'
+import { getVoicesByLanguage } from '@/utils/speechUtils'
 
 export default function SpeechSettings() {
   const { settings, updateSpeechSettings } = useSettings()
   const drawer = useDrawer()
+  const { start, setText, isGlobalLoading } = useTTS('')
 
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
+  const [voices, setVoices] = useState<{ value: string; label: string }[]>([])
   const [rate, setRate] = useState(settings.speech.rate)
-  const [pitch, setPitch] = useState(settings.speech.pitch)
-  const [volume, setVolume] = useState(settings.speech.volume)
   const [voiceText, setVoiceText] = useState('hello world')
 
   useEffect(() => {
-    const loadVoices = async () => {
-      const availableVoices = await waitForVoicesReady()
-      setVoices(availableVoices)
-    }
-    loadVoices()
-  }, [])
+    setVoices(getVoicesByLanguage(settings.speech.language) as any)
+  }, [settings.speech.language])
 
   useEffect(() => {
     setRate(settings.speech.rate)
-    setPitch(settings.speech.pitch)
-    setVolume(settings.speech.volume)
-  }, [settings.speech.rate, settings.speech.pitch, settings.speech.volume])
+  }, [settings.speech.rate])
 
   return (
     <SettingItem title="语音设置" icon={Headphones} isCard>
@@ -48,27 +42,21 @@ export default function SpeechSettings() {
             onValueChange={(value) => updateSpeechSettings({ language: value })}
           />
         </SettingItem>
-
-        {voices.length > 0 && (
-          <SettingItem title="语音">
-            <Select
-              size="sm"
-              contentClassName="max-h-60 overflow-y-auto"
-              options={getVoicesByLanguage(settings.speech.language).map((voice) => ({
-                value: voice.name,
-                label: voice.name,
-              }))}
-              value={settings.speech.voice}
-              onValueChange={(value) => updateSpeechSettings({ voice: value })}
-            ></Select>
-          </SettingItem>
-        )}
-
+        <SettingItem title="语音">
+          <Select
+            disabled={!settings.speech.language}
+            size="sm"
+            contentClassName="max-h-60 overflow-y-auto"
+            options={voices}
+            value={settings.speech.voice}
+            onValueChange={(value) => updateSpeechSettings({ voice: value })}
+          ></Select>
+        </SettingItem>
         <SettingItem title="语速">
           <Slider
             value={rate}
-            min={0.5}
-            max={2.0}
+            min={0.1}
+            max={2}
             step={0.1}
             onChange={(rate) => setRate(rate)}
             onChangeComplete={() => updateSpeechSettings({ rate })}
@@ -77,35 +65,6 @@ export default function SpeechSettings() {
             size="md"
           />
         </SettingItem>
-
-        <SettingItem title="音调">
-          <Slider
-            value={pitch}
-            min={0.5}
-            max={2.0}
-            step={0.1}
-            onChange={(pitch) => setPitch(pitch)}
-            onChangeComplete={() => updateSpeechSettings({ pitch })}
-            formatValue={(v) => v.toFixed(1)}
-            showValue={true}
-            size="md"
-          />
-        </SettingItem>
-
-        <SettingItem title="音量">
-          <Slider
-            value={volume}
-            min={0.1}
-            max={1.0}
-            step={0.01}
-            onChange={(volume) => setVolume(volume)}
-            onChangeComplete={() => updateSpeechSettings({ volume })}
-            formatValue={(v) => `${Math.round(v * 100)}%`}
-            showValue={true}
-            size="md"
-          />
-        </SettingItem>
-
         <Drawer
           trigger={
             <Button className="w-full" variant="outline" size="sm">
@@ -118,7 +77,11 @@ export default function SpeechSettings() {
               variant="primary"
               icon={Play}
               disabled={!voiceText}
-              onClick={() => textToSpeech(voiceText, settings.speech)}
+              loading={isGlobalLoading}
+              onClick={() => {
+                setText(voiceText)
+                start()
+              }}
             >
               播放测试语音
             </Button>

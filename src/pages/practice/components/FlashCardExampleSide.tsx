@@ -1,4 +1,4 @@
-import { AlertTriangle, Volume2 } from 'lucide-react'
+import { AlertTriangle } from 'lucide-react'
 import { AuthenticationError } from 'openai'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -6,13 +6,13 @@ import { toast } from 'sonner'
 
 import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'
 import Button from '@/components/Button'
+import Speak from '@/components/Speak'
 import Typography from '@/components/Typography'
 import { Badge } from '@/components/ui/badge'
 import { useSettings } from '@/hooks/useSettings'
 import { cn } from '@/lib/utils'
 import { Word } from '@/types'
 import { generateExample } from '@/utils/ai'
-import { textToSpeech } from '@/utils/speechUtils'
 
 interface FlashCardExampleSideProps {
   word: Word
@@ -40,17 +40,6 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
       onScroll(false)
     }
   }, [isScrolling, onScroll])
-
-  const handlePlayExampleAudio = (example: string, audioUrl?: string) => {
-    if (audioUrl) {
-      const audio = new Audio(audioUrl)
-      audio.play()
-    } else {
-      if (!example) return
-
-      textToSpeech(example, settings.speech)
-    }
-  }
 
   const handleGenerateExample = async (event: React.MouseEvent) => {
     event.stopPropagation()
@@ -122,20 +111,11 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
                       </Typography.Text>
                     )}
                   </div>
-                  <div className="h-full flex flex-col items-center justify-between gap-1">
-                    <Button
-                      className="justify-start h-auto !p-0"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handlePlayExampleAudio(
-                          example.example,
-                          example.isAi ? '' : word.exampleAudio
-                        )
-                      }}
-                      variant="ghost"
-                      size="sm"
-                      icon={Volume2}
-                    ></Button>
+                  <div className="h-full flex flex-col items-end justify-between gap-1">
+                    <Speak
+                      text={example.example}
+                      audioUrl={example.isAi ? '' : word.exampleAudio}
+                    />
                     {example.isAi && (
                       <Badge variant="secondary" className="font-medium">
                         AI

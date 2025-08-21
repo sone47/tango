@@ -8,9 +8,8 @@ export const defaultSettings = {
   },
   speech: {
     language: 'zh-CN',
+    voice: '',
     rate: 1.0,
-    pitch: 1.0,
-    volume: 1.0,
   },
   transfer: {
     importStrategy: 'overwrite' as const,
