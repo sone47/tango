@@ -92,7 +92,7 @@ const FlashCard = ({
   }
 
   const handleDoubleClick = (e: React.MouseEvent) => {
-    if (!e.currentTarget.contains(e.target as Node) || !isAllRevealed) {
+    if (!e.currentTarget.contains(e.target as Node)) {
       return
     }
 
