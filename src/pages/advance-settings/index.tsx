@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
 
+import AlertDialog from '@/components/AlertDialog'
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import Page from '@/components/Page'
@@ -9,15 +10,13 @@ import SettingItem from '@/pages/settings/componetns/SettingItem'
 
 export default function AdvanceSettings() {
   const { settings, updateAdvancedSettings } = useSettings()
-
+  const navigate = useNavigate()
   const [aiApiKey, setAiApiKey] = useState(settings.advanced.aiApiKey)
 
   const handleSave = () => {
     updateAdvancedSettings({
       aiApiKey,
     })
-
-    toast.success('保存成功')
   }
 
   return (
@@ -33,9 +32,19 @@ export default function AdvanceSettings() {
           </SettingItem>
         </SettingItem>
 
-        <Button variant="primary" className="w-full" onClick={handleSave}>
-          保存设置
-        </Button>
+        <AlertDialog
+          title="保存成功"
+          confirmText="返回上一页"
+          cancelText="继续设置"
+          onConfirm={() => {
+            navigate(-1)
+          }}
+          trigger={
+            <Button variant="primary" className="w-full" onClick={handleSave}>
+              保存设置
+            </Button>
+          }
+        />
       </div>
     </Page>
   )

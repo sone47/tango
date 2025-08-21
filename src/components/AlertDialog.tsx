@@ -16,8 +16,8 @@ export interface AlertDialogProps {
   open?: boolean
   onOpenChange?: (open: boolean) => void
   trigger?: React.ReactNode
-  title: string
-  description?: string
+  title: string | React.ReactNode
+  description?: string | React.ReactNode
   confirmText?: string
   cancelText?: string
   onConfirm?: () => void
