@@ -1,4 +1,5 @@
-import { Volume2 } from 'lucide-react'
+import { AlertTriangle, Volume2 } from 'lucide-react'
+import { AuthenticationError } from 'openai'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -23,6 +24,7 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
   const navigate = useNavigate()
   const { settings } = useSettings()
   const generateDisabledDialog = useAlertDialog()
+  const generateExampleFailedDialog = useAlertDialog()
   const [isGenerating, setIsGenerating] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
   const [examples, setExamples] = useState(
@@ -70,8 +72,12 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
       setExamples([...examples, { ...example, isAi: true }])
     } catch (error) {
       console.error(error)
-      toast.error('生成例句失败')
-      return
+      if (error instanceof AuthenticationError) {
+        generateExampleFailedDialog.show()
+      } else {
+        console.error(error)
+        toast.error('生成例句失败，请联系管理员')
+      }
     } finally {
       setIsGenerating(false)
     }
@@ -166,6 +172,21 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
         onOpenChange={generateDisabledDialog.setIsOpen}
         title="请先配置 API Key"
         description="请先在设置中配置 API Key，以便生成例句"
+        confirmText="去设置"
+        onConfirm={() => {
+          navigate('/settings/advanced')
+        }}
+      ></AlertDialog>
+      <AlertDialog
+        open={generateExampleFailedDialog.isOpen}
+        onOpenChange={generateExampleFailedDialog.setIsOpen}
+        title={
+          <div className="flex items-center justify-center gap-2 text-destructive">
+            <AlertTriangle size={20} />
+            <span>生成例句失败</span>
+          </div>
+        }
+        description="可能是 API Key 失效了，请重新配置。"
         confirmText="去设置"
         onConfirm={() => {
           navigate('/settings/advanced')
