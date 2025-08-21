@@ -28,7 +28,7 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
   const [isGenerating, setIsGenerating] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
   const [examples, setExamples] = useState(
-    word.example ? [{ example: word.example, translation: '', isAi: false }] : []
+    word.example ? [{ example: word.example, translation: '', isAi: false, id: 0 }] : []
   )
 
   const aiApiKey = settings.advanced.aiApiKey.trim()
@@ -58,7 +58,7 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
         return
       }
 
-      setExamples([...examples, { ...example, isAi: true }])
+      setExamples([{ ...example, isAi: true, id: examples.length }, ...examples])
     } catch (error) {
       console.error(error)
       if (error instanceof AuthenticationError) {
@@ -96,9 +96,9 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
                 setIsScrolling(false)
               }}
             >
-              {examples.map((example, index) => (
+              {examples.map((example) => (
                 <div
-                  key={index}
+                  key={example.id}
                   className="w-full flex items-start space-between gap-1 bg-background rounded-lg p-4"
                 >
                   <div className="flex-1 flex flex-col justify-start gap-2 text-left">
