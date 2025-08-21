@@ -48,15 +48,23 @@ const FlashCardExampleSide = ({ word, className }: FlashCardExampleSideProps) =>
       return
     }
 
-    setIsGenerating(true)
-    const example = await generateExample(word.word, aiApiKey)
-    if (!example) {
-      toast.error('生成例句失败，请重试')
-      return
-    }
+    try {
+      setIsGenerating(true)
 
-    setExamples([...examples, { ...example, isAi: true }])
-    setIsGenerating(false)
+      const example = await generateExample(word.word, aiApiKey)
+      if (!example) {
+        toast.error('生成例句失败，请重试')
+        return
+      }
+
+      setExamples([...examples, { ...example, isAi: true }])
+    } catch (error) {
+      console.error(error)
+      toast.error('生成例句失败')
+      return
+    } finally {
+      setIsGenerating(false)
+    }
   }
 
   const checkGenerateEnabled = () => {

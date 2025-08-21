@@ -308,7 +308,6 @@ const FlashCard = ({
               </div>
             </div>
 
-            {/* 背面 */}
             <FlashCardExampleSide word={word} className="absolute top-0 left-0 w-full h-full p-4" />
           </motion.div>
         </VerticalSwipeHandler>
