@@ -168,8 +168,8 @@ export class WordPackService {
 
       // 验证词汇内容
       cardPack.vocabularies.forEach((vocab, vocabIndex) => {
-        if (!vocab.word?.trim() && !vocab.phonetic?.trim()) {
-          errors.push(`卡包 "${cardPack.name}" 第 ${vocabIndex + 1} 行的写法和音标不能同时为空`)
+        if (!vocab.word?.trim()) {
+          errors.push(`卡包 "${cardPack.name}" 第 ${vocabIndex + 1} 行的写法不能为空`)
         }
         if (!vocab.definition?.trim()) {
           errors.push(`卡包 "${cardPack.name}" 第 ${vocabIndex + 1} 行的释义不能为空`)
