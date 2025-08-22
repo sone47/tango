@@ -27,7 +27,7 @@ const VerticalSwipeHandler = ({
   onSwipeReset,
   onSwipeUp,
   onSwipeDown,
-  distanceThreshold = 150,
+  distanceThreshold = 120,
   exitDuration = 300,
 }: VerticalSwipeHandlerProps) => {
   const [swipeState, setSwipeState] = useState<SwipeState>({
@@ -49,16 +49,15 @@ const VerticalSwipeHandler = ({
     }
   }, [dragOffset, distanceThreshold, onSwipeUpProcess, onSwipeDownProcess, onSwipeReset])
 
-  const handleVerticalSwipe = (offsetY: number) => {
+  const handleVerticalSwipe = (offsetY: number, velocityY: number) => {
     if (isSwipingOut) return
 
-    const isSwipeUp = offsetY < -distanceThreshold
-    const isSwipeDown = offsetY > distanceThreshold
+    const isSwipe = Math.abs(offsetY) > distanceThreshold || Math.abs(velocityY) > 500
 
-    if (isSwipeUp || isSwipeDown) {
+    if (isSwipe) {
       setSwipeState((prev) => ({ ...prev, isSwipingOut: true }))
 
-      if (isSwipeUp) {
+      if (offsetY < 0) {
         onSwipeUp()
       } else {
         onSwipeDown()
@@ -89,7 +88,7 @@ const VerticalSwipeHandler = ({
         setSwipeState((prev) => ({ ...prev, dragOffset: info.offset.y }))
       }}
       onDragEnd={(_, info) => {
-        handleVerticalSwipe(info.offset.y)
+        handleVerticalSwipe(info.offset.y, info.velocity.y)
       }}
     >
       {children}
