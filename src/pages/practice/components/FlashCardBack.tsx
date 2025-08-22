@@ -11,6 +11,7 @@ import { AnimatedList } from '@/components/magicui/animated-list'
 import Speak from '@/components/Speak'
 import Typography from '@/components/Typography'
 import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useExampleStream } from '@/hooks/useGenerateWordExample'
 import { useSettings } from '@/hooks/useSettings'
 import { cn } from '@/lib/utils'
@@ -167,20 +168,29 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
                     className="w-full min-h-[50px] flex items-stretch space-between gap-1 bg-background rounded-lg p-4"
                   >
                     <div className="flex-1 flex flex-col justify-start gap-2 text-left">
-                      <Typography.Text type="secondary" size="sm" className="!font-medium">
-                        {example.example.slice(0, example.wordPosition)}
-                        <span className="text-primary">
-                          {example.example.slice(
-                            example.wordPosition,
-                            example.wordPosition + word.word.length
+                      {example.isGenerating ? (
+                        <>
+                          <Skeleton className="h-4 w-[250px]" />
+                          <Skeleton className="h-4 w-[200px]" />
+                        </>
+                      ) : (
+                        <>
+                          <Typography.Text type="secondary" size="sm" className="!font-medium">
+                            {example.example.slice(0, example.wordPosition)}
+                            <span className="text-primary">
+                              {example.example.slice(
+                                example.wordPosition,
+                                example.wordPosition + word.word.length
+                              )}
+                            </span>
+                            {example.example.slice(example.wordPosition + word.word.length)}
+                          </Typography.Text>
+                          {example.translation && (
+                            <Typography.Text type="secondary" size="xs">
+                              {example.translation}
+                            </Typography.Text>
                           )}
-                        </span>
-                        {example.example.slice(example.wordPosition + word.word.length)}
-                      </Typography.Text>
-                      {example.translation && (
-                        <Typography.Text type="secondary" size="xs">
-                          {example.translation}
-                        </Typography.Text>
+                        </>
                       )}
                     </div>
                     {!example.isGenerating && (
