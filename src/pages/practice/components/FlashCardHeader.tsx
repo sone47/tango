@@ -88,8 +88,8 @@ const FlashCardHeader = ({
   ]
 
   return (
-    <>
-      <div className={cn(baseClasses, className)} onClick={(e) => e.stopPropagation()}>
+    <div className="z-1">
+      <div className={cn(baseClasses, className)}>
         <div className={`${variantClasses[variant]} px-3 py-1 rounded-full text-sm font-medium`}>
           {currentIndex + 1}/{totalCount}
         </div>
@@ -118,7 +118,7 @@ const FlashCardHeader = ({
           />
         )}
       </Drawer>
-    </>
+    </div>
   )
 }
 
