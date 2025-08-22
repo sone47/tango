@@ -9,9 +9,10 @@ interface SpeakProps {
   text: string
   autoPlay?: boolean
   size?: 'sm' | 'md' | 'lg'
+  onPlay?: () => void
 }
 
-const Speak = ({ text, audioUrl, autoPlay = false, size = 'md' }: SpeakProps) => {
+const Speak = ({ text, audioUrl, autoPlay = false, size = 'md', onPlay }: SpeakProps) => {
   const playButtonRef = useRef<HTMLButtonElement>(null)
 
   const { start, isGlobalLoading } = useTTS(text)
@@ -31,6 +32,8 @@ const Speak = ({ text, audioUrl, autoPlay = false, size = 'md' }: SpeakProps) =>
     } else {
       start()
     }
+
+    onPlay?.()
   }
 
   return (

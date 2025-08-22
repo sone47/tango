@@ -46,6 +46,7 @@ const FlashCardExampleSide = ({
   const [isGenerating, setIsGenerating] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
   const [examples, setExamples] = useState<Example[]>([])
+  const [isPlayed, setIsPlayed] = useState(false)
 
   const aiApiKey = settings.advanced.aiApiKey.trim()
 
@@ -85,6 +86,8 @@ const FlashCardExampleSide = ({
           wordPosition: getWordPositionInExample(example.example),
         },
       ])
+
+      setIsPlayed(false)
     } catch (error) {
       console.error(error)
       if (error instanceof AuthenticationError) {
@@ -131,7 +134,7 @@ const FlashCardExampleSide = ({
           <Typography.Title level={5}>例句</Typography.Title>
           {examples.length > 0 ? (
             <div
-              className="max-h-[200px] overflow-y-auto flex flex-col gap-3"
+              className="max-h-1/2 overflow-y-auto flex flex-col gap-3"
               onClick={(e) => {
                 e.stopPropagation()
               }}
@@ -143,7 +146,7 @@ const FlashCardExampleSide = ({
               }}
             >
               <AnimatedList delay={100}>
-                {examples.map((example) => (
+                {examples.map((example, index) => (
                   <div
                     key={example.id}
                     className="w-full flex items-start space-between gap-1 bg-background rounded-lg p-4"
@@ -161,13 +164,14 @@ const FlashCardExampleSide = ({
                       )}
                     </div>
                     <div className="h-full flex flex-col items-end justify-between gap-1">
-                      {isFlipped && (
-                        <Speak
-                          text={example.example}
-                          audioUrl={example.isAi ? '' : word.exampleAudio}
-                          autoPlay
-                        />
-                      )}
+                      <Speak
+                        text={example.example}
+                        audioUrl={example.isAi ? '' : word.exampleAudio}
+                        autoPlay={isFlipped && index === examples.length - 1 && !isPlayed}
+                        onPlay={() => {
+                          setIsPlayed(true)
+                        }}
+                      />
                       {example.isAi && (
                         <Badge variant="secondary" className="font-medium">
                           AI
