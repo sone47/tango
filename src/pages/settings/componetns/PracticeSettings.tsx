@@ -2,6 +2,7 @@ import { BookCheck } from 'lucide-react'
 
 import Switch from '@/components/Switch'
 import ToggleGroup from '@/components/ToggleGroup'
+import { FlashCardItemEnum, FlashCardItemNameMap } from '@/constants/flashCard'
 import { useSettings } from '@/hooks/useSettings'
 
 import SettingItem from './SettingItem'
@@ -10,9 +11,12 @@ export default function PracticeSettings() {
   const { settings, updatePracticeSettings } = useSettings()
 
   const hiddenInCardOptions = [
-    { value: 'phonetic', label: '音标' },
-    { value: 'word', label: '单词' },
-    { value: 'definition', label: '释义' },
+    { value: FlashCardItemEnum.phonetic, label: FlashCardItemNameMap[FlashCardItemEnum.phonetic] },
+    { value: FlashCardItemEnum.word, label: FlashCardItemNameMap[FlashCardItemEnum.word] },
+    {
+      value: FlashCardItemEnum.definition,
+      label: FlashCardItemNameMap[FlashCardItemEnum.definition],
+    },
   ]
 
   return (

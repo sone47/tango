@@ -1,11 +1,12 @@
 import { VoiceList } from '@lobehub/tts'
 
+import { FlashCardItemNameMap } from '@/constants/flashCard'
 import type { AppSettings } from '@/types/settings'
 
 export const defaultSettings = {
   practice: {
     isShuffle: true,
-    hiddenInCard: ['phonetic', 'word', 'definition'],
+    hiddenInCard: Object.keys(FlashCardItemNameMap),
     isAutoPlayAudio: true,
   },
   speech: {

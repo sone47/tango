@@ -6,24 +6,13 @@ import Button from '@/components/Button'
 import { Confetti, ConfettiRef } from '@/components/magicui/confetti'
 import Typography from '@/components/Typography'
 import { usePracticeStore } from '@/stores/practiceStore'
-import type { CardPack, CardRevealState, Word } from '@/types'
 
 import FlashCard from './FlashCard'
 
-interface PracticeContentProps {
-  selectedCardPack: CardPack | null
-  shuffledWords: Word[]
-  currentWordIndex: number
-}
-
-const PracticeContent = ({
-  selectedCardPack,
-  shuffledWords,
-  currentWordIndex,
-}: PracticeContentProps) => {
+const PracticeContent = () => {
   const confettiRef = useRef<ConfettiRef>(null)
 
-  const { revealState, updateState } = usePracticeStore()
+  const { currentWordIndex, selectedCardPack, shuffledWords, updateState } = usePracticeStore()
 
   const handleShowCardPackSelector = () => {
     updateState({ showCardPackSelector: true })
@@ -83,21 +72,9 @@ const PracticeContent = ({
     )
   }
 
-  const currentWord = shuffledWords[currentWordIndex]
-
-  const handleRevealStateChange = (newRevealState: CardRevealState) => {
-    updateState({ revealState: newRevealState })
-  }
-
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-4">
-      <FlashCard
-        word={currentWord}
-        revealState={revealState}
-        onRevealStateChange={handleRevealStateChange}
-        currentIndex={currentWordIndex}
-        totalCount={shuffledWords.length}
-      />
+      <FlashCard />
     </div>
   )
 }

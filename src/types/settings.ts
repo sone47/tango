@@ -1,6 +1,8 @@
+import { FlashCardItemNameMap } from '@/constants/flashCard'
+
 export interface PracticeSettings {
   isShuffle: boolean
-  hiddenInCard: ('phonetic' | 'word' | 'definition')[]
+  hiddenInCard: (keyof typeof FlashCardItemNameMap)[]
   isAutoPlayAudio: boolean
 }
 

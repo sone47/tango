@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils'
 import { Word } from '@/types'
 import { generateExample } from '@/utils/ai'
 
-interface FlashCardExampleSideProps {
+interface FlashCardBackProps {
   word: Word
   className?: string
   onScroll: (isScrolling: boolean) => void
@@ -31,12 +31,7 @@ interface Example {
   wordPosition: number
 }
 
-const FlashCardExampleSide = ({
-  word,
-  className,
-  onScroll,
-  isFlipped,
-}: FlashCardExampleSideProps) => {
+const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackProps) => {
   const navigate = useNavigate()
   const { settings } = useSettings()
   const generateDisabledDialog = useAlertDialog()
@@ -234,4 +229,4 @@ const FlashCardExampleSide = ({
   )
 }
 
-export default FlashCardExampleSide
+export default FlashCardBack

@@ -12,15 +12,8 @@ import PracticeHeader from './components/PracticeHeader'
 export default function PracticeTab() {
   const { fetchWordPacks } = useWordPackStore()
 
-  const {
-    selectedCardPack,
-    currentWordIndex,
-    shuffledWords,
-    studiedWords,
-    tempSelectedCardPack,
-    showHistoryPool,
-    updateState,
-  } = usePracticeStore()
+  const { selectedCardPack, studiedWords, tempSelectedCardPack, showHistoryPool, updateState } =
+    usePracticeStore()
 
   useEffect(() => {
     if (!selectedCardPack) {
@@ -34,11 +27,7 @@ export default function PracticeTab() {
     <div className="h-full flex flex-col">
       <PracticeHeader />
 
-      <PracticeContent
-        selectedCardPack={selectedCardPack}
-        shuffledWords={shuffledWords}
-        currentWordIndex={currentWordIndex}
-      />
+      <PracticeContent />
 
       <CardPackSelector />
 
