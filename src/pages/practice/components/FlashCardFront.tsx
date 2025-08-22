@@ -27,7 +27,6 @@ const FlashCardFront = () => {
   const guideItemName = cardItemNames.find(
     (key) => !settings.practice.hiddenInCard.includes(key as keyof typeof FlashCardItemNameMap)
   )
-  console.log(revealState)
 
   const handleRevealDragStart = (field: keyof CardRevealState) => {
     isDraggingRef.current[field] = true
