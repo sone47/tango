@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 
 import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'
 import Button from '@/components/Button'
+import { AnimatedList } from '@/components/magicui/animated-list'
 import Speak from '@/components/Speak'
 import Typography from '@/components/Typography'
 import { Badge } from '@/components/ui/badge'
@@ -79,13 +80,13 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
       }
 
       setExamples([
+        ...examples,
         {
           ...example,
           isAi: true,
           id: examples.length,
           wordPosition: getWordPositionInExample(example.example),
         },
-        ...examples,
       ])
     } catch (error) {
       console.error(error)
@@ -128,36 +129,38 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
                 setIsScrolling(false)
               }}
             >
-              {examples.map((example) => (
-                <div
-                  key={example.id}
-                  className="w-full flex items-start space-between gap-1 bg-background rounded-lg p-4"
-                >
-                  <div className="flex-1 flex flex-col justify-start gap-2 text-left">
-                    <Typography.Text type="secondary" size="sm" className="!font-medium">
-                      {example.example.slice(0, example.wordPosition)}
-                      <span className="text-primary">{word.word}</span>
-                      {example.example.slice(example.wordPosition + word.word.length)}
-                    </Typography.Text>
-                    {example.translation && (
-                      <Typography.Text type="secondary" size="xs">
-                        {example.translation}
+              <AnimatedList delay={100}>
+                {examples.map((example) => (
+                  <div
+                    key={example.id}
+                    className="w-full flex items-start space-between gap-1 bg-background rounded-lg p-4"
+                  >
+                    <div className="flex-1 flex flex-col justify-start gap-2 text-left">
+                      <Typography.Text type="secondary" size="sm" className="!font-medium">
+                        {example.example.slice(0, example.wordPosition)}
+                        <span className="text-primary">{word.word}</span>
+                        {example.example.slice(example.wordPosition + word.word.length)}
                       </Typography.Text>
-                    )}
+                      {example.translation && (
+                        <Typography.Text type="secondary" size="xs">
+                          {example.translation}
+                        </Typography.Text>
+                      )}
+                    </div>
+                    <div className="h-full flex flex-col items-end justify-between gap-1">
+                      <Speak
+                        text={example.example}
+                        audioUrl={example.isAi ? '' : word.exampleAudio}
+                      />
+                      {example.isAi && (
+                        <Badge variant="secondary" className="font-medium">
+                          AI
+                        </Badge>
+                      )}
+                    </div>
                   </div>
-                  <div className="h-full flex flex-col items-end justify-between gap-1">
-                    <Speak
-                      text={example.example}
-                      audioUrl={example.isAi ? '' : word.exampleAudio}
-                    />
-                    {example.isAi && (
-                      <Badge variant="secondary" className="font-medium">
-                        AI
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </AnimatedList>
             </div>
           ) : (
             <div className="text-center py-4 bg-background rounded-lg flex flex-col gap-2">
