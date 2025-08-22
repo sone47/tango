@@ -20,6 +20,14 @@ interface FlashCardExampleSideProps {
   onScroll: (isScrolling: boolean) => void
 }
 
+interface Example {
+  example: string
+  translation: string
+  isAi: boolean
+  id: number
+  wordPosition: number
+}
+
 const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSideProps) => {
   const navigate = useNavigate()
   const { settings } = useSettings()
@@ -27,11 +35,23 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
   const generateExampleFailedDialog = useAlertDialog()
   const [isGenerating, setIsGenerating] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
-  const [examples, setExamples] = useState(
-    word.example ? [{ example: word.example, translation: '', isAi: false, id: 0 }] : []
-  )
+  const [examples, setExamples] = useState<Example[]>([])
 
   const aiApiKey = settings.advanced.aiApiKey.trim()
+
+  useEffect(() => {
+    if (word.example) {
+      setExamples([
+        {
+          example: word.example,
+          translation: '',
+          isAi: false,
+          id: 0,
+          wordPosition: getWordPositionInExample(word.example),
+        },
+      ])
+    }
+  }, [word.example])
 
   useEffect(() => {
     if (isScrolling) {
@@ -58,7 +78,15 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
         return
       }
 
-      setExamples([{ ...example, isAi: true, id: examples.length }, ...examples])
+      setExamples([
+        {
+          ...example,
+          isAi: true,
+          id: examples.length,
+          wordPosition: getWordPositionInExample(example.example),
+        },
+        ...examples,
+      ])
     } catch (error) {
       console.error(error)
       if (error instanceof AuthenticationError) {
@@ -74,6 +102,10 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
 
   const checkGenerateEnabled = () => {
     return !!aiApiKey
+  }
+
+  const getWordPositionInExample = (example: string) => {
+    return example.indexOf(word.word)
   }
 
   return (
@@ -103,7 +135,9 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
                 >
                   <div className="flex-1 flex flex-col justify-start gap-2 text-left">
                     <Typography.Text type="secondary" size="sm" className="!font-medium">
-                      {example.example}
+                      {example.example.slice(0, example.wordPosition)}
+                      <span className="text-primary">{word.word}</span>
+                      {example.example.slice(example.wordPosition + word.word.length)}
                     </Typography.Text>
                     {example.translation && (
                       <Typography.Text type="secondary" size="xs">
