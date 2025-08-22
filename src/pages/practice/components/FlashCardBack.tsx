@@ -168,7 +168,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
                     className="w-full min-h-[50px] flex items-stretch space-between gap-1 bg-background rounded-lg p-4"
                   >
                     <div className="flex-1 flex flex-col justify-start gap-2 text-left">
-                      {example.isGenerating ? (
+                      {example.isGenerating && !example.example ? (
                         <>
                           <Skeleton className="h-4 w-[250px]" />
                           <Skeleton className="h-4 w-[200px]" />
