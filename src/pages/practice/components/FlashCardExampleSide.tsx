@@ -1,3 +1,4 @@
+import { useIsFirstRender } from '@uidotdev/usehooks'
 import { AlertTriangle } from 'lucide-react'
 import { AuthenticationError } from 'openai'
 import { useEffect, useState } from 'react'
@@ -19,6 +20,7 @@ interface FlashCardExampleSideProps {
   word: Word
   className?: string
   onScroll: (isScrolling: boolean) => void
+  isFlipped: boolean
 }
 
 interface Example {
@@ -29,30 +31,23 @@ interface Example {
   wordPosition: number
 }
 
-const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSideProps) => {
+const FlashCardExampleSide = ({
+  word,
+  className,
+  onScroll,
+  isFlipped,
+}: FlashCardExampleSideProps) => {
   const navigate = useNavigate()
   const { settings } = useSettings()
   const generateDisabledDialog = useAlertDialog()
   const generateExampleFailedDialog = useAlertDialog()
+  const isFirstRender = useIsFirstRender()
+
   const [isGenerating, setIsGenerating] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
   const [examples, setExamples] = useState<Example[]>([])
 
   const aiApiKey = settings.advanced.aiApiKey.trim()
-
-  useEffect(() => {
-    if (word.example) {
-      setExamples([
-        {
-          example: word.example,
-          translation: '',
-          isAi: false,
-          id: 0,
-          wordPosition: getWordPositionInExample(word.example),
-        },
-      ])
-    }
-  }, [word.example])
 
   useEffect(() => {
     if (isScrolling) {
@@ -62,8 +57,10 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
     }
   }, [isScrolling, onScroll])
 
-  const handleGenerateExample = async (event: React.MouseEvent) => {
-    event.stopPropagation()
+  const handleGenerateExample = async (event?: React.MouseEvent) => {
+    event?.stopPropagation()
+
+    if (isGenerating) return
 
     if (!checkGenerateEnabled()) {
       generateDisabledDialog.show()
@@ -109,6 +106,22 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
     return example.indexOf(word.word)
   }
 
+  if (isFirstRender) {
+    if (word.example) {
+      setExamples([
+        {
+          example: word.example,
+          translation: '',
+          isAi: false,
+          id: 0,
+          wordPosition: getWordPositionInExample(word.example),
+        },
+      ])
+    } else {
+      handleGenerateExample()
+    }
+  }
+
   return (
     <>
       <div
@@ -148,10 +161,13 @@ const FlashCardExampleSide = ({ word, className, onScroll }: FlashCardExampleSid
                       )}
                     </div>
                     <div className="h-full flex flex-col items-end justify-between gap-1">
-                      <Speak
-                        text={example.example}
-                        audioUrl={example.isAi ? '' : word.exampleAudio}
-                      />
+                      {isFlipped && (
+                        <Speak
+                          text={example.example}
+                          audioUrl={example.isAi ? '' : word.exampleAudio}
+                          autoPlay
+                        />
+                      )}
                       {example.isAi && (
                         <Badge variant="secondary" className="font-medium">
                           AI

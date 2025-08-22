@@ -287,8 +287,9 @@ const FlashCard = ({
             </div>
 
             <FlashCardExampleSide
-              word={word}
               className="absolute top-0 left-0 w-full h-full p-4"
+              word={word}
+              isFlipped={isFlipped}
               onScroll={handleExampleScroll}
             />
           </motion.div>
