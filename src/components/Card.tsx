@@ -35,7 +35,7 @@ const Card = ({
         {Icon && (
           <div
             className={cn(
-              baseStyles.iconContainer,
+              baseStyles.iconContainerLarge,
               iconColor ? colors.icon[iconColor] : '',
               iconColor ? 'justify-center' : 'justify-start'
             )}

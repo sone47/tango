@@ -72,7 +72,7 @@ const Modal = ({
                   <div className="flex items-center gap-3">
                     {Icon && (
                       <div
-                        className={`${baseStyles.iconContainer} ${iconColor ? colors.icon[iconColor] : ''}`}
+                        className={`${baseStyles.iconContainerLarge} ${iconColor ? colors.icon[iconColor] : ''}`}
                       >
                         <Icon size={20} />
                       </div>
