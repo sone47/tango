@@ -54,25 +54,18 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
   }, [isScrolling, onScroll])
 
   useEffect(() => {
-    if (isGenerating) {
-      setExamples([
-        ...examples.slice(0, -1),
-        {
-          ...examples[examples.length - 1],
-          example,
-          translation,
-          wordPosition: getWordPositionInExample(example),
-        },
-      ])
-    } else {
-      setExamples([
-        ...examples.slice(0, -1),
-        {
-          ...examples[examples.length - 1],
-          isGenerating: false,
-        },
-      ])
-    }
+    if (!example) return
+
+    setExamples([
+      ...examples.slice(0, -1),
+      {
+        ...examples[examples.length - 1],
+        example,
+        translation,
+        wordPosition: getWordPositionInExample(example),
+        isGenerating,
+      },
+    ])
   }, [example, translation, isGenerating])
 
   useEffect(() => {

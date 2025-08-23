@@ -49,8 +49,10 @@ export function useExampleStream() {
         }
       }
 
-      setExample('')
-      setTranslation('')
+      requestAnimationFrame(() => {
+        setExample('')
+        setTranslation('')
+      })
     } finally {
       setIsGenerating(false)
     }
