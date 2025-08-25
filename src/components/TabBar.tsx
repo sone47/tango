@@ -20,14 +20,16 @@ interface TabsProps {
 
 const Tabs = ({ tabs, activeTab, onTabChange, className = '' }: TabsProps) => {
   return (
-    <div className={`bg-white/80 backdrop-blur-lg border-t border-gray-200/50 ${className}`}>
+    <div className={`bg-background/80 backdrop-blur-lg border-t border-border ${className}`}>
       <div className="flex items-center justify-around py-1 px-4">
         {tabs.map((tab) => (
           <motion.button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
             className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${
-              activeTab === tab.id ? 'text-primary' : 'text-gray-500 hover:text-gray-700'
+              activeTab === tab.id
+                ? 'text-primary'
+                : 'text-muted-foreground/80 hover:text-muted-foreground'
             }`}
             whileTap={{ scale: 0.95 }}
           >
