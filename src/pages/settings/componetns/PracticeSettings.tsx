@@ -22,12 +22,14 @@ export default function PracticeSettings() {
   >({})
 
   useEffect(() => {
+    if (!cardConfigDrawer.isOpen) return
+
     setCardConfig(
       Object.fromEntries(settings.practice.hiddenInCard.map((item) => [item, true])) as {
         [key in FlashCardItemEnum]: boolean
       }
     )
-  }, [])
+  }, [cardConfigDrawer.isOpen])
 
   const hiddenInCardOptions = [
     { value: FlashCardItemEnum.phonetic, label: FlashCardItemNameMap[FlashCardItemEnum.phonetic] },
@@ -115,7 +117,7 @@ export default function PracticeSettings() {
               </div>
               <div className="flex-1 flex flex-col gap-2">
                 {hiddenInCardOptions.map((option) => (
-                  <SettingItem key={option.value} title={option.label}>
+                  <SettingItem key={option.value} title={option.label} titleClassName="text-md">
                     <Switch
                       checked={!!cardConfig[option.value]}
                       onChange={(checked) => handleCardConfigChange(option.value, checked)}

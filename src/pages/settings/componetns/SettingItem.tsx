@@ -11,6 +11,7 @@ interface SettingItemProps {
   children: ReactNode
   className?: string
   isCard?: boolean
+  titleClassName?: string
 }
 
 export default function SettingItem({
@@ -20,6 +21,7 @@ export default function SettingItem({
   children,
   isCard = false,
   className,
+  titleClassName,
 }: SettingItemProps) {
   const titleElement = isCard ? null : (
     <div className="flex items-center gap-3">
@@ -29,7 +31,7 @@ export default function SettingItem({
         </div>
       )}
       <div className="flex-1">
-        <div className="text-sm font-medium text-gray-900">{title}</div>
+        <div className={cn('text-sm font-medium text-gray-900', titleClassName)}>{title}</div>
         {description && <div className="text-xs text-gray-500 mt-0.5">{description}</div>}
       </div>
     </div>
