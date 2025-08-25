@@ -1,5 +1,5 @@
-import { Volume2 } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { LucideIcon, Volume, Volume1, Volume2 } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 
 import Button from '@/components/Button'
 import { useTTS } from '@/hooks/useTTS'
@@ -10,6 +10,59 @@ interface SpeakProps {
   autoPlay?: boolean
   size?: 'sm' | 'md' | 'lg'
   onPlay?: () => void
+}
+
+const Icon = ({ isPlaying }: { isPlaying: boolean }) => {
+  const iconSequence = [Volume, Volume1, Volume2]
+  const staticIndex = 2
+  const intervalTime = 300
+
+  const [CurrentIcon, setCurrentIcon] = useState<LucideIcon>(iconSequence[staticIndex])
+  const currentIconIndex = useRef(0)
+  const animationFrameId = useRef<number | null>(null)
+  const lastUpdateTime = useRef(0)
+
+  useEffect(() => {
+    if (isPlaying) {
+      currentIconIndex.current = 0
+      lastUpdateTime.current = performance.now()
+      startAnimation()
+    } else {
+      stopAnimation()
+      setCurrentIcon(iconSequence[staticIndex])
+    }
+
+    return () => {
+      stopAnimation()
+    }
+  }, [isPlaying])
+
+  const startAnimation = () => {
+    const animate = (currentTime: number) => {
+      if (!isPlaying) return
+
+      const deltaTime = currentTime - lastUpdateTime.current
+
+      if (deltaTime >= intervalTime) {
+        setCurrentIcon(iconSequence[currentIconIndex.current % iconSequence.length])
+        currentIconIndex.current++
+        lastUpdateTime.current = currentTime
+      }
+
+      animationFrameId.current = requestAnimationFrame(animate)
+    }
+
+    animationFrameId.current = requestAnimationFrame(animate)
+  }
+
+  const stopAnimation = () => {
+    if (animationFrameId.current) {
+      cancelAnimationFrame(animationFrameId.current)
+      animationFrameId.current = null
+    }
+  }
+
+  return <CurrentIcon className="size-4" />
 }
 
 const Speak = ({ text, audioUrl, autoPlay = false, size = 'md', onPlay }: SpeakProps) => {
@@ -57,11 +110,16 @@ const Speak = ({ text, audioUrl, autoPlay = false, size = 'md', onPlay }: SpeakP
       ref={playButtonRef}
       variant="ghost"
       onClick={handlePlay}
-      icon={Volume2}
-      loading={isGlobalLoading}
       size={size}
       className="!p-0 h-auto"
-    ></Button>
+      disabled={isGlobalLoading}
+    >
+      {isGlobalLoading ? (
+        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+      ) : (
+        <Icon isPlaying={ttsAudio.isPlaying} />
+      )}
+    </Button>
   )
 }
 
