@@ -44,7 +44,7 @@ export default function DataSyncSettings() {
       <div className="space-y-4 w-full">
         <SettingItem title="接收策略">
           <Select
-            className="w-1/2"
+            className="w-[136px]"
             triggerClassName="w-full"
             size="sm"
             options={[
@@ -59,13 +59,13 @@ export default function DataSyncSettings() {
         </SettingItem>
 
         <SettingItem title="ICE/TURN 服务器">
-          <div className="flex items-center justify-end gap-2 w-full">
+          <div className="flex items-center justify-end gap-2 w-[136px]">
             <Drawer
               className="h-full"
               contentClassName="flex flex-col gap-4"
               footerClassName="border-t bg-card-foreground/5"
               trigger={
-                <Button size="sm" variant="outline" className="w-1/2">
+                <Button size="sm" variant="outline" className="flex-1">
                   配置
                 </Button>
               }

@@ -38,7 +38,7 @@ export default function SpeechSettings() {
       <div className="space-y-4 w-full">
         <SettingItem title="语言">
           <Select
-            className="w-1/2"
+            className="w-[136px]"
             triggerClassName="w-full"
             size="sm"
             options={languageOptions}
@@ -48,7 +48,7 @@ export default function SpeechSettings() {
         </SettingItem>
         <SettingItem title="语音">
           <Select
-            className="w-1/2"
+            className="w-[136px]"
             triggerClassName="w-full"
             disabled={!settings.speech.language}
             size="sm"
