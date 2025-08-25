@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 
 import Button from '@/components/Button'
 import Drawer, { useDrawer } from '@/components/Drawer'
-import Switch from '@/components/Switch'
+import { Switch } from '@/components/ui/switch'
 import { FlashCardItemEnum, FlashCardItemNameMap } from '@/constants/flashCard'
 import { useSettings } from '@/hooks/useSettings'
 import { cn } from '@/lib/utils'
@@ -64,13 +64,13 @@ export default function PracticeSettings() {
         <SettingItem title="开始时自动洗牌">
           <Switch
             checked={settings.practice.isShuffle}
-            onChange={(checked) => updatePracticeSettings({ isShuffle: checked })}
+            onCheckedChange={(checked) => updatePracticeSettings({ isShuffle: checked })}
           />
         </SettingItem>
         <SettingItem title="开始时自动播放单词语音">
           <Switch
             checked={settings.practice.isAutoPlayAudio}
-            onChange={(checked) => updatePracticeSettings({ isAutoPlayAudio: checked })}
+            onCheckedChange={(checked) => updatePracticeSettings({ isAutoPlayAudio: checked })}
           />
         </SettingItem>
         <SettingItem title="卡片设置">
@@ -120,7 +120,7 @@ export default function PracticeSettings() {
                   <SettingItem key={option.value} title={option.label} titleClassName="text-md">
                     <Switch
                       checked={!!cardConfig[option.value]}
-                      onChange={(checked) => handleCardConfigChange(option.value, checked)}
+                      onCheckedChange={(checked) => handleCardConfigChange(option.value, checked)}
                     />
                   </SettingItem>
                 ))}
