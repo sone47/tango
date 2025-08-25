@@ -85,7 +85,7 @@ const RecommendedPacksPage = () => {
     }
 
     return (
-      <Card className="h-full overflow-y-auto" contentClassName="space-y-3">
+      <div className="h-full overflow-y-auto space-y-3">
         {recommendedPacks.map((pack, index) => (
           <motion.div
             key={index}
@@ -99,7 +99,7 @@ const RecommendedPacksPage = () => {
             }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className={`${colors.gradients.blue} border border-blue-100 rounded-xl p-4`}
+            className="bg-background rounded-xl p-4 shadow-xs"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
@@ -126,7 +126,7 @@ const RecommendedPacksPage = () => {
             </div>
           </motion.div>
         ))}
-      </Card>
+      </div>
     )
   }
 
