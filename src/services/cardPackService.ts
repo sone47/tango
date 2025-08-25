@@ -49,6 +49,18 @@ export class CardPackService {
     }
   }
 
+  async getCardPackById(cardPackId: number): Promise<Omit<CardPackEntity, 'words'> | null> {
+    try {
+      const cardPack = await this.cardPackRepo.findById(cardPackId)
+      if (!cardPack) return null
+
+      return cardPack
+    } catch (error) {
+      console.error('获取完整卡包数据失败:', error)
+      return null
+    }
+  }
+
   /**
    * 根据卡包ID获取完整的卡包数据（包含单词）
    */

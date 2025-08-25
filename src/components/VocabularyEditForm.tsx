@@ -59,7 +59,8 @@ const VocabularyEditForm: React.FC<VocabularyEditFormProps> = ({
 
       setLoadingCardPacks(true)
       try {
-        const packs = await cardPackService.getCardPacksByWordPackId(cardPackId)
+        const pack = await cardPackService.getCardPackWithWordsById(cardPackId)
+        const packs = await cardPackService.getCardPacksByWordPackId(pack!.wordPackId)
         setCardPacks(packs)
 
         if (isCreate && packs.length === 1) {
@@ -101,7 +102,7 @@ const VocabularyEditForm: React.FC<VocabularyEditFormProps> = ({
           options={cardPackOptions}
           placeholder={loadingCardPacks ? '加载中...' : '请选择卡包'}
           disabled={loadingCardPacks || loading}
-          fullWidth
+          triggerClassName="w-full"
         />
       ),
     },
@@ -176,12 +177,12 @@ const VocabularyEditForm: React.FC<VocabularyEditFormProps> = ({
         className="space-y-4"
       >
         <div className="flex flex-col gap-2 pt-4">
-          <Button type="submit" loading={loading} fullWidth variant="primary">
+          <Button type="submit" loading={loading} variant="primary">
             {isCreate ? '创建词汇' : '保存修改'}
           </Button>
 
           {onCancel && (
-            <Button type="button" onClick={onCancel} disabled={loading} fullWidth variant="outline">
+            <Button type="button" onClick={onCancel} disabled={loading} variant="outline">
               取消
             </Button>
           )}
