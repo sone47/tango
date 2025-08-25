@@ -28,13 +28,13 @@ const Tabs = ({ tabs, activeTab, onTabChange, className = '' }: TabsProps) => {
             onClick={() => onTabChange(tab.id)}
             className={`flex flex-col items-center justify-center gap-1 transition-colors ${
               activeTab === tab.id
-                ? 'text-primary'
-                : 'text-muted-foreground/80 hover:text-muted-foreground'
+                ? 'text-primary font-semibold'
+                : 'text-muted-foreground/80 hover:text-muted-foreground hover:font-semibold hover:scale-105'
             }`}
             whileTap={{ scale: 0.95 }}
           >
             <tab.icon size={20} />
-            <span className="text-xs font-medium">{tab.label}</span>
+            <span className="text-xs">{tab.label}</span>
           </motion.button>
         ))}
       </div>
