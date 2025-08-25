@@ -43,7 +43,6 @@ export interface SelectProps {
   triggerClassName?: string
   contentClassName?: string
   size?: 'sm' | 'default'
-  fullWidth?: boolean
 
   // 状态
   error?: boolean
@@ -67,7 +66,6 @@ const Select: React.FC<SelectProps> = ({
   triggerClassName,
   contentClassName,
   size = 'default',
-  fullWidth = false,
   error = false,
   errorMessage,
   name,
@@ -118,7 +116,7 @@ const Select: React.FC<SelectProps> = ({
   const SelectedIcon = selectedOption?.icon
 
   return (
-    <div className={cn('relative', fullWidth && 'w-full', className)}>
+    <div className={cn('relative', className)}>
       <UISelect
         value={value}
         defaultValue={defaultValue}
@@ -131,7 +129,6 @@ const Select: React.FC<SelectProps> = ({
         <SelectTrigger
           className={cn(
             'text-left',
-            fullWidth && 'w-full',
             error && 'border-red-500 focus-visible:border-red-500 focus-visible:ring-red-500/20',
             triggerClassName
           )}

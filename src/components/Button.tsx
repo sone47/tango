@@ -19,7 +19,6 @@ export interface ButtonProps extends React.ComponentProps<'button'> {
   size?: 'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'md' | 'xl'
   icon?: LucideIcon
   loading?: boolean
-  fullWidth?: boolean
   asChild?: boolean
 }
 
@@ -29,7 +28,6 @@ const Button = ({
   size = 'default',
   icon: Icon,
   loading = false,
-  fullWidth = false,
   disabled = false,
   className = '',
   asChild = false,
@@ -92,7 +90,7 @@ const Button = ({
       disabled={isDisabled}
       onClick={(event) => onClick?.(event)}
       asChild={asChild}
-      className={cn(getExtraStyles(), fullWidth && 'w-full', 'gap-2', className)}
+      className={cn(getExtraStyles(), 'gap-2', className)}
       {...props}
     >
       {loading && (

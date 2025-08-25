@@ -23,7 +23,7 @@ const ErrorDisplay = ({ title, message, onRetry, retryText = '重试' }: ErrorDi
           {message && <p className="text-gray-600 text-sm leading-relaxed">{message}</p>}
 
           {onRetry && (
-            <Button onClick={onRetry} variant="primary" size="md" fullWidth>
+            <Button onClick={onRetry} variant="primary" size="md" className="w-full">
               {retryText}
             </Button>
           )}
