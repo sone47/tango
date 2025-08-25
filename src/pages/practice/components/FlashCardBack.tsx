@@ -213,16 +213,19 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
               <p className="text-muted-foreground text-sm">该词汇还没有添加例句</p>
             </div>
           )}
-          {word.word &&
-            (isGenerating ? (
-              <Button variant="link" onClick={handleGenerateExample} loading={isGenerating}>
-                生成中...
-              </Button>
-            ) : (
-              <Button variant="link" onClick={handleGenerateExample}>
-                {examples.length > 0 ? '更多例句' : '生成例句'}
-              </Button>
-            ))}
+          {word.word && (
+            <div onClick={(e) => e.stopPropagation()}>
+              {isGenerating ? (
+                <Button variant="link" loading={isGenerating}>
+                  生成中...
+                </Button>
+              ) : (
+                <Button variant="link" onClick={handleGenerateExample}>
+                  {examples.length > 0 ? '更多例句' : '生成例句'}
+                </Button>
+              )}
+            </div>
+          )}
         </div>
 
         <Typography.Text type="secondary" size="sm" className="text-center">
