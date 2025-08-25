@@ -1,41 +1,36 @@
-import { motion } from 'motion/react'
-
 import { colors } from '@/constants/styles'
+import { cn } from '@/lib/utils'
 import type { WordPack } from '@/types'
 import { toLocaleDateString } from '@/utils/date'
 
 interface WordPackItemProps {
   wordPack: WordPack
   isSelected?: boolean
-  onClick?: (wordPack: WordPack) => void
   showSelectedBadge?: boolean
+  className?: string
 }
 
-const WordPackItem = ({ wordPack, isSelected, onClick }: WordPackItemProps) => {
+const WordPackItem = ({ wordPack, isSelected, className }: WordPackItemProps) => {
   return (
-    <motion.button
-      onClick={() => onClick?.(wordPack)}
-      className={`w-full p-4 rounded-2xl text-left transition-all ${
+    <div
+      className={cn(
+        'flex items-center justify-between w-full p-4 rounded-2xl text-left',
         isSelected
-          ? `${colors.gradients.blueActive} border-2 border-blue-300 shadow-lg`
-          : `${colors.gradients.blue} border border-gray-200 ${colors.gradients.blueHover}`
-      }`}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+          ? `${colors.gradients.blueActive} border-2 border-primary shadow-lg`
+          : `${colors.gradients.blue} border border-secondary ${colors.gradients.blueHover}`,
+        className
+      )}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div>
-            <h3 className="font-semibold text-gray-900">{wordPack.name}</h3>
-            <p className="text-sm text-gray-600">
-              创建时间: {wordPack.createdAt ? toLocaleDateString(wordPack.createdAt) : '未知'}
-            </p>
-          </div>
+      <div className="flex items-center gap-3">
+        <div>
+          <h3 className="font-semibold text-secondary-foreground">{wordPack.name}</h3>
+          <p className="text-sm text-muted-foreground">
+            创建时间: {wordPack.createdAt ? toLocaleDateString(wordPack.createdAt) : '未知'}
+          </p>
         </div>
-        {isSelected && <div className="text-blue-600 text-sm font-medium">当前词包</div>}
       </div>
-    </motion.button>
+      {isSelected && <div className="text-primary text-sm font-medium">当前词包</div>}
+    </div>
   )
 }
 

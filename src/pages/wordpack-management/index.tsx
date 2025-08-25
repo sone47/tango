@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 
-import Card from '@/components/Card'
 import Page from '@/components/Page'
 import { useWordPackStore } from '@/stores/wordPackStore'
 
@@ -17,9 +16,7 @@ const WordPackManagePage = () => {
   return (
     <Page title="词包管理">
       <div className="h-full flex flex-col gap-4 pb-4">
-        <Card className="flex-1 overflow-y-auto" contentClassName="h-full">
-          <WordPackList />
-        </Card>
+        <WordPackList />
         <Footer />
       </div>
     </Page>

@@ -42,7 +42,7 @@ const WordPackList = () => {
         const isSelected = wordPack.id === currentWordPackId
 
         return (
-          <motion.div
+          <motion.button
             key={wordPack.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -52,13 +52,13 @@ const WordPackList = () => {
               stiffness: 400,
               damping: 17,
             }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => handleWordPackSelect(wordPack)}
+            className="w-full"
           >
-            <WordPackItem
-              wordPack={wordPack}
-              isSelected={isSelected}
-              onClick={handleWordPackSelect}
-            />
-          </motion.div>
+            <WordPackItem wordPack={wordPack} isSelected={isSelected} className="bg-background" />
+          </motion.button>
         )
       })}
     </div>
