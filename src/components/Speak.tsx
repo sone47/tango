@@ -15,7 +15,7 @@ interface SpeakProps {
 const Speak = ({ text, audioUrl, autoPlay = false, size = 'md', onPlay }: SpeakProps) => {
   const playButtonRef = useRef<HTMLButtonElement>(null)
 
-  const { start, isGlobalLoading } = useTTS(text)
+  const { start, isGlobalLoading, audio: ttsAudio } = useTTS(text)
 
   useEffect(() => {
     if (autoPlay) {
@@ -27,13 +27,29 @@ const Speak = ({ text, audioUrl, autoPlay = false, size = 'md', onPlay }: SpeakP
     e.stopPropagation()
 
     if (audioUrl) {
-      const audio = new Audio(audioUrl)
-      audio.play()
+      handleUrlPlay()
     } else {
-      start()
+      handleTTSPlay()
     }
 
     onPlay?.()
+  }
+
+  const handleUrlPlay = () => {
+    const audio = new Audio(audioUrl)
+    audio.play()
+  }
+
+  const handleTTSPlay = () => {
+    if (ttsAudio.arrayBuffers.length) {
+      if (ttsAudio.isPlaying) {
+        ttsAudio.stop()
+      }
+
+      ttsAudio.play()
+    } else {
+      start()
+    }
   }
 
   return (
