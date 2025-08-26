@@ -1,9 +1,11 @@
 import 'react-swipeable-list/dist/styles.css'
 
+import { isNil } from 'lodash'
 import {
   LeadingActions,
   SwipeableList,
   SwipeableListItem,
+  type SwipeableListProps,
   SwipeAction as SwipeableAction,
   TrailingActions,
   Type,
@@ -17,7 +19,7 @@ interface Action<T> {
   className?: string
   onClick?: (item: T) => void
 }
-interface SwipeActionProps<T = any> {
+interface SwipeActionProps<T = any> extends SwipeableListProps {
   closeOnAction?: boolean
   closeOnTouchOutside?: boolean
   leadingActions?: Action<T>[]
@@ -28,7 +30,6 @@ interface SwipeActionProps<T = any> {
   }[]
   className?: string
   itemClassName?: string
-  fullSwipe?: boolean
 }
 
 const ActionContent = ({
@@ -54,12 +55,11 @@ const SwipeAction = ({
   leadingActions,
   trailingActions,
   list,
-  className,
   itemClassName,
-  fullSwipe,
+  ...restProps
 }: SwipeActionProps) => {
   return (
-    <SwipeableList type={Type.IOS} className={className} fullSwipe={fullSwipe}>
+    <SwipeableList {...restProps} type={isNil(restProps.type) ? Type.IOS : restProps.type}>
       {list.map(({ node, item }, index) => (
         <SwipeableListItem
           key={index}
