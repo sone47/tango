@@ -131,6 +131,9 @@ importers:
       react-router-dom:
         specifier: ^7.6.2
         version: 7.6.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react-swipeable-list:
+        specifier: ^1.10.0
+        version: 1.10.0
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -5224,6 +5227,9 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
+
+  react-swipeable-list@1.10.0:
+    resolution: {integrity: sha512-Ap85a3c5sgvglZBlaansfT6VfwuMad5U4puxFW4sJbUU6alE7epzW39CHvs5AohUZi7wjlP1KFunpXoD+iUyGQ==}
 
   react-zoom-pan-pinch@3.7.0:
     resolution: {integrity: sha512-UmReVZ0TxlKzxSbYiAj+LeGRW8s8LraAFTXRAxzMYnNRgGPsxCudwZKVkjvGmjtx7SW/hZamt69NUmGf4xrkXA==}
@@ -12227,6 +12233,8 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.1.6
+
+  react-swipeable-list@1.10.0: {}
 
   react-zoom-pan-pinch@3.7.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:

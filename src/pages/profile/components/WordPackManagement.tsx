@@ -26,7 +26,13 @@ const ProgressSection = () => {
 
   if (!content) {
     if (currentWordPack) {
-      content = <WordPackItem wordPack={currentWordPack} isSelected />
+      content = (
+        <WordPackItem
+          wordPack={currentWordPack}
+          isSelected
+          className="bg-gradient-to-r from-blue-100 to-indigo-100 border-2 border-primary shadow-lg rounded-2xl"
+        />
+      )
     } else {
       content = (
         <Typography.Text type="secondary" className="text-md">
