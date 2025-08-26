@@ -10,9 +10,11 @@ import Content from './components/Content'
 export default function PracticeTab() {
   const { fetchWordPacks } = useWordPackStore()
 
-  const { selectedCardPack, updateState } = usePracticeStore()
+  const { selectedCardPack, updateState, resetPracticeState } = usePracticeStore()
 
   useEffect(() => {
+    resetPracticeState()
+
     if (!selectedCardPack) {
       updateState({ showCardPackSelector: true })
     }

@@ -7,12 +7,10 @@ import { usePracticeStore } from '@/stores/practiceStore'
 
 const PracticeHeader = () => {
   const navigate = useNavigate()
-  const { selectedCardPack, currentWordIndex, shuffledWords, updateState, resetPracticeState } =
-    usePracticeStore()
+  const { selectedCardPack, currentWordIndex, shuffledWords, updateState } = usePracticeStore()
   if (!selectedCardPack || currentWordIndex >= shuffledWords.length) return null
 
   const handleExitPractice = () => {
-    resetPracticeState()
     navigate(-1)
   }
 
