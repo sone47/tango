@@ -106,18 +106,18 @@ export class IDBManager {
    * @param callback 事务执行回调
    * @returns 事务执行结果
    */
-  async transaction<T>(
+  async transaction<T, M extends IDBTransactionMode>(
     storeNames: string | string[],
-    mode: IDBTransactionMode,
-    callback: (stores: { [key: string]: IDBPObjectStore }) => Promise<T>
+    mode: M,
+    callback: (stores: { [key: string]: IDBPObjectStore<any, any, any, M> }) => Promise<T>
   ): Promise<T> {
     const db = this.getDB()
     const tx = db.transaction(storeNames, mode)
 
-    const stores: { [key: string]: IDBPObjectStore<any, any, any, any> } = {}
+    const stores: { [key: string]: IDBPObjectStore<any, any, any, M> } = {}
     const names = Array.isArray(storeNames) ? storeNames : [storeNames]
     names.forEach((name) => {
-      stores[name] = tx.objectStore(name)
+      stores[name] = tx.objectStore(name) as IDBPObjectStore<any, any, any, M>
     })
 
     try {

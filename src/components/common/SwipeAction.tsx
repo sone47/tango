@@ -19,7 +19,7 @@ interface Action<T> {
   className?: string
   onClick?: (item: T) => void
 }
-interface SwipeActionProps<T = any> extends SwipeableListProps {
+interface SwipeActionProps<T = any> extends Omit<SwipeableListProps, 'children'> {
   closeOnAction?: boolean
   closeOnTouchOutside?: boolean
   leadingActions?: Action<T>[]
