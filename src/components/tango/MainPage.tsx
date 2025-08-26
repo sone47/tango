@@ -1,12 +1,11 @@
 import { BookOpen, User } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import TabBar, { TabConfig } from '@/components/TabBar'
 import PracticeTab from '@/pages/practice'
 import ProfileTab from '@/pages/profile'
 import { usePracticeStore } from '@/stores/practiceStore'
 import { TabType } from '@/types'
-
-import TabBar, { TabConfig } from './TabBar'
 
 const MainPage = () => {
   const location = useLocation()

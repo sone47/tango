@@ -13,7 +13,7 @@ import SettingsPage from '@/pages/settings'
 import SyncPage from '@/pages/sync'
 import WordPackManagePage from '@/pages/wordpack-management'
 
-import MainPage from './components/MainPage'
+import MainPage from './components/tango/MainPage'
 
 function App() {
   const { init, isInitializing, error, retry } = useDatabase(DB_NAME, DB_VERSION)
