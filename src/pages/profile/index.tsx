@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 
 import { useWordPackStore } from '@/stores/wordPackStore'
 
-import ProfileHeader from './components/ProfileHeader'
 import StudyStats from './components/StudyStats'
 import WordPackManagement from './components/WordPackManagement'
 
@@ -22,23 +21,9 @@ const ProfileTab = () => {
 
   return (
     <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="fixed w-full top-0 z-1">
-        <ProfileHeader />
-      </div>
-
-      <div
-        className="h-full overflow-auto p-4 space-y-6 profile-scroll-container"
-        style={{
-          paddingTop: 72,
-        }}
-      >
-        <div id="stats">
-          <StudyStats />
-        </div>
-
-        <div id="word-pack-management">
-          <WordPackManagement />
-        </div>
+      <div className="h-full overflow-auto p-4 space-y-6 profile-scroll-container">
+        <StudyStats />
+        <WordPackManagement />
       </div>
     </div>
   )

@@ -2,28 +2,27 @@ import { useEffect } from 'react'
 
 import CardPackConfigModal from '@/components/tango/CardPackConfigModal'
 import CardPackSelector from '@/components/tango/CardPackSelector'
-import { usePracticeStore } from '@/stores/practiceStore'
 import { useWordPackStore } from '@/stores/wordPackStore'
 
-import Content from './components/Content'
+import HistoryPool from './components/HistoryPool'
+import PracticeContent from './components/PracticeContent'
+import PracticeHeader from './components/PracticeHeader'
 
-export default function PracticeTab() {
+export default function GamePage() {
   const { fetchWordPacks } = useWordPackStore()
 
-  const { selectedCardPack, updateState } = usePracticeStore()
-
   useEffect(() => {
-    if (!selectedCardPack) {
-      updateState({ showCardPackSelector: true })
-    }
-
     fetchWordPacks()
   }, [])
 
   return (
     <>
-      <Content />
+      <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
+        <PracticeHeader />
+        <PracticeContent />
+      </div>
       <CardPackSelector />
+      <HistoryPool />
       <CardPackConfigModal />
     </>
   )

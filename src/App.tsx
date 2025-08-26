@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router'
 
 import NotFound from '@/components/404'
 import ErrorDisplay from '@/components/ErrorDisplay'
@@ -14,6 +14,7 @@ import SyncPage from '@/pages/sync'
 import WordpackPage from '@/pages/wordpack'
 
 import MainPage from './components/tango/MainPage'
+import GamePage from './pages/game'
 
 function App() {
   const { init, isInitializing, error, retry } = useDatabase(DB_NAME, DB_VERSION)
@@ -37,6 +38,9 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/profile" element={<MainPage />} />
+        <Route path="/game" element={<GamePage />} />
         <Route path="/wordpack" element={<WordpackPage />} />
         <Route path="/recommended-packs" element={<RecommendedPacksPage />} />
         <Route path="settings">
@@ -44,8 +48,6 @@ function App() {
           <Route path="advanced" element={<AdvanceSettings />} />
         </Route>
         <Route path="/sync" element={<SyncPage />} />
-        <Route path="/" element={<MainPage />} />
-        <Route path="/profile" element={<MainPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster richColors theme="system" position="top-right" />

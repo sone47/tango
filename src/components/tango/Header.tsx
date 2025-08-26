@@ -1,10 +1,14 @@
 import { RefreshCw, Settings } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 import Button from '@/components/Button'
 import Typography from '@/components/Typography'
 
-const ProfileHeader = () => {
+interface HeaderProps {
+  title: string
+}
+
+const Header = ({ title }: HeaderProps) => {
   const navigate = useNavigate()
 
   const handleSyncClick = () => {
@@ -16,9 +20,9 @@ const ProfileHeader = () => {
   }
 
   return (
-    <div className="w-full flex justify-between items-center bg-white/70 backdrop-blur-sm py-2 px-6">
+    <div className="w-full flex justify-between items-center bg-background backdrop-blur-sm py-2 px-6">
       <Typography.Title level={4} className="!font-bold">
-        我的学习
+        {title}
       </Typography.Title>
       <div className="flex items-center gap-6">
         <Button
@@ -40,4 +44,4 @@ const ProfileHeader = () => {
   )
 }
 
-export default ProfileHeader
+export default Header

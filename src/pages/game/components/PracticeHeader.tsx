@@ -1,24 +1,23 @@
 import { History, LogOut, Menu } from 'lucide-react'
+import { useNavigate } from 'react-router'
 
 import AlertDialog from '@/components/AlertDialog'
 import Button from '@/components/Button'
 import { usePracticeStore } from '@/stores/practiceStore'
 
 const PracticeHeader = () => {
+  const navigate = useNavigate()
   const { selectedCardPack, currentWordIndex, shuffledWords, updateState, resetPracticeState } =
     usePracticeStore()
-
   if (!selectedCardPack || currentWordIndex >= shuffledWords.length) return null
 
   const handleExitPractice = () => {
     resetPracticeState()
-    updateState({
-      showCardPackSelector: false,
-    })
+    navigate(-1)
   }
 
   return (
-    <div className="flex items-center justify-between p-4 bg-white/70 backdrop-blur-sm">
+    <div className="flex items-center justify-between p-4 bg-background backdrop-blur-sm">
       <div className="flex items-center gap-2">
         <Button
           variant="outline"

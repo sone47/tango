@@ -5,21 +5,17 @@ import Modal from '@/components/Modal'
 import ProficiencySlider from '@/components/ProficiencySlider'
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { practiceService } from '@/services/practiceService'
-import type { Word } from '@/types'
+import { usePracticeStore } from '@/stores/practiceStore'
 
-interface HistoryPoolProps {
-  isOpen: boolean
-  onClose: () => void
-  studiedWords: Word[]
-}
+const HistoryPool = () => {
+  const { studiedWords, showHistoryPool, updateState } = usePracticeStore()
 
-const HistoryPool = ({ isOpen, onClose, studiedWords }: HistoryPoolProps) => {
   const [api, setApi] = useState<CarouselApi>()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [practiceData, setPracticeData] = useState<Record<number, number>>({})
 
   const handleOpen = useCallback(async () => {
-    if (!isOpen || !studiedWords.length) return
+    if (!showHistoryPool || !studiedWords.length) return
 
     setCurrentIndex(0)
     api?.scrollTo(0)
@@ -30,7 +26,7 @@ const HistoryPool = ({ isOpen, onClose, studiedWords }: HistoryPoolProps) => {
       practices.map((practice) => [practice.vocabularyId, practice.proficiency])
     )
     setPracticeData(data)
-  }, [isOpen, studiedWords, api])
+  }, [showHistoryPool, studiedWords, api])
 
   useEffect(() => {
     handleOpen()
@@ -55,10 +51,16 @@ const HistoryPool = ({ isOpen, onClose, studiedWords }: HistoryPoolProps) => {
     await practiceService.updatePractice(currentWord?.id, { proficiency })
   }
 
+  const handleModalClose = () => {
+    updateState({
+      showHistoryPool: false,
+    })
+  }
+
   const currentWord = studiedWords[currentIndex]
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="历史卡池" maxWidth="md">
+    <Modal isOpen={showHistoryPool} onClose={handleModalClose} title="历史卡池" maxWidth="md">
       {studiedWords.length > 0 ? (
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-center">

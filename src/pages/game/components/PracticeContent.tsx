@@ -1,6 +1,6 @@
-import { LibraryBig, PartyPopper } from 'lucide-react'
-import { motion } from 'motion/react'
+import { PartyPopper } from 'lucide-react'
 import { useRef } from 'react'
+import { useNavigate } from 'react-router'
 
 import Button from '@/components/Button'
 import { Confetti, ConfettiRef } from '@/components/magicui/confetti'
@@ -11,7 +11,7 @@ import FlashCard from './FlashCard'
 
 const PracticeContent = () => {
   const confettiRef = useRef<ConfettiRef>(null)
-
+  const navigate = useNavigate()
   const { currentWordIndex, selectedCardPack, shuffledWords, updateState } = usePracticeStore()
 
   const handleShowCardPackSelector = () => {
@@ -19,29 +19,8 @@ const PracticeContent = () => {
   }
 
   if (!selectedCardPack) {
-    return (
-      <div className="flex-1 flex flex-col items-center justify-center p-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col items-center justify-center gap-4"
-        >
-          <LibraryBig className="size-16 text-primary"></LibraryBig>
-          <div className="flex flex-col items-center justify-center gap-1">
-            <Typography.Title level={4}>未选择卡包</Typography.Title>
-            <Typography.Text type="secondary">点击下方按钮选择一个卡包开始学习</Typography.Text>
-          </div>
-          <Button
-            variant="primary"
-            size="lg"
-            className="w-full text-md"
-            onClick={handleShowCardPackSelector}
-          >
-            开始学习
-          </Button>
-        </motion.div>
-      </div>
-    )
+    navigate('/')
+    return
   }
 
   if (currentWordIndex >= shuffledWords.length) {

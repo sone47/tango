@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 
 import Button from '@/components/Button'
 import Drawer, { useDrawer } from '@/components/Drawer'

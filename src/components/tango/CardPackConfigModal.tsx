@@ -1,5 +1,6 @@
 import { Settings, Shuffle } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router'
 
 import Button from '@/components/Button'
 import Modal from '@/components/Modal'
@@ -9,22 +10,31 @@ import { useLastestData } from '@/hooks/useLastestData'
 import { useSettings } from '@/hooks/useSettings'
 import { practiceService } from '@/services/practiceService'
 import { usePracticeStore } from '@/stores/practiceStore'
-import type { CardPack, Practice } from '@/types'
+import type { Practice } from '@/types'
 import { filterWordsByProficiency, processWords } from '@/utils/practiceUtils'
 
-interface CardPackConfigModalProps {
-  cardPack: CardPack
-}
-
-const CardPackConfigModal = ({ cardPack }: CardPackConfigModalProps) => {
+const CardPackConfigModal = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
   const { settings } = useSettings()
   const { setLatestCardPackId } = useLastestData()
-  const { showCardPackConfig, updateState } = usePracticeStore()
+  const { showCardPackConfig, updateState, tempSelectedCardPack } = usePracticeStore()
 
   const [proficiency, setProficiency] = useState(100)
   const [filteredWordsCount, setFilteredWordsCount] = useState(0)
   const [practices, setPractices] = useState<Practice[]>([])
   const [isShuffle, setIsShuffle] = useState(settings.practice.isShuffle)
+
+  const cardPack = useMemo(
+    () =>
+      tempSelectedCardPack ?? {
+        id: 0,
+        name: '未选择卡包',
+        words: [],
+        wordPackId: 0,
+      },
+    [tempSelectedCardPack]
+  )
 
   const initData = useCallback(async () => {
     setProficiency(100)
@@ -57,6 +67,12 @@ const CardPackConfigModal = ({ cardPack }: CardPackConfigModalProps) => {
     })
 
     setLatestCardPackId(cardPack.id)
+
+    if (location.pathname !== '/game') {
+      setTimeout(() => {
+        navigate('/game')
+      }, 100)
+    }
   }
 
   const handleCardPackConfigCancel = () => {

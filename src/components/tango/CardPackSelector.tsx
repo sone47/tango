@@ -1,7 +1,7 @@
 import { BookOpen, ListX } from 'lucide-react'
 import { ReactElement, useEffect } from 'react'
 import { InView } from 'react-intersection-observer'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 import Button from '@/components/Button'
 import EmptyWordPack from '@/components/EmptyWordPack'

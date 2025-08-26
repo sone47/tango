@@ -37,7 +37,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
     name: 'TanGo',
     short_name: 'tango',
     description: '一緒に単語を覚えましょう',
-    theme_color: '#EEF4FF',
+    theme_color: '#FFF',
     background_color: '#EEF4FF',
     display: 'standalone',
     start_url: '/tango/',

@@ -2,7 +2,7 @@ import { useIsFirstRender } from '@uidotdev/usehooks'
 import { AlertTriangle } from 'lucide-react'
 import { AuthenticationError } from 'openai'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'

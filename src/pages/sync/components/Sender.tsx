@@ -1,6 +1,6 @@
 import { Upload } from 'lucide-react'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'
