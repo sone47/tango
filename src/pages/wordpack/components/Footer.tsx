@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '@/components/Button'
 import Drawer, { useDrawer } from '@/components/Drawer'
 import { useModalState } from '@/hooks/useModalState'
-import ImportSection from '@/pages/wordpack-management/components/ImportSection'
+import ImportSection from '@/pages/wordpack/components/ImportSection'
 import { ImportResult } from '@/services/wordPackService'
 import { useWordPackStore } from '@/stores/wordPackStore'
 

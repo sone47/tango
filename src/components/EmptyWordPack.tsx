@@ -15,7 +15,7 @@ export default function EmptyWordPack({ showImportButton }: EmptyWordPackProps) 
   }
 
   const handleImportCustomCardPack = () => {
-    navigate('/wordpack-management', { state: { action: 'import' } })
+    navigate('/wordpack', { state: { action: 'import' } })
   }
 
   return (

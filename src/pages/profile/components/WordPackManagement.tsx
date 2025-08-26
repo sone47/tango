@@ -16,7 +16,7 @@ const ProgressSection = () => {
   const { currentWordPack } = useCurrentWordPack()
 
   const handleViewMore = () => {
-    navigate('/wordpack-management')
+    navigate('/wordpack')
   }
 
   let content: ReactElement | null = null
@@ -37,7 +37,7 @@ const ProgressSection = () => {
       content = (
         <Typography.Text type="secondary" className="text-md">
           未选择词包，请前往
-          <Link to="/wordpack-management">
+          <Link to="/wordpack">
             <Button variant="link" className="p-0 text-md">
               词包管理页
             </Button>

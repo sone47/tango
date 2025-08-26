@@ -11,7 +11,7 @@ import AdvanceSettings from '@/pages/advance-settings'
 import RecommendedPacksPage from '@/pages/recommended-packs'
 import SettingsPage from '@/pages/settings'
 import SyncPage from '@/pages/sync'
-import WordPackManagePage from '@/pages/wordpack-management'
+import WordpackPage from '@/pages/wordpack'
 
 import MainPage from './components/tango/MainPage'
 
@@ -37,7 +37,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/wordpack-management" element={<WordPackManagePage />} />
+        <Route path="/wordpack" element={<WordpackPage />} />
         <Route path="/recommended-packs" element={<RecommendedPacksPage />} />
         <Route path="settings">
           <Route path="" element={<SettingsPage />} />

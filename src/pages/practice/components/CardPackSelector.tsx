@@ -39,7 +39,7 @@ const CardPackSelector = () => {
   }
 
   const handleSelectWordPack = () => {
-    navigate('/wordpack-management')
+    navigate('/wordpack')
   }
 
   const handleCardPackSelect = async (cardPack: CardPack) => {
