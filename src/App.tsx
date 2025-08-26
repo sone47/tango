@@ -48,7 +48,7 @@ function App() {
         <Route path="/profile" element={<MainPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Toaster richColors theme="system" position="top-right" mobileOffset={60} />
+      <Toaster richColors theme="system" position="top-right" />
     </>
   )
 }

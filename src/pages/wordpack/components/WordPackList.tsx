@@ -93,26 +93,18 @@ const WordPackList = () => {
 
     return {
       node: (
-        <div key={wordPack.id} className="w-full">
+        <div key={wordPack.id} className="w-full" onClick={() => handleWordPackSelect(wordPack)}>
           <WordPackItem wordPack={wordPack} isSelected={isSelected} className="bg-background" />
         </div>
       ),
       item: wordPack,
+      className: isSelected ? 'border-primary border-2' : 'w-full',
     }
   })
 
   return (
     <>
       <SwipeAction
-        fullSwipe
-        leadingActions={[
-          {
-            key: 'select',
-            text: '选择',
-            className: 'bg-emerald-400 text-emerald-50 min-w-[72px] !justify-center',
-            onClick: handleWordPackSelect,
-          },
-        ]}
         trailingActions={[
           {
             key: 'edit',

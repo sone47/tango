@@ -27,6 +27,7 @@ interface SwipeActionProps<T = any> extends Omit<SwipeableListProps, 'children'>
   list: {
     node: React.ReactNode
     item: T
+    className?: string
   }[]
   className?: string
   itemClassName?: string
@@ -60,10 +61,10 @@ const SwipeAction = ({
 }: SwipeActionProps) => {
   return (
     <SwipeableList {...restProps} type={isNil(restProps.type) ? Type.IOS : restProps.type}>
-      {list.map(({ node, item }, index) => (
+      {list.map((item, index) => (
         <SwipeableListItem
           key={index}
-          className={itemClassName}
+          className={cn(itemClassName, item.className)}
           leadingActions={
             leadingActions?.length ? (
               <LeadingActions>
@@ -71,7 +72,7 @@ const SwipeAction = ({
                   <SwipeableAction
                     key={action.key}
                     onClick={() => {
-                      action.onClick?.(item)
+                      action.onClick?.(item.item)
                     }}
                   >
                     <ActionContent className={action.className}>{action.text}</ActionContent>
@@ -97,7 +98,7 @@ const SwipeAction = ({
             ) : null
           }
         >
-          {node}
+          {item.node}
         </SwipeableListItem>
       ))}
     </SwipeableList>
