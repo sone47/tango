@@ -88,7 +88,7 @@ const SwipeAction = ({
                   <SwipeableAction
                     key={action.key}
                     onClick={() => {
-                      action.onClick?.(item)
+                      action.onClick?.(item.item)
                     }}
                   >
                     <ActionContent className={action.className}>{action.text}</ActionContent>
