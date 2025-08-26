@@ -62,6 +62,17 @@ const ProficiencySlider = ({
         className
       )}
     >
+      <Slider
+        value={value}
+        onChange={onChange}
+        onChangeComplete={onChangeComplete}
+        min={0}
+        max={100}
+        disabled={disabled}
+        size={size}
+        color={getProficiencyColor(value)}
+      />
+
       {(showLabel || showValue) && (
         <div className="flex items-center justify-between">
           {showLabel && (
@@ -80,17 +91,6 @@ const ProficiencySlider = ({
           )}
         </div>
       )}
-
-      <Slider
-        value={value}
-        onChange={onChange}
-        onChangeComplete={onChangeComplete}
-        min={0}
-        max={100}
-        disabled={disabled}
-        size={size}
-        color={getProficiencyColor(value)}
-      />
     </div>
   )
 }

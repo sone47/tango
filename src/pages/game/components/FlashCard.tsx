@@ -208,7 +208,7 @@ const FlashCard = () => {
         onChangeComplete={handleProficiencyChangeComplete}
         disabled={!isAllRevealed}
         size="lg"
-        className="bg-white/80 p-4"
+        className="bg-background p-4"
       />
     </motion.div>
   )
