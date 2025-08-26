@@ -1,4 +1,4 @@
-import { History, LogOut, Menu } from 'lucide-react'
+import { ChevronLeft, History } from 'lucide-react'
 import { useNavigate } from 'react-router'
 
 import AlertDialog from '@/components/AlertDialog'
@@ -15,41 +15,23 @@ const PracticeHeader = () => {
   }
 
   return (
-    <div className="flex items-center justify-between p-4 bg-background backdrop-blur-sm">
-      <div className="flex items-center gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => updateState({ showCardPackSelector: true })}
-          icon={Menu}
-          className="shadow-lg"
-        >
-          切换卡包
-        </Button>
-
-        <AlertDialog
-          title="确定要退出本次学习吗？"
-          description=" "
-          confirmText="退出本次学习"
-          cancelText="继续学习"
-          onConfirm={handleExitPractice}
-          trigger={
-            <Button variant="outline" size="sm" icon={LogOut} className="shadow-lg">
-              退出
-            </Button>
-          }
-        ></AlertDialog>
-      </div>
+    <div className="flex items-center justify-between p-2 bg-background backdrop-blur-sm">
+      <AlertDialog
+        title="确定要退出本次学习吗？"
+        description=" "
+        confirmText="退出本次学习"
+        cancelText="继续学习"
+        onConfirm={handleExitPractice}
+        trigger={<Button variant="ghost" size="md" icon={ChevronLeft} className="" />}
+      ></AlertDialog>
 
       <Button
-        variant="primary"
-        size="sm"
+        variant="ghost"
+        size="md"
         onClick={() => updateState({ showHistoryPool: true })}
         icon={History}
-        className="shadow-md"
-      >
-        历史卡池
-      </Button>
+        className="text-primary"
+      ></Button>
     </div>
   )
 }

@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 
-import CardPackConfigModal from '@/components/tango/CardPackConfigModal'
-import CardPackSelector from '@/components/tango/CardPackSelector'
 import { usePracticeStore } from '@/stores/practiceStore'
 import { useWordPackStore } from '@/stores/wordPackStore'
 
+import CardPackConfigModal from './components/CardPackConfigModal'
+import CardPackSelector from './components/CardPackSelector'
 import Content from './components/Content'
 
 export default function PracticeTab() {

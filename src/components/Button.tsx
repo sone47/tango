@@ -64,15 +64,15 @@ const Button = ({
 
   const getIconSize = () => {
     const iconSizes = {
-      xs: 12,
-      sm: 14,
-      md: 16,
-      lg: 20,
-      xl: 24,
-      default: 16,
-      icon: 16,
+      xs: 4,
+      sm: 4,
+      md: 5,
+      lg: 6,
+      xl: 6,
+      default: 4,
+      icon: 4,
     }
-    return iconSizes[size as keyof typeof iconSizes] || 16
+    return iconSizes[size as keyof typeof iconSizes] || 4
   }
 
   const getExtraStyles = () => {
@@ -96,7 +96,7 @@ const Button = ({
       {loading && (
         <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
       )}
-      {Icon && !loading && <Icon size={getIconSize()} />}
+      {Icon && !loading && <Icon className={`size-${getIconSize()}`} />}
       {children}
     </ShadcnButton>
   )

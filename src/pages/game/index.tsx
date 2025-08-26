@@ -1,7 +1,5 @@
 import { useEffect } from 'react'
 
-import CardPackConfigModal from '@/components/tango/CardPackConfigModal'
-import CardPackSelector from '@/components/tango/CardPackSelector'
 import { useWordPackStore } from '@/stores/wordPackStore'
 
 import HistoryPool from './components/HistoryPool'
@@ -21,9 +19,7 @@ export default function GamePage() {
         <PracticeHeader />
         <PracticeContent />
       </div>
-      <CardPackSelector />
       <HistoryPool />
-      <CardPackConfigModal />
     </>
   )
 }

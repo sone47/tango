@@ -27,14 +27,14 @@ const Header = ({ title }: HeaderProps) => {
       <div className="flex items-center gap-6">
         <Button
           variant="ghost"
-          size="lg"
+          size="md"
           className="!p-0"
           icon={RefreshCw}
           onClick={handleSyncClick}
         />
         <Button
           variant="ghost"
-          size="lg"
+          size="md"
           className="!p-0"
           icon={Settings}
           onClick={handleSettingsClick}
