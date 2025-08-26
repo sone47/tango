@@ -384,6 +384,45 @@ export class WordPackService {
       return false
     }
   }
+
+  async deleteWordPack(wordPackId: number): Promise<void> {
+    try {
+      await getGlobalIDBManager().transaction(
+        ['wordPacks', 'cardPacks', 'vocabularies', 'practices'],
+        'readwrite',
+        async (stores) => {
+          const wordPackStore = stores['wordPacks']
+          const cardPackStore = stores['cardPacks']
+          const vocabularyStore = stores['vocabularies']
+          const practiceStore = stores['practices']
+
+          // delete word pack
+          await wordPackStore.delete(wordPackId)
+
+          const cardPacks = await cardPackStore.index('wordPackId').getAll(wordPackId)
+
+          for (const cardPack of cardPacks) {
+            const vocabularies = await vocabularyStore.index('cardPackId').getAll(cardPack.id)
+            for (const vocabulary of vocabularies) {
+              // delete practices
+              const practice = await practiceStore.index('vocabularyId').get(vocabulary.id)
+              if (practice) {
+                await practiceStore.delete(practice.id)
+              }
+              // delete vocabularies
+              await vocabularyStore.delete(vocabulary.id)
+            }
+
+            // delete card packs
+            await cardPackStore.delete(cardPack.id)
+          }
+        }
+      )
+    } catch (error) {
+      console.error('删除词包失败:', error)
+      throw error
+    }
+  }
 }
 
 export const wordPackService = new WordPackService()

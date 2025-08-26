@@ -1,5 +1,5 @@
 import { OctagonX } from 'lucide-react'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { toast } from 'sonner'
 
 import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'
@@ -9,15 +9,23 @@ import Loading from '@/components/Loading'
 import WordPackItem from '@/components/WordPackItem'
 import { spacing } from '@/constants/styles'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
+import { wordPackService } from '@/services/wordPackService'
 import { useWordPackStore } from '@/stores/wordPackStore'
 import { WordPack } from '@/types'
 
 const WordPackList = () => {
-  const { currentWordPackId, setCurrentWordPackId } = useCurrentWordPack()
-  const { allWordPacks, loading, error, hasData } = useWordPackStore()
+  const { currentWordPackId, currentWordPack, setCurrentWordPackId } = useCurrentWordPack()
+  const { allWordPacks, loading, error, hasData, fetchWordPacks } = useWordPackStore()
   const deleteAlertDialog = useAlertDialog()
 
   const activeWordPack = useRef<WordPack | null>(null)
+
+  useEffect(() => {
+    if (currentWordPack || !hasData) return
+
+    // if deleted pack is a selected pack, then pick a existing pack
+    setCurrentWordPackId(allWordPacks[0].id!)
+  }, [allWordPacks])
 
   if (loading) {
     return (
@@ -58,9 +66,26 @@ const WordPackList = () => {
     toast.warning('🚧 施工中，请耐心等待')
   }
 
-  const handleDeleteConfirm = () => {
-    console.log('delete', activeWordPack.current)
-    toast.warning('🚧 施工中，请耐心等待')
+  const handleDeleteConfirm = async () => {
+    toast.promise(
+      async () => {
+        try {
+          await wordPackService.deleteWordPack(activeWordPack.current!.id)
+
+          activeWordPack.current = null
+          fetchWordPacks()
+          setCurrentWordPackId(null)
+        } catch (error) {
+          console.error(error)
+          throw error
+        }
+      },
+      {
+        loading: '删除中...',
+        success: '删除成功',
+        error: '删除失败',
+      }
+    )
   }
 
   const list = allWordPacks.map((wordPack) => {
