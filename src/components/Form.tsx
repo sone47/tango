@@ -1,5 +1,11 @@
 import React from 'react'
-import { type DefaultValues, type FieldValues, useForm, type UseFormReturn } from 'react-hook-form'
+import {
+  type DefaultValues,
+  type FieldValues,
+  type Resolver,
+  useForm,
+  type UseFormReturn,
+} from 'react-hook-form'
 
 import {
   Form as ShadcnForm,
@@ -16,7 +22,11 @@ export interface FormFieldConfig<T extends FieldValues> {
   label?: string
   description?: string
   required?: boolean
-  render: (field: any) => React.ReactNode
+  render: (field: {
+    value: any
+    onChange: (value: any) => void
+    onBlur: () => void
+  }) => React.ReactNode
 }
 
 export interface FormProps<T extends FieldValues> {
@@ -71,11 +81,14 @@ export function Form<T extends FieldValues>({
   )
 }
 
-// 创建表单的便捷 Hook
-export function useFormHelper<T extends FieldValues>(defaultValues?: DefaultValues<T>) {
+export function useFormHelper<T extends FieldValues>(
+  defaultValues?: DefaultValues<T>,
+  resolver?: Resolver<T>
+) {
   return useForm<T>({
     defaultValues,
     mode: 'onChange',
+    resolver,
   })
 }
 

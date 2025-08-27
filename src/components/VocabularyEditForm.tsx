@@ -1,4 +1,6 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useEffect, useMemo, useState } from 'react'
+import { z } from 'zod'
 
 import { LanguageEnum, PartOfSpeechEnum, partOfSpeechToLanguageMap } from '@/constants/language'
 import { type CardPackEntity, type VocabularyEntity, type WordPackEntity } from '@/schemas'
@@ -11,16 +13,18 @@ import Input from './Input'
 import Select, { type SelectOption } from './Select'
 import Textarea from './Textarea'
 
-export interface VocabularyFormData {
-  cardPackId: number
-  phonetic: string
-  word: string
-  definition: string
-  partOfSpeech: PartOfSpeechEnum
-  example: string
-  wordAudio: string
-  exampleAudio: string
-}
+const vocabularyFormSchema = z.object({
+  cardPackId: z.number().min(1, '请选择所属卡包'),
+  phonetic: z.string().optional(),
+  word: z.string().min(1, '单词不能为空').max(100, '单词长度不能超过100个字符'),
+  definition: z.string().min(1, '释义不能为空').max(500, '释义长度不能超过500个字符'),
+  partOfSpeech: z.nativeEnum(PartOfSpeechEnum),
+  example: z.string().max(1000, '例句长度不能超过1000个字符').optional(),
+  wordAudio: z.string().max(2000, '单词音频长度不能超过2000个字符').optional(),
+  exampleAudio: z.string().max(2000, '例句音频长度不能超过2000个字符').optional(),
+})
+
+export type VocabularyFormData = z.infer<typeof vocabularyFormSchema>
 
 export interface VocabularyEditFormProps {
   vocabulary?: VocabularyEntity
@@ -56,7 +60,7 @@ const VocabularyEditForm: React.FC<VocabularyEditFormProps> = ({
     exampleAudio: vocabulary?.exampleAudio || '',
   }
 
-  const form = useFormHelper<VocabularyFormData>(defaultValues)
+  const form = useFormHelper<VocabularyFormData>(defaultValues, zodResolver(vocabularyFormSchema))
   const cardPackId = vocabulary?.cardPackId
 
   const partOfSpeechOptions = useMemo(() => {
