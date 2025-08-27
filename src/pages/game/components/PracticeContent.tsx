@@ -1,5 +1,5 @@
 import { PartyPopper } from 'lucide-react'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'
 
 import Button from '@/components/Button'
@@ -18,10 +18,11 @@ const PracticeContent = () => {
     updateState({ showCardPackSelector: true })
   }
 
-  if (!selectedCardPack) {
-    navigate('/', { replace: true })
-    return
-  }
+  useEffect(() => {
+    if (!selectedCardPack) {
+      navigate('/', { replace: true })
+    }
+  }, [selectedCardPack])
 
   if (currentWordIndex >= shuffledWords.length) {
     return (
