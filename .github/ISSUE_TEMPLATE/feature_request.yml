@@ -1,11 +1,9 @@
----
-name: 'Feature Request'
-description: 'Suggest an idea for TanGo'
+name: Feature Request
+description: Suggest an idea for TanGo
 title: '[Request] '
-labels: enhancement
-assignees: sone47
----
-
+labels: ['enhancement']
+assignees:
+  - sone47
 body:
   - type: textarea
     id: what

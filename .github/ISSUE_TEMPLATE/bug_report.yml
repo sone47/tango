@@ -1,12 +1,9 @@
----
-name: 'Bug Report'
-description: 'Create a bug report to help us improve TanGo!'
+name: Bug Report
+description: Create a bug report to help us improve TanGo!
 title: '[Bug] '
-labels: bug
-assignees: sone47
-
----
-
+labels: ['bug']
+assignees:
+  - sone47
 body:
   - type: markdown
     attributes:
