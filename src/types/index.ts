@@ -1,5 +1,4 @@
 export type { CardRevealState } from './card'
-export * from './excel'
 export type { RecommendedPack } from './recommendedPack'
 export type { TabType } from './ui'
 export type {
