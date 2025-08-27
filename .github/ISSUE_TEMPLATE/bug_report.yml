@@ -45,6 +45,12 @@ body:
         (If you are using the application, you can ignore the browser and browser version)
         Browser: [e.g. edge, chrome, safari]
         Browser Version: [e.g. 22]
+      value: |
+        OS: [e.g. iOS 16.4, Android 13, Windows 10, macOS 10.15]
+        Platform: [e.g. Application, Browser]
+        (If you are using the application, you can ignore the browser and browser version)
+        Browser: [e.g. edge, chrome, safari]
+        Browser Version: [e.g. 22]
     validations:
       required: true
   - type: textarea
