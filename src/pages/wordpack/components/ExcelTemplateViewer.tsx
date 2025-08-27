@@ -2,13 +2,32 @@ import { Check, Copy } from 'lucide-react'
 import { useState } from 'react'
 
 import Button from '@/components/Button'
-import type { FormatField } from '@/types/excel'
+import { LanguageEnum, PartOfSpeechEnum, partOfSpeechToLanguageMap } from '@/constants/language'
 
-interface ExcelTemplateViewerProps {
-  formatFields: FormatField[]
+interface FormatField {
+  label: string
+  example: string
+  description?: string
 }
 
-const ExcelTemplateViewer = ({ formatFields }: ExcelTemplateViewerProps) => {
+const formatFields: FormatField[] = [
+  { label: '音标', example: 'べんきょう' },
+  { label: '写法', example: '勉強' },
+  { label: '释义', example: '学习' },
+  {
+    label: '词性',
+    example: '名词',
+    description: `请填入：${Object.values(
+      partOfSpeechToLanguageMap[LanguageEnum.japanese] as Record<PartOfSpeechEnum, string>
+    ).join('、')}，或置空`,
+  },
+  { label: '例句', example: '勉強すればするほど、難しくなる感じがします。' },
+  { label: '卡包名', example: '第一課　出会い' },
+  { label: '词汇音频', example: '' },
+  { label: '例句音频', example: '' },
+]
+
+const ExcelTemplateViewer = () => {
   const [copySuccess, setCopySuccess] = useState(false)
 
   // 根据表头长度自动生成Excel列标识
@@ -32,7 +51,8 @@ const ExcelTemplateViewer = ({ formatFields }: ExcelTemplateViewerProps) => {
   const handleCopyHeaders = async () => {
     const headers = formatFields.map((field) => field.label).join('\t')
     const example = formatFields.map((field) => field.example).join('\t')
-    const content = `${headers}\n${example}`
+    const description = formatFields.map((field) => field.description).join('\t')
+    const content = `${headers}\n${example}\n${description}`
 
     try {
       await navigator.clipboard.writeText(content)
@@ -73,7 +93,7 @@ const ExcelTemplateViewer = ({ formatFields }: ExcelTemplateViewerProps) => {
             </div>
 
             {/* 示例数据行 */}
-            <div className="flex bg-background">
+            <div className="flex bg-background border-b">
               {formatFields.map((field, index) => (
                 <div
                   key={index}

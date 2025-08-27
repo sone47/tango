@@ -1,31 +1,31 @@
 import { invert } from 'lodash'
 
 export enum LanguageEnum {
-  ja = 'ja',
-  en = 'en',
-  zh = 'zh',
-  fr = 'fr',
-  de = 'de',
-  es = 'es',
-  it = 'it',
-  pt = 'pt',
-  ru = 'ru',
-  ar = 'ar',
-  ko = 'ko',
+  japanese = 'ja',
+  english = 'en',
+  chinese = 'zh',
+  france = 'fr',
+  germany = 'de',
+  spanish = 'es',
+  italian = 'it',
+  portuguese = 'pt',
+  russian = 'ru',
+  arab = 'ar',
+  korean = 'ko',
 }
 
 export const languageToNameMap = {
-  [LanguageEnum.ja]: '日语',
-  // [LanguageEnum.en]: '英语',
-  // [LanguageEnum.zh]: '中文',
-  // [LanguageEnum.fr]: '法语',
-  // [LanguageEnum.de]: '德语',
-  // [LanguageEnum.es]: '西班牙语',
-  // [LanguageEnum.it]: '意大利语',
-  // [LanguageEnum.pt]: '葡萄牙语',
-  // [LanguageEnum.ru]: '俄语',
-  // [LanguageEnum.ar]: '阿拉伯语',
-  // [LanguageEnum.ko]: '韩语',
+  [LanguageEnum.japanese]: '日语',
+  // [LanguageEnum.english]: '英语',
+  // [LanguageEnum.chinese]: '中文',
+  // [LanguageEnum.france]: '法语',
+  // [LanguageEnum.germany]: '德语',
+  // [LanguageEnum.spanish]: '西班牙语',
+  // [LanguageEnum.italian]: '意大利语',
+  // [LanguageEnum.portuguese]: '葡萄牙语',
+  // [LanguageEnum.russian]: '俄语',
+  // [LanguageEnum.arab]: '阿拉伯语',
+  // [LanguageEnum.korean]: '韩语',
 }
 
 export const nameToLanguageMap = invert(languageToNameMap)
@@ -49,7 +49,7 @@ export enum PartOfSpeechEnum {
 export const partOfSpeechToLanguageMap: Partial<
   Record<LanguageEnum, Partial<Record<PartOfSpeechEnum, string>>>
 > = {
-  [LanguageEnum.ja]: {
+  [LanguageEnum.japanese]: {
     [PartOfSpeechEnum.unknown]: '未知',
     [PartOfSpeechEnum.type1]: '名词',
     [PartOfSpeechEnum.type2]: '代名词',

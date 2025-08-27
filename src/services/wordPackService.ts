@@ -89,7 +89,7 @@ export class WordPackService {
   async importFromExcel(
     file: File,
     wordPackName?: string,
-    language: LanguageEnum = LanguageEnum.ja
+    language: LanguageEnum = LanguageEnum.japanese
   ): Promise<ImportResult> {
     try {
       // 1. 解析 Excel 文件

@@ -5,7 +5,6 @@ import { toast } from 'sonner'
 import Button from '@/components/Button'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { ImportResult, wordPackService } from '@/services/wordPackService'
-import type { FormatField } from '@/types/excel'
 
 import ExcelTemplateViewer from './ExcelTemplateViewer'
 
@@ -17,16 +16,6 @@ const ImportSection = ({ onFinish }: ImportSectionProps) => {
   const { setCurrentWordPackId, currentWordPack } = useCurrentWordPack()
 
   const [isUploading, setIsUploading] = useState(false)
-
-  const formatFields: FormatField[] = [
-    { label: '音标', example: 'べんきょう' },
-    { label: '写法', example: '勉強' },
-    { label: '释义', example: '学习' },
-    { label: '例句', example: '勉強すればするほど、難しくなる感じがします。' },
-    { label: '卡包名', example: '第一課　出会い' },
-    { label: '词汇音频', example: '' },
-    { label: '例句音频', example: '' },
-  ]
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -58,7 +47,7 @@ const ImportSection = ({ onFinish }: ImportSectionProps) => {
   return (
     <>
       <div className="bg-muted p-4 rounded-xl mb-4">
-        <ExcelTemplateViewer formatFields={formatFields} />
+        <ExcelTemplateViewer />
       </div>
 
       <label className="w-full cursor-pointer">
