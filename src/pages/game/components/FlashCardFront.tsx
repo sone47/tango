@@ -56,6 +56,14 @@ const FlashCardFront = () => {
     <div className="absolute top-0 left-0 w-full h-full p-4 backface-hidden flex flex-col">
       {/* 内容区域 */}
       <div className="flex-1 flex flex-col justify-center space-y-8 min-h-0">
+        {word.word && (
+          <Speak
+            text={word.word}
+            audioUrl={word.wordAudio}
+            autoPlay={settings.practice.isAutoPlayAudio}
+            size="xxl"
+          />
+        )}
         <RevealOverlay
           isRevealed={revealState.phonetic}
           label="音标"
@@ -66,13 +74,6 @@ const FlashCardFront = () => {
         >
           <div className="flex items-center justify-center gap-2 h-12">
             <span className="text-xl font-medium text-gray-800">{word.phonetic}</span>
-            {word.word && (
-              <Speak
-                text={word.word}
-                audioUrl={word.wordAudio}
-                autoPlay={settings.practice.isAutoPlayAudio}
-              />
-            )}
           </div>
         </RevealOverlay>
 

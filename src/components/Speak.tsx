@@ -3,16 +3,25 @@ import { useEffect, useRef, useState } from 'react'
 
 import Button from '@/components/Button'
 import { useTTS } from '@/hooks/useTTS'
+import { cn } from '@/lib/utils'
 
 interface SpeakProps {
   audioUrl?: string
   text: string
   autoPlay?: boolean
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
   onPlay?: () => void
 }
 
-const Icon = ({ isPlaying }: { isPlaying: boolean }) => {
+const iconSizeMap = {
+  sm: 'size-3',
+  md: 'size-4',
+  lg: 'size-5',
+  xl: 'size-6',
+  xxl: 'size-7',
+}
+
+const Icon = ({ isPlaying, size = 'md' }: { isPlaying: boolean; size?: SpeakProps['size'] }) => {
   const iconSequence = [Volume, Volume1, Volume2]
   const staticIndex = 2
   const intervalTime = 300
@@ -62,7 +71,7 @@ const Icon = ({ isPlaying }: { isPlaying: boolean }) => {
     }
   }
 
-  return <CurrentIcon className="size-4" />
+  return <CurrentIcon className={cn(iconSizeMap[size])} />
 }
 
 const Speak = ({ text, audioUrl, autoPlay = false, size = 'md', onPlay }: SpeakProps) => {
@@ -110,14 +119,18 @@ const Speak = ({ text, audioUrl, autoPlay = false, size = 'md', onPlay }: SpeakP
       ref={playButtonRef}
       variant="ghost"
       onClick={handlePlay}
-      size={size}
       className="!p-0 h-auto"
       disabled={isGlobalLoading}
     >
       {isGlobalLoading ? (
-        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+        <div
+          className={cn(
+            'border-2 border-current border-t-transparent rounded-full animate-spin',
+            iconSizeMap[size]
+          )}
+        />
       ) : (
-        <Icon isPlaying={ttsAudio.isPlaying} />
+        <Icon isPlaying={ttsAudio.isPlaying} size={size} />
       )}
     </Button>
   )
