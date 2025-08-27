@@ -41,7 +41,7 @@ const RecommendedPacksPage = () => {
       setImportingIndex(index)
 
       const file = await recommendedPackService.downloadRecommendedPack(pack)
-      const importResult = await wordPackService.importFromExcel(file, pack.name)
+      const importResult = await wordPackService.importFromExcel(file, pack.name, pack.language)
 
       if (importResult.success) {
         setSuccessImportedModalOpen(true)

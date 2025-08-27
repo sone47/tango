@@ -1,3 +1,6 @@
+import { invert, isNil } from 'lodash'
+
+import { LanguageEnum, PartOfSpeechEnum, partOfSpeechToLanguageMap } from '@/constants/language'
 import { getGlobalIDBManager } from '@/hooks/useDatabase'
 import type { CardPackEntity, VocabularyEntity, WordPackEntity } from '@/schemas'
 import { cardPackSchema, vocabularySchema, wordPackSchema } from '@/schemas'
@@ -24,6 +27,7 @@ export interface ParsedWordPackData {
       phonetic?: string
       word?: string
       definition?: string
+      partOfSpeech?: PartOfSpeechEnum
       example?: string
       wordAudio?: string
       exampleAudio?: string
@@ -53,6 +57,7 @@ export const ExcelToDataFieldMap = {
   音标: 'phonetic',
   写法: 'word',
   释义: 'definition',
+  词性: 'partOfSpeech',
   例句: 'example',
   卡包名: 'cardPackName',
   词汇音频: 'wordAudio',
@@ -81,10 +86,14 @@ export class WordPackService {
    * @param file Excel 文件
    * @returns 导入结果
    */
-  async importFromExcel(file: File, wordPackName?: string): Promise<ImportResult> {
+  async importFromExcel(
+    file: File,
+    wordPackName?: string,
+    language: LanguageEnum = LanguageEnum.ja
+  ): Promise<ImportResult> {
     try {
       // 1. 解析 Excel 文件
-      const parsedData = await this.parseExcel(file)
+      const parsedData = await this.parseExcel(file, language)
 
       // 2. 验证数据
       const validation = this.validateData(parsedData)
@@ -97,7 +106,7 @@ export class WordPackService {
       }
 
       // 3. 导入数据
-      const result = await this.importData(parsedData, wordPackName)
+      const result = await this.importData(parsedData, wordPackName, language)
       return result
     } catch (error) {
       console.error('词包导入失败:', error)
@@ -115,7 +124,7 @@ export class WordPackService {
    * @param file Excel 文件
    * @returns 解析后的词包数据
    */
-  async parseExcel(file: File): Promise<ParsedWordPackData> {
+  async parseExcel(file: File, language: LanguageEnum): Promise<ParsedWordPackData> {
     // 1. 验证文件类型
     if (!isValidExcelFile(file)) {
       throw new Error('请选择有效的 Excel 文件（.xlsx 或 .xls）')
@@ -132,7 +141,7 @@ export class WordPackService {
     const excelData = parseResult.data as WordPackExcelRow[]
 
     // 4. 解析数据
-    const parsedData = this.parseVocabularyData(excelData, file.name)
+    const parsedData = this.parseVocabularyData(excelData, file.name, language)
 
     return parsedData
   }
@@ -174,6 +183,9 @@ export class WordPackService {
         if (!vocab.definition?.trim()) {
           errors.push(`卡包 "${cardPack.name}" 第 ${vocabIndex + 1} 行的释义不能为空`)
         }
+        if (isNil(vocab.partOfSpeech)) {
+          errors.push(`卡包 "${cardPack.name}" 第 ${vocabIndex + 1} 行的词性非法`)
+        }
       })
     })
 
@@ -189,7 +201,11 @@ export class WordPackService {
    * @param parsedData 解析后的词包数据
    * @returns 导入结果
    */
-  async importData(parsedData: ParsedWordPackData, wordPackName?: string): Promise<ImportResult> {
+  async importData(
+    parsedData: ParsedWordPackData,
+    wordPackName?: string,
+    language?: LanguageEnum
+  ): Promise<ImportResult> {
     try {
       // 使用事务执行完整的导入操作，确保数据一致性
       const result = await getGlobalIDBManager().transaction(
@@ -211,6 +227,7 @@ export class WordPackService {
           // 2. 创建词包记录
           const wordPackData = {
             name,
+            language,
           }
           const wordPackWithTimestamps = this.wordPackRepo.addTimestamps(wordPackData, false)
           const wordPackId = await wordPackStore.add(wordPackWithTimestamps)
@@ -234,6 +251,7 @@ export class WordPackService {
                 phonetic: vocabularyData.phonetic || '',
                 word: vocabularyData.word || '',
                 definition: vocabularyData.definition || '',
+                partOfSpeech: vocabularyData.partOfSpeech,
                 example: vocabularyData.example || '',
                 wordAudio: vocabularyData.wordAudio || '',
                 exampleAudio: vocabularyData.exampleAudio || '',
@@ -282,7 +300,11 @@ export class WordPackService {
    * @param fileName 文件名，用作词包名
    * @returns 解析后的词包数据
    */
-  private parseVocabularyData(excelData: WordPackExcelRow[], fileName: string): ParsedWordPackData {
+  private parseVocabularyData(
+    excelData: WordPackExcelRow[],
+    fileName: string,
+    language: LanguageEnum
+  ): ParsedWordPackData {
     const wordPackName = fileName.replace(/\.(xlsx?|xls)$/i, '')
 
     const cardPackMap = new Map<string, WordPackExcelRow[]>()
@@ -296,16 +318,25 @@ export class WordPackService {
       cardPackMap.get(cardPackName)!.push(row)
     })
 
+    const partOfSpeechMap = invert(partOfSpeechToLanguageMap[language] as Record<string, string>)
+
     // 转换为最终数据结构
     const cardPacks = Array.from(cardPackMap.entries()).map(([cardPackName, vocabularies]) => ({
       name: cardPackName,
       vocabularies: vocabularies.map((vocab) => {
-        return Object.fromEntries(
+        const rawData = Object.fromEntries(
           Object.entries(ExcelToDataFieldMap).map(([key, value]) => [
             value,
             String((vocab[key as keyof WordPackExcelRow] as string) || '').trim(),
           ])
         ) as ParsedWordPackData['cardPacks'][number]['vocabularies'][number]
+
+        return {
+          ...rawData,
+          partOfSpeech: rawData.partOfSpeech
+            ? (+partOfSpeechMap[rawData.partOfSpeech] as PartOfSpeechEnum)
+            : PartOfSpeechEnum.unknown,
+        }
       }),
     }))
 

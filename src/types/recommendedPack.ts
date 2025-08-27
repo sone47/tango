@@ -1,3 +1,5 @@
+import { LanguageEnum } from '@/constants/language'
+
 export interface RecommendedPack {
   name: string
   description: string
@@ -5,4 +7,5 @@ export interface RecommendedPack {
   category: string
   author: string
   version: string
+  language: LanguageEnum
 }

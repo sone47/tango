@@ -2,6 +2,8 @@ import { useRef } from 'react'
 
 import Speak from '@/components/Speak'
 import { FlashCardItemEnum, FlashCardItemNameMap } from '@/constants/flashCard'
+import { LanguageEnum, PartOfSpeechEnum, partOfSpeechToLanguageMap } from '@/constants/language'
+import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { useSettings } from '@/hooks/useSettings'
 import { usePracticeStore } from '@/stores/practiceStore'
 import { CardRevealState } from '@/types'
@@ -13,8 +15,10 @@ const cardItemNames = Object.keys(FlashCardItemNameMap) as (keyof typeof FlashCa
 const FlashCardFront = () => {
   const { settings } = useSettings()
   const { currentWordIndex, revealState, updateState, shuffledWords } = usePracticeStore()
+  const { currentWordPack } = useCurrentWordPack()
 
   const word = shuffledWords[currentWordIndex]
+  const partOfSpeechMap = partOfSpeechToLanguageMap[currentWordPack?.language as LanguageEnum] ?? {}
 
   const isDraggingRef = useRef<Record<keyof CardRevealState, boolean>>({
     phonetic: false,
@@ -94,7 +98,12 @@ const FlashCardFront = () => {
           showGuide={isFirstCard && guideItemName === FlashCardItemEnum.definition}
         >
           <div className="flex items-center justify-center h-12">
-            <span className="text-lg text-gray-700">{word.definition}</span>
+            <span className="text-lg text-gray-700">
+              {word.partOfSpeech === PartOfSpeechEnum.unknown
+                ? ''
+                : `[${partOfSpeechMap[word.partOfSpeech]}]`}
+              {word.definition}
+            </span>
           </div>
         </RevealOverlay>
       </div>

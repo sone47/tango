@@ -1,9 +1,12 @@
+import { PartOfSpeechEnum } from '@/constants/language'
+
 export interface VocabularyEntity {
   id: number // 自增主键，可选
   cardPackId: number // 卡包ID，外键
   phonetic?: string // 音标
   word: string // 写法
   definition: string // 释义
+  partOfSpeech: PartOfSpeechEnum // 词性
   example?: string // 例句
   wordAudio?: string // 词汇音频URL或Base64
   exampleAudio?: string // 例句音频URL或Base64
