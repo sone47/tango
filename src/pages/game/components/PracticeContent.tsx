@@ -1,6 +1,5 @@
 import { PartyPopper } from 'lucide-react'
-import { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router'
+import { useRef } from 'react'
 
 import Button from '@/components/Button'
 import { Confetti, ConfettiRef } from '@/components/magicui/confetti'
@@ -11,18 +10,11 @@ import FlashCard from './FlashCard'
 
 const PracticeContent = () => {
   const confettiRef = useRef<ConfettiRef>(null)
-  const navigate = useNavigate()
-  const { currentWordIndex, selectedCardPack, shuffledWords, updateState } = usePracticeStore()
+  const { currentWordIndex, shuffledWords, updateState } = usePracticeStore()
 
   const handleShowCardPackSelector = () => {
     updateState({ showCardPackSelector: true })
   }
-
-  useEffect(() => {
-    if (!selectedCardPack) {
-      navigate('/', { replace: true })
-    }
-  }, [selectedCardPack])
 
   if (currentWordIndex >= shuffledWords.length) {
     return (
