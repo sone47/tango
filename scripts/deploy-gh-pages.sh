@@ -4,6 +4,13 @@
 
 set -e  # 遇到错误时退出
 
+echo "🔄 切换到 gh-pages 分支"
+git switch gh-pages
+echo "✅ 同步远程 gh-pages 分支"
+git pull
+echo "🔙 切换回原来的分支"
+git switch -
+
 echo "🏗️  开始构建项目..."
 
 # 确保我们在项目根目录
@@ -24,9 +31,6 @@ fi
 
 echo "📁 准备 gh-pages 分支..."
 
-# 保存当前分支名
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-
 # 检查是否有未提交的更改
 if ! git diff-index --quiet HEAD --; then
     echo "⚠️  检测到未提交的更改，请先提交或暂存更改"
@@ -34,14 +38,9 @@ if ! git diff-index --quiet HEAD --; then
     exit 1
 fi
 
-# 切换到 gh-pages 分支（如果不存在则创建）
-if git rev-parse --verify gh-pages >/dev/null 2>&1; then
-    echo "🔄 切换到现有的 gh-pages 分支"
-    git checkout gh-pages
-else
-    echo "🆕 创建新的 gh-pages 分支"
-    git checkout --orphan gh-pages
-fi
+# 切换到 gh-pages 分支
+echo "🔄 切换到 gh-pages 分支"
+git switch gh-pages
 
 # 保存 node_modules 的引用（如果存在）
 if [ -d "node_modules" ]; then
@@ -85,8 +84,8 @@ else
 fi
 
 # 切换回原来的分支
-echo "🔙 切换回 $CURRENT_BRANCH 分支"
-git checkout "$CURRENT_BRANCH"
+echo "🔙 切换回原来的分支"
+git switch -
 
 # 恢复 node_modules（如果需要）
 if [ "$NODE_MODULES_EXISTS" = true ]; then
