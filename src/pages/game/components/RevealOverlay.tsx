@@ -108,7 +108,7 @@ const RevealOverlay = ({
   const shouldAnimate = !isDragging && (isSliding || shouldSnapBack)
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       {/* 背景内容 */}
       {children}
 

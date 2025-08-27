@@ -1,4 +1,4 @@
-import { LucideIcon, Volume, Volume1, Volume2 } from 'lucide-react'
+import { Loader2, LucideIcon, Volume, Volume1, Volume2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
 import Button from '@/components/Button'
@@ -9,8 +9,9 @@ interface SpeakProps {
   audioUrl?: string
   text: string
   autoPlay?: boolean
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
   onPlay?: () => void
+  buttonProps?: React.ComponentProps<typeof Button>
 }
 
 const iconSizeMap = {
@@ -18,7 +19,7 @@ const iconSizeMap = {
   md: 'size-4',
   lg: 'size-5',
   xl: 'size-6',
-  xxl: 'size-7',
+  '2xl': 'size-8',
 }
 
 const Icon = ({ isPlaying, size = 'md' }: { isPlaying: boolean; size?: SpeakProps['size'] }) => {
@@ -74,7 +75,14 @@ const Icon = ({ isPlaying, size = 'md' }: { isPlaying: boolean; size?: SpeakProp
   return <CurrentIcon className={cn(iconSizeMap[size])} />
 }
 
-const Speak = ({ text, audioUrl, autoPlay = false, size = 'md', onPlay }: SpeakProps) => {
+const Speak = ({
+  text,
+  audioUrl,
+  autoPlay = false,
+  size = 'md',
+  onPlay,
+  buttonProps,
+}: SpeakProps) => {
   const playButtonRef = useRef<HTMLButtonElement>(null)
 
   const { start, isGlobalLoading, audio: ttsAudio } = useTTS(text)
@@ -121,14 +129,10 @@ const Speak = ({ text, audioUrl, autoPlay = false, size = 'md', onPlay }: SpeakP
       onClick={handlePlay}
       className="!p-0 h-auto"
       disabled={isGlobalLoading}
+      {...buttonProps}
     >
       {isGlobalLoading ? (
-        <div
-          className={cn(
-            'border-2 border-current border-t-transparent rounded-full animate-spin',
-            iconSizeMap[size]
-          )}
-        />
+        <Loader2 className={cn('animate-spin', iconSizeMap[size])} />
       ) : (
         <Icon isPlaying={ttsAudio.isPlaying} size={size} />
       )}

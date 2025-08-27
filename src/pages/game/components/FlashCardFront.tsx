@@ -56,13 +56,17 @@ const FlashCardFront = () => {
   return (
     <div className="absolute top-0 left-0 w-full h-full p-4 backface-hidden flex flex-col">
       {/* 内容区域 */}
-      <div className="flex-1 flex flex-col justify-center space-y-8 min-h-0">
+      <div className="flex-1 flex flex-col justify-center items-center space-y-8 min-h-0">
         {word.word && (
           <Speak
             text={word.word}
             audioUrl={word.wordAudio}
             autoPlay={settings.practice.isAutoPlayAudio}
-            size="xxl"
+            size="2xl"
+            buttonProps={{
+              variant: 'primary',
+              className: '!size-10 !p-8 rounded-2xl',
+            }}
           />
         )}
         <RevealOverlay
