@@ -1,5 +1,6 @@
 import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys'
 import { getGlobalIDBManager } from '@/hooks/useDatabase'
+import { LatestData } from '@/hooks/useLastestData'
 import type { CardPackEntity, PracticeEntity, VocabularyEntity, WordPackEntity } from '@/schemas'
 import { cardPackSchema, practiceSchema, vocabularySchema, wordPackSchema } from '@/schemas'
 
@@ -17,6 +18,7 @@ export interface DataSyncPayload {
   vocabularies: VocabularyEntity[]
   practices: PracticeEntity[]
   currentWordPackId: number | null
+  latestData: LatestData | null
 }
 
 export class DataSyncService {
@@ -36,6 +38,8 @@ export class DataSyncService {
 
     const currentWordPackIdStr = localStorage.getItem(LOCAL_STORAGE_KEYS.CURRENT_WORD_PACK_ID)
     const currentWordPackId = currentWordPackIdStr ? Number(currentWordPackIdStr) : null
+    const latestDataStr = localStorage.getItem(LOCAL_STORAGE_KEYS.LATEST_DATA)
+    const latestData = latestDataStr ? (JSON.parse(latestDataStr) as LatestData) : null
 
     return {
       meta: {
@@ -47,6 +51,7 @@ export class DataSyncService {
       vocabularies,
       practices,
       currentWordPackId,
+      latestData,
     }
   }
 
@@ -84,6 +89,12 @@ export class DataSyncService {
       )
     } else {
       localStorage.removeItem(LOCAL_STORAGE_KEYS.CURRENT_WORD_PACK_ID)
+    }
+
+    if (payload.latestData !== null) {
+      localStorage.setItem(LOCAL_STORAGE_KEYS.LATEST_DATA, JSON.stringify(payload.latestData))
+    } else {
+      localStorage.removeItem(LOCAL_STORAGE_KEYS.LATEST_DATA)
     }
   }
 }

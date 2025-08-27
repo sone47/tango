@@ -3,7 +3,7 @@ import { useLocalStorage } from '@uidotdev/usehooks'
 import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys'
 import { DateUtils } from '@/utils/date'
 
-interface LatestData {
+export interface LatestData {
   cardPackId: number
   practiceDate: string
   syncDate: string
