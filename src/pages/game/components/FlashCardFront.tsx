@@ -1,3 +1,4 @@
+import { isNil } from 'lodash'
 import { useRef } from 'react'
 
 import Speak from '@/components/Speak'
@@ -100,7 +101,7 @@ const FlashCardFront = () => {
         >
           <div className="flex items-center justify-center h-12">
             <span className="text-lg text-gray-700">
-              {word.partOfSpeech === PartOfSpeechEnum.unknown
+              {word.partOfSpeech === PartOfSpeechEnum.unknown || isNil(word.partOfSpeech)
                 ? ''
                 : `[${partOfSpeechMap[word.partOfSpeech]}]`}
               {word.definition}

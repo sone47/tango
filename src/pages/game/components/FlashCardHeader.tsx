@@ -6,6 +6,7 @@ import Button from '@/components/Button'
 import Drawer, { useDrawer } from '@/components/Drawer'
 import DropdownMenu from '@/components/DropdownMenu'
 import VocabularyEditForm, { type VocabularyFormData } from '@/components/VocabularyEditForm'
+import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { cn } from '@/lib/utils'
 import { vocabularyService } from '@/services/vocabularyService'
 import { usePracticeStore } from '@/stores/practiceStore'
@@ -31,6 +32,7 @@ const FlashCardHeader = ({
 
   const editDrawer = useDrawer()
   const { updateState, shuffledWords, currentWordIndex } = usePracticeStore()
+  const { currentWordPack } = useCurrentWordPack()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -51,6 +53,7 @@ const FlashCardHeader = ({
         phonetic: data.phonetic,
         word: data.word,
         definition: data.definition,
+        partOfSpeech: data.partOfSpeech,
         example: data.example,
         wordAudio: data.wordAudio,
         exampleAudio: data.exampleAudio,
@@ -110,6 +113,7 @@ const FlashCardHeader = ({
       >
         {word && (
           <VocabularyEditForm
+            wordPackId={currentWordPack?.id || -1}
             vocabulary={word}
             isCreate={false}
             onSubmit={handleFormSubmit}
