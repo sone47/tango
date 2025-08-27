@@ -1,6 +1,6 @@
 import { Settings, Shuffle } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 
 import Button from '@/components/Button'
 import Modal from '@/components/Modal'
@@ -15,7 +15,6 @@ import { filterWordsByProficiency, processWords } from '@/utils/practiceUtils'
 
 const CardPackConfigModal = () => {
   const navigate = useNavigate()
-  const location = useLocation()
   const { settings } = useSettings()
   const { setLatestCardPackId } = useLastestData()
   const { showCardPackConfig, updateState, tempSelectedCardPack } = usePracticeStore()
@@ -68,11 +67,9 @@ const CardPackConfigModal = () => {
 
     setLatestCardPackId(cardPack.id)
 
-    if (location.pathname !== '/game') {
-      setTimeout(() => {
-        navigate('/game')
-      }, 100)
-    }
+    setTimeout(() => {
+      navigate('/game')
+    }, 100)
   }
 
   const handleCardPackConfigCancel = () => {

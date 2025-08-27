@@ -19,7 +19,7 @@ const PracticeContent = () => {
   }
 
   if (!selectedCardPack) {
-    navigate('/')
+    navigate('/', { replace: true })
     return
   }
 
