@@ -82,7 +82,7 @@ const HistoryPool = () => {
                       <span className="text-lg text-gray-700">{word.definition}</span>
                     </div>
 
-                    <div className="bg-white/80 p-4 rounded-xl">
+                    {/* <div className="bg-background p-4 rounded-xl">
                       <p className="text-sm text-gray-600 mb-2 font-medium">例句:</p>
                       {word.example ? (
                         <p className="text-gray-800 leading-relaxed">{word.example}</p>
@@ -92,7 +92,7 @@ const HistoryPool = () => {
                           <p className="text-gray-400 text-sm mt-1">该词汇还没有添加例句</p>
                         </div>
                       )}
-                    </div>
+                    </div> */}
                   </div>
                 </CarouselItem>
               ))}
