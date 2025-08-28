@@ -24,12 +24,7 @@ const PracticeContent = () => {
           <Typography.Title level={4}>未选择卡包</Typography.Title>
           <Typography.Text type="secondary">点击下方按钮选择一个卡包开始学习</Typography.Text>
         </div>
-        <Button
-          variant="primary"
-          size="lg"
-          className="w-full text-md"
-          onClick={handleShowCardPackSelector}
-        >
+        <Button variant="primary" size="xl" className="w-full" onClick={handleShowCardPackSelector}>
           开始学习
         </Button>
       </motion.div>

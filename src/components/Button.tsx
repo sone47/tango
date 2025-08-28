@@ -62,6 +62,19 @@ const Button = ({
     return sizeMap[s as keyof typeof sizeMap] || 'default'
   }
 
+  const textSize = (s: ButtonProps['size']) => {
+    const textSizeMap = {
+      xs: 'text-xs',
+      sm: 'text-sm',
+      md: 'text-md',
+      lg: 'text-md',
+      xl: 'text-xl',
+      default: 'text-base',
+      icon: 'text-base',
+    }
+    return textSizeMap[s as keyof typeof textSizeMap] || 'text-md'
+  }
+
   const getIconSize = () => {
     const iconSizes = {
       xs: 4,
@@ -90,7 +103,7 @@ const Button = ({
       disabled={isDisabled}
       onClick={(event) => onClick?.(event)}
       asChild={asChild}
-      className={cn(getExtraStyles(), 'gap-2', className)}
+      className={cn(getExtraStyles(), 'gap-2', textSize(size), className)}
       {...props}
     >
       {loading && (
