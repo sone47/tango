@@ -15,6 +15,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useExampleStream } from '@/hooks/useGenerateWordExample'
 import { useSettings } from '@/hooks/useSettings'
 import { cn } from '@/lib/utils'
+import { exampleService } from '@/services/exampleService'
 import { Word } from '@/types'
 
 interface FlashCardBackProps {
@@ -54,6 +55,8 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
   }, [isScrolling, onScroll])
 
   useEffect(() => {
+    if (!examples.length) return
+
     const lastExample = examples[examples.length - 1]
 
     setExamples([
@@ -117,21 +120,26 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
     return example.indexOf(word.word)
   }
 
-  if (isFirstRender) {
-    if (word.example) {
-      setExamples([
-        {
-          example: word.example,
-          translation: '',
-          isAi: false,
-          id: 0,
-          wordPosition: getWordPositionInExample(word.example),
+  const fetchInitExamples = async () => {
+    const examples = await exampleService.getExamplesByVocabularyId(word.id)
+    if (examples.length) {
+      setExamples(
+        examples.map((example) => ({
+          example: example.content,
+          translation: example.translation,
+          isAi: example.isAi,
+          id: example.id,
+          wordPosition: getWordPositionInExample(example.content),
           isGenerating: false,
-        },
-      ])
+        }))
+      )
     } else {
       handleGenerateExample()
     }
+  }
+
+  if (isFirstRender) {
+    fetchInitExamples()
   }
 
   return (
