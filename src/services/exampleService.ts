@@ -15,6 +15,25 @@ export class ExampleService {
     const examples = await this.exampleRepo.findBy('vocabularyId', vocabularyId)
     return examples
   }
+
+  async addExample(example: ExampleEntity): Promise<ExampleEntity> {
+    const newExample = {
+      ...example,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }
+    const savedExample = await this.exampleRepo.save(newExample)
+    return savedExample
+  }
+
+  async updateExample(example: ExampleEntity): Promise<ExampleEntity> {
+    const updatedExample = {
+      ...example,
+      updatedAt: new Date().toISOString(),
+    }
+    const savedExample = await this.exampleRepo.save(updatedExample)
+    return savedExample
+  }
 }
 
 export const exampleService = new ExampleService()
