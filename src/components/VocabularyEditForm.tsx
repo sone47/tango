@@ -166,40 +166,12 @@ const VocabularyEditForm: React.FC<VocabularyEditFormProps> = ({
       ),
     },
     {
-      name: 'example',
-      label: '例句',
-      render: (field) => (
-        <Textarea
-          {...field}
-          placeholder="请输入例句"
-          disabled={loading}
-          autoResize
-          minHeight={60}
-          maxHeight={120}
-        />
-      ),
-    },
-    {
       name: 'wordAudio',
       label: '单词音频',
       render: (field) => (
         <Textarea
           {...field}
           placeholder="请输入音频URL或Base64编码"
-          disabled={loading}
-          autoResize
-          minHeight={60}
-          maxHeight={100}
-        />
-      ),
-    },
-    {
-      name: 'exampleAudio',
-      label: '例句音频',
-      render: (field) => (
-        <Textarea
-          {...field}
-          placeholder="请输入例句音频URL或Base64编码"
           disabled={loading}
           autoResize
           minHeight={60}
