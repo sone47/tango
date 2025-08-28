@@ -10,10 +10,14 @@ import FlashCard from './FlashCard'
 
 const PracticeContent = () => {
   const confettiRef = useRef<ConfettiRef>(null)
-  const { currentWordIndex, shuffledWords, updateState } = usePracticeStore()
+  const { currentWordIndex, shuffledWords, selectedCardPack, updateState } = usePracticeStore()
 
   const handleShowCardPackSelector = () => {
     updateState({ showCardPackSelector: true })
+  }
+
+  if (!selectedCardPack) {
+    return null
   }
 
   if (currentWordIndex >= shuffledWords.length) {
