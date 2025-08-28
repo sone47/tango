@@ -1,5 +1,7 @@
 import { isNil } from 'lodash'
+import { Edit } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
 
 import Accordion from '@/components/Accordion'
 import { cardPackService } from '@/services/cardPackService'
@@ -52,7 +54,7 @@ const CardpackList = ({ wordPackId }: CardpackListProps) => {
     }
   }
 
-  const handleEditSuccess = (updatedWord: Word) => {
+  const handleEditWordSuccess = (updatedWord: Word) => {
     const cardPack = cardPacks.find((cardPack) => cardPack.id === updatedWord.cardPackId)
     if (cardPack) {
       cardPack.words = cardPack.words.map((word) =>
@@ -62,9 +64,25 @@ const CardpackList = ({ wordPackId }: CardpackListProps) => {
     }
   }
 
+  const handleEditCardPack = (cardPack: CardPack) => {
+    toast.warning('🚧 施工中，敬请期待')
+    console.log(cardPack)
+  }
+
   const items = cardPacks.map((cardPack) => ({
     id: cardPack.id.toString(),
-    title: cardPack.name,
+    title: (
+      <div className="flex items-center gap-2">
+        {cardPack.name}
+        <Edit
+          className="w-4 h-4 text-primary cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation()
+            handleEditCardPack(cardPack)
+          }}
+        />
+      </div>
+    ),
     content: (
       <div id={`cardpack-${cardPack.id}`} className="flex flex-col gap-4">
         {cardPack.words.map((word) => (
@@ -72,7 +90,7 @@ const CardpackList = ({ wordPackId }: CardpackListProps) => {
             key={word.id}
             word={word}
             language={wordPack!.language}
-            onEditSuccess={handleEditSuccess}
+            onEditSuccess={handleEditWordSuccess}
           />
         ))}
       </div>
