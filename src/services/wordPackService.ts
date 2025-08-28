@@ -2,8 +2,8 @@ import { invert, isNil } from 'lodash'
 
 import { LanguageEnum, PartOfSpeechEnum, partOfSpeechToLanguageMap } from '@/constants/language'
 import { getGlobalIDBManager } from '@/hooks/useDatabase'
-import type { CardPackEntity, VocabularyEntity, WordPackEntity } from '@/schemas'
-import { cardPackSchema, vocabularySchema, wordPackSchema } from '@/schemas'
+import type { CardPackEntity, ExampleEntity, VocabularyEntity, WordPackEntity } from '@/schemas'
+import { cardPackSchema, exampleSchema, vocabularySchema, wordPackSchema } from '@/schemas'
 import type { ExcelParseResult } from '@/utils/excel'
 import { isValidExcelFile, parseExcelFile } from '@/utils/excel'
 
@@ -12,10 +12,12 @@ export interface WordPackExcelRow {
   音标?: string
   写法: string
   释义: string
+  词性?: string
   例句?: string
   卡包名: string
   词汇音频?: string
   例句音频?: string
+  例句翻译?: string
 }
 
 // 解析后的词包数据结构
@@ -29,6 +31,7 @@ export interface ParsedWordPackData {
       definition?: string
       partOfSpeech?: PartOfSpeechEnum
       example?: string
+      exampleTranslation?: string
       wordAudio?: string
       exampleAudio?: string
     }[]
@@ -53,15 +56,16 @@ export interface ImportResult {
   errors?: string[]
 }
 
-export const ExcelToDataFieldMap = {
+export const ExcelToDataFieldMap: Record<keyof WordPackExcelRow, string> = {
   音标: 'phonetic',
   写法: 'word',
   释义: 'definition',
   词性: 'partOfSpeech',
-  例句: 'example',
   卡包名: 'cardPackName',
   词汇音频: 'wordAudio',
+  例句: 'example',
   例句音频: 'exampleAudio',
+  例句翻译: 'exampleTranslation',
 }
 
 /**
@@ -79,6 +83,10 @@ export class WordPackService {
 
   private get vocabularyRepo() {
     return getGlobalIDBManager().getRepository<VocabularyEntity>(vocabularySchema)
+  }
+
+  private get exampleRepo() {
+    return getGlobalIDBManager().getRepository<ExampleEntity>(exampleSchema)
   }
 
   /**
@@ -209,12 +217,13 @@ export class WordPackService {
     try {
       // 使用事务执行完整的导入操作，确保数据一致性
       const result = await getGlobalIDBManager().transaction(
-        ['wordPacks', 'cardPacks', 'vocabularies'],
+        ['wordPacks', 'cardPacks', 'vocabularies', 'examples'],
         'readwrite',
         async (stores) => {
           const wordPackStore = stores['wordPacks']
           const cardPackStore = stores['cardPacks']
           const vocabularyStore = stores['vocabularies']
+          const exampleStore = stores['examples']
 
           // 1. 在事务内检查词包名是否已存在（避免竞态条件）
           const name = wordPackName || parsedData.wordPackName
@@ -252,13 +261,23 @@ export class WordPackService {
                 word: vocabularyData.word || '',
                 definition: vocabularyData.definition || '',
                 partOfSpeech: vocabularyData.partOfSpeech,
-                example: vocabularyData.example || '',
                 wordAudio: vocabularyData.wordAudio || '',
-                exampleAudio: vocabularyData.exampleAudio || '',
               }
               const vocabularyWithTimestamps = this.vocabularyRepo.addTimestamps(vocabulary, false)
-              await vocabularyStore.add(vocabularyWithTimestamps)
+              const vocabularyId = await vocabularyStore.add(vocabularyWithTimestamps)
               totalVocabularyCount++
+
+              if (vocabularyData.example) {
+                const example = {
+                  vocabularyId,
+                  content: vocabularyData.example,
+                  translation: vocabularyData.exampleTranslation,
+                  exampleAudio: vocabularyData.exampleAudio,
+                  isAi: false,
+                }
+                const exampleWithTimestamps = this.exampleRepo.addTimestamps(example, false)
+                await exampleStore.add(exampleWithTimestamps)
+              }
             }
           }
 

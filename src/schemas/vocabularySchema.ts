@@ -7,9 +7,7 @@ export interface VocabularyEntity {
   word: string // 写法
   definition: string // 释义
   partOfSpeech: PartOfSpeechEnum // 词性
-  example?: string // 例句
   wordAudio?: string // 词汇音频URL或Base64
-  exampleAudio?: string // 例句音频URL或Base64
   createdAt?: string // 创建时间
   updatedAt?: string // 更新时间
 }

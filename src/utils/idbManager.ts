@@ -64,19 +64,19 @@ export class IDBManager {
       upgrade(db) {
         // 为每个schema创建对象存储和索引
         schemas.forEach((schema) => {
-          if (!db.objectStoreNames.contains(schema.name)) {
-            const store = db.createObjectStore(schema.name, {
-              keyPath: schema.keyPath,
-              autoIncrement: schema.autoIncrement,
-            })
+          if (db.objectStoreNames.contains(schema.name)) return
 
-            // 创建索引
-            schema.indexes.forEach((index) => {
-              store.createIndex(index.name, index.keyPath, {
-                unique: index.unique,
-              })
+          const store = db.createObjectStore(schema.name, {
+            keyPath: schema.keyPath,
+            autoIncrement: schema.autoIncrement,
+          })
+
+          // 创建索引
+          schema.indexes.forEach((index) => {
+            store.createIndex(index.name, index.keyPath, {
+              unique: index.unique,
             })
-          }
+          })
         })
       },
     })
