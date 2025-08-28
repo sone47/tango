@@ -54,15 +54,15 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
   }, [isScrolling, onScroll])
 
   useEffect(() => {
-    if (!example) return
+    const lastExample = examples[examples.length - 1]
 
     setExamples([
       ...examples.slice(0, -1),
       {
         ...examples[examples.length - 1],
-        example,
-        translation,
-        wordPosition: getWordPositionInExample(example),
+        example: example ? example : lastExample.example,
+        translation: translation ? translation : lastExample.translation,
+        wordPosition: example ? getWordPositionInExample(example) : lastExample.wordPosition,
         isGenerating,
       },
     ])
@@ -162,47 +162,46 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
                   >
                     <div className="flex-1 flex flex-col justify-start gap-2 text-left">
                       {example.isGenerating && !example.example ? (
-                        <>
-                          <Skeleton className="h-4 w-[250px]" />
-                          <Skeleton className="h-4 w-[200px]" />
-                        </>
+                        <Skeleton className="h-4 w-[250px]" />
                       ) : (
+                        <Typography.Text type="secondary" size="sm" className="!font-medium">
+                          {example.example.slice(0, example.wordPosition)}
+                          <span className="text-primary">
+                            {example.example.slice(
+                              example.wordPosition,
+                              example.wordPosition + word.word.length
+                            )}
+                          </span>
+                          {example.example.slice(example.wordPosition + word.word.length)}
+                        </Typography.Text>
+                      )}
+                      {example.isGenerating && !example.translation ? (
+                        <Skeleton className="h-4 w-[200px]" />
+                      ) : (
+                        <Typography.Text type="secondary" size="xs">
+                          {example.translation}
+                        </Typography.Text>
+                      )}
+                    </div>
+                    <div className="flex flex-col items-end justify-between gap-1 w-4">
+                      {!example.isGenerating && (
                         <>
-                          <Typography.Text type="secondary" size="sm" className="!font-medium">
-                            {example.example.slice(0, example.wordPosition)}
-                            <span className="text-primary">
-                              {example.example.slice(
-                                example.wordPosition,
-                                example.wordPosition + word.word.length
-                              )}
-                            </span>
-                            {example.example.slice(example.wordPosition + word.word.length)}
-                          </Typography.Text>
-                          {example.translation && (
-                            <Typography.Text type="secondary" size="xs">
-                              {example.translation}
-                            </Typography.Text>
+                          <Speak
+                            text={example.example}
+                            audioUrl={example.isAi ? '' : word.exampleAudio}
+                            autoPlay={isFlipped && index === examples.length - 1 && !isPlayed}
+                            onPlay={() => {
+                              setIsPlayed(true)
+                            }}
+                          />
+                          {example.isAi && (
+                            <Badge variant="secondary" className="font-medium">
+                              AI
+                            </Badge>
                           )}
                         </>
                       )}
                     </div>
-                    {!example.isGenerating && (
-                      <div className="flex flex-col items-end justify-between gap-1">
-                        <Speak
-                          text={example.example}
-                          audioUrl={example.isAi ? '' : word.exampleAudio}
-                          autoPlay={isFlipped && index === examples.length - 1 && !isPlayed}
-                          onPlay={() => {
-                            setIsPlayed(true)
-                          }}
-                        />
-                        {example.isAi && (
-                          <Badge variant="secondary" className="font-medium">
-                            AI
-                          </Badge>
-                        )}
-                      </div>
-                    )}
                   </div>
                 ))}
               </AnimatedList>
@@ -215,15 +214,9 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
           )}
           {word.word && (
             <div onClick={(e) => e.stopPropagation()}>
-              {isGenerating ? (
-                <Button variant="link" loading={isGenerating}>
-                  生成中...
-                </Button>
-              ) : (
-                <Button variant="link" onClick={handleGenerateExample}>
-                  {examples.length > 0 ? '更多例句' : '生成例句'}
-                </Button>
-              )}
+              <Button variant="link" onClick={handleGenerateExample} loading={isGenerating}>
+                {isGenerating ? '生成中...' : examples.length > 0 ? '更多例句' : '生成例句'}
+              </Button>
             </div>
           )}
         </div>

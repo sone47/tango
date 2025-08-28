@@ -49,7 +49,7 @@ export function useExampleStream() {
         }
       }
 
-      requestAnimationFrame(() => {
+      setTimeout(() => {
         setExample('')
         setTranslation('')
       })
