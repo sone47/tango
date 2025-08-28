@@ -1,5 +1,4 @@
 import type { LucideIcon } from 'lucide-react'
-import { motion } from 'motion/react'
 import React from 'react'
 
 import {
@@ -20,20 +19,31 @@ export interface AccordionItemData {
 
 export interface AccordionProps {
   items: AccordionItemData[]
-  type?: 'single' | 'multiple'
   collapsible?: boolean
   defaultValue?: string | string[]
   value?: string | string[]
-  onValueChange?: (value: string | string[]) => void
   className?: string
   itemClassName?: string
   triggerClassName?: string
   contentClassName?: string
-  animated?: boolean
-  animationDelay?: number
 }
 
-const Accordion: React.FC<AccordionProps> = ({
+interface AccordionSingleProps extends AccordionProps {
+  type?: 'single'
+  collapsible?: boolean
+  defaultValue?: string
+  value?: string
+  onValueChange: (value: string) => void
+}
+
+interface AccordionMultipleProps extends AccordionProps {
+  type?: 'multiple'
+  defaultValue?: string[]
+  value?: string[]
+  onValueChange: (value: string[]) => void
+}
+
+const Accordion: React.FC<AccordionSingleProps | AccordionMultipleProps> = ({
   items,
   type = 'single',
   collapsible = true,
@@ -44,8 +54,6 @@ const Accordion: React.FC<AccordionProps> = ({
   itemClassName,
   triggerClassName,
   contentClassName,
-  animated = true,
-  animationDelay = 0.1,
 }) => {
   const accordionProps = React.useMemo(() => {
     if (type === 'single') {
@@ -66,14 +74,14 @@ const Accordion: React.FC<AccordionProps> = ({
     }
   }, [type, collapsible, defaultValue, value, onValueChange])
 
-  const renderItem = (item: AccordionItemData, index: number) => {
+  const renderItem = (item: AccordionItemData) => {
     const Icon = item.icon
 
     const triggerContent = (
       <div className="flex items-center gap-3 flex-1">
         {Icon && (
           <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
-            <Icon size={18} className="text-gray-600" />
+            <Icon size={18} className="text-muted-foreground" />
           </div>
         )}
         <span className="text-left">{item.title}</span>
@@ -89,9 +97,9 @@ const Accordion: React.FC<AccordionProps> = ({
       >
         <AccordionTrigger
           className={cn(
-            'hover:no-underline py-4 px-0 text-sm font-medium text-gray-900 transition-colors',
-            'hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2',
-            'focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-md',
+            'hover:no-underline py-4 px-0 font-medium text-foreground transition-colors',
+            'hover:text-primary focus-visible:outline-none focus-visible:ring-2',
+            'focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md',
             'disabled:opacity-50 disabled:cursor-not-allowed',
             triggerClassName
           )}
@@ -99,36 +107,22 @@ const Accordion: React.FC<AccordionProps> = ({
           {triggerContent}
         </AccordionTrigger>
         <AccordionContent
-          className={cn('pb-4 pt-1 text-sm text-gray-600 leading-relaxed', contentClassName)}
+          className={cn(
+            'pb-4 pt-1 text-sm text-muted-foreground leading-relaxed',
+            contentClassName
+          )}
         >
           {item.content}
         </AccordionContent>
       </AccordionItem>
     )
 
-    if (animated) {
-      return (
-        <motion.div
-          key={item.id}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.3,
-            delay: index * animationDelay,
-            ease: 'easeOut',
-          }}
-        >
-          {itemElement}
-        </motion.div>
-      )
-    }
-
     return itemElement
   }
 
   return (
-    <UIAccordion {...accordionProps} className={cn('w-full divide-y divide-gray-200', className)}>
-      {items.map((item, index) => renderItem(item, index))}
+    <UIAccordion {...accordionProps} className={cn('w-full divide-y divide-muted', className)}>
+      {items.map((item) => renderItem(item))}
     </UIAccordion>
   )
 }

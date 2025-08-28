@@ -1,5 +1,6 @@
 import { OctagonX } from 'lucide-react'
 import { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'
@@ -14,6 +15,7 @@ import { useWordPackStore } from '@/stores/wordPackStore'
 import { WordPack } from '@/types'
 
 const WordPackList = () => {
+  const navigate = useNavigate()
   const { currentWordPackId, currentWordPack, setCurrentWordPackId } = useCurrentWordPack()
   const { allWordPacks, loading, error, hasData, fetchWordPacks } = useWordPackStore()
   const deleteAlertDialog = useAlertDialog()
@@ -62,8 +64,7 @@ const WordPackList = () => {
   }
 
   const handleEdit = (wordPack: WordPack) => {
-    console.log('edit', wordPack)
-    toast.warning('🚧 施工中，请耐心等待')
+    navigate(`/wordpack/edit/${wordPack.id}`)
   }
 
   const handleDeleteConfirm = async () => {

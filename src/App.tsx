@@ -4,17 +4,17 @@ import { Route, Routes } from 'react-router'
 import NotFound from '@/components/404'
 import ErrorDisplay from '@/components/ErrorDisplay'
 import Loading from '@/components/Loading'
+import MainPage from '@/components/tango/MainPage'
 import { Toaster } from '@/components/ui/sonner'
 import { DB_NAME, DB_VERSION } from '@/constants/database'
 import { useDatabase } from '@/hooks/useDatabase'
 import AdvanceSettings from '@/pages/advance-settings'
+import GamePage from '@/pages/game'
 import RecommendedPacksPage from '@/pages/recommended-packs'
 import SettingsPage from '@/pages/settings'
 import SyncPage from '@/pages/sync'
 import WordpackPage from '@/pages/wordpack'
-
-import MainPage from './components/tango/MainPage'
-import GamePage from './pages/game'
+import WordPackEditPage from '@/pages/wordpack-edit'
 
 function App() {
   const { init, isInitializing, error, retry } = useDatabase(DB_NAME, DB_VERSION)
@@ -42,6 +42,7 @@ function App() {
         <Route path="/profile" element={<MainPage />} />
         <Route path="/game" element={<GamePage />} />
         <Route path="/wordpack" element={<WordpackPage />} />
+        <Route path="/wordpack/edit/:id" element={<WordPackEditPage />} />
         <Route path="/recommended-packs" element={<RecommendedPacksPage />} />
         <Route path="settings">
           <Route path="" element={<SettingsPage />} />

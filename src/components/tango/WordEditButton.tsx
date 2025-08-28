@@ -2,7 +2,6 @@ import { Edit, MoreHorizontal } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import Button from '@/components/Button'
 import Drawer, { useDrawer } from '@/components/Drawer'
 import DropdownMenu from '@/components/DropdownMenu'
 import VocabularyEditForm, { type VocabularyFormData } from '@/components/VocabularyEditForm'
@@ -12,7 +11,7 @@ import { Word } from '@/types'
 interface WordEditButtonProps {
   wordPackId: number
   word: Word
-  onSuccess: (updatedWord: Word) => void
+  onSuccess?: (updatedWord: Word) => void
 }
 
 const WordEditButton = ({ wordPackId, word, onSuccess }: WordEditButtonProps) => {
@@ -40,7 +39,7 @@ const WordEditButton = ({ wordPackId, word, onSuccess }: WordEditButtonProps) =>
       })
 
       if (updatedWord) {
-        onSuccess(updatedWord)
+        onSuccess?.(updatedWord)
 
         editDrawer.close()
         toast.success('词汇更新成功')
@@ -71,9 +70,7 @@ const WordEditButton = ({ wordPackId, word, onSuccess }: WordEditButtonProps) =>
   return (
     <>
       <DropdownMenu items={menuItems}>
-        <Button variant="ghost" size="icon">
-          <MoreHorizontal className="size-4" />
-        </Button>
+        <MoreHorizontal className="size-4 cursor-pointer" />
       </DropdownMenu>
 
       <Drawer
