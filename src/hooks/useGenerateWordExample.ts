@@ -8,7 +8,7 @@ import { useSettings } from './useSettings'
 export function useExampleStream() {
   const { settings } = useSettings()
 
-  const [example, setExample] = useState('')
+  const [content, setContent] = useState('')
   const [translation, setTranslation] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
 
@@ -24,7 +24,7 @@ export function useExampleStream() {
 
   const _generateExample = async (word: string) => {
     setIsGenerating(true)
-    setExample('')
+    setContent('')
     setTranslation('')
 
     const response = await generateExample(word, client)
@@ -41,7 +41,7 @@ export function useExampleStream() {
           const trMatch = buffer.match(/翻译:\s*([^\n]+)/)
 
           if (exMatch) {
-            setExample(exMatch[1])
+            setContent(exMatch[1])
           }
           if (trMatch) {
             setTranslation(trMatch[1])
@@ -50,7 +50,7 @@ export function useExampleStream() {
       }
 
       setTimeout(() => {
-        setExample('')
+        setContent('')
         setTranslation('')
       })
     } finally {
@@ -58,5 +58,5 @@ export function useExampleStream() {
     }
   }
 
-  return { example, translation, isGenerating, generateExample: _generateExample }
+  return { content, translation, isGenerating, generateExample: _generateExample }
 }

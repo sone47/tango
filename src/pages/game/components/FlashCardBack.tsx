@@ -26,12 +26,13 @@ interface FlashCardBackProps {
 }
 
 interface Example {
-  example: string
+  content: string
   translation: string
   isAi: boolean
   id: number
   wordPosition: number
   isGenerating: boolean
+  audio?: string
 }
 
 const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackProps) => {
@@ -40,7 +41,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
   const generateDisabledDialog = useAlertDialog()
   const generateExampleFailedDialog = useAlertDialog()
   const isFirstRender = useIsFirstRender()
-  const { example, translation, isGenerating, generateExample } = useExampleStream()
+  const { content, translation, isGenerating, generateExample } = useExampleStream()
 
   const [isScrolling, setIsScrolling] = useState(false)
   const [examples, setExamples] = useState<Example[]>([])
@@ -63,13 +64,13 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
       ...examples.slice(0, -1),
       {
         ...examples[examples.length - 1],
-        example: example ? example : lastExample.example,
+        content: content ? content : lastExample.content,
         translation: translation ? translation : lastExample.translation,
-        wordPosition: example ? getWordPositionInExample(example) : lastExample.wordPosition,
+        wordPosition: content ? getWordPositionInExample(content) : lastExample.wordPosition,
         isGenerating,
       },
     ])
-  }, [example, translation, isGenerating])
+  }, [content, translation, isGenerating])
 
   useEffect(() => {
     if (!isGenerating) {
@@ -91,7 +92,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
       setExamples([
         ...examples,
         {
-          example,
+          content,
           translation,
           isAi: true,
           id: examples.length,
@@ -125,10 +126,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
     if (examples.length) {
       setExamples(
         examples.map((example) => ({
-          example: example.content,
-          translation: example.translation,
-          isAi: example.isAi,
-          id: example.id,
+          ...example,
           wordPosition: getWordPositionInExample(example.content),
           isGenerating: false,
         }))
@@ -169,23 +167,23 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
                     className="w-full min-h-[50px] flex items-stretch space-between gap-1 bg-background rounded-lg p-4"
                   >
                     <div className="flex-1 flex flex-col justify-start gap-2 text-left">
-                      {example.isGenerating && !example.example ? (
+                      {example.isGenerating && !example.content ? (
                         <Skeleton className="h-4 w-[250px]" />
                       ) : (
                         <Typography.Text type="secondary" size="sm" className="!font-medium">
                           {example.wordPosition >= 0 ? (
                             <>
-                              {example.example.slice(0, example.wordPosition)}
+                              {example.content.slice(0, example.wordPosition)}
                               <span className="text-primary">
-                                {example.example.slice(
+                                {example.content.slice(
                                   example.wordPosition,
                                   example.wordPosition + word.word.length
                                 )}
                               </span>
-                              {example.example.slice(example.wordPosition + word.word.length)}
+                              {example.content.slice(example.wordPosition + word.word.length)}
                             </>
                           ) : (
-                            example.example
+                            example.content
                           )}
                         </Typography.Text>
                       )}
@@ -203,8 +201,8 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
                       {!example.isGenerating && (
                         <>
                           <Speak
-                            text={example.example}
-                            audioUrl={example.isAi ? '' : word.exampleAudio}
+                            text={example.content}
+                            audioUrl={example.isAi ? '' : example.audio}
                             autoPlay={isFlipped && index === examples.length - 1 && !isPlayed}
                             onPlay={() => {
                               setIsPlayed(true)
