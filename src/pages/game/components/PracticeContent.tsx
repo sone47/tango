@@ -10,10 +10,11 @@ import FlashCard from './FlashCard'
 
 const PracticeContent = () => {
   const confettiRef = useRef<ConfettiRef>(null)
-  const { currentWordIndex, shuffledWords, selectedCardPack, updateState } = usePracticeStore()
+  const { currentWordIndex, shuffledWords, selectedCardPack, resetPracticeState, updateState } =
+    usePracticeStore()
 
-  const handleShowCardPackSelector = () => {
-    updateState({ showCardPackSelector: true })
+  const handleContinueLearning = () => {
+    resetPracticeState()
   }
 
   if (!selectedCardPack) {
@@ -22,23 +23,31 @@ const PracticeContent = () => {
 
   if (currentWordIndex >= shuffledWords.length) {
     return (
-      <div className="relative flex flex-col items-center justify-center gap-4 h-full">
-        <PartyPopper className="w-10 h-10" />
+      <div className="relative flex flex-col items-center justify-center gap-4 h-full pb-16">
+        <PartyPopper className="size-16 text-primary" />
         <div className="flex flex-col items-center">
-          <Typography.Title level={5}>恭喜！</Typography.Title>
-          <Typography.Title level={6} className="!text-gray-600">
-            你已经完成了本次学习！
+          <Typography.Title level={3} className="text-foreground">
+            恭喜！
+          </Typography.Title>
+          <Typography.Title level={4} className="text-muted-foreground">
+            你已经完成了本次学习~
           </Typography.Title>
           <Confetti ref={confettiRef} className="absolute left-0 top-0 z-0 size-full" />
         </div>
 
-        <div className="relative flex flex-col gap-4 w-full px-16 text-md">
-          <Button variant="primary" size="lg" onClick={handleShowCardPackSelector}>
+        <div className="relative flex flex-col gap-3 w-full px-8">
+          <Button
+            variant="primary"
+            size="xl"
+            className="rounded-lg"
+            onClick={handleContinueLearning}
+          >
             继续学习
           </Button>
           <Button
             variant="outline"
-            size="lg"
+            size="xl"
+            className="rounded-lg"
             onClick={() => updateState({ showHistoryPool: true })}
           >
             查看本次学习记录
