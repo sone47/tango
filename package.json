@@ -16,6 +16,7 @@
     "deploy:gh-pages": "./scripts/deploy-gh-pages.sh"
   },
   "dependencies": {
+    "@braintree/browser-detection": "^2.1.0",
     "@hookform/resolvers": "^5.2.1",
     "@lobehub/tts": "^2.0.1",
     "@radix-ui/react-accordion": "^1.2.11",

@@ -1,3 +1,4 @@
+import isIos from '@braintree/browser-detection/dist/is-ios'
 import { BookCheck } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -67,12 +68,14 @@ export default function PracticeSettings() {
             onCheckedChange={(checked) => updatePracticeSettings({ isShuffle: checked })}
           />
         </SettingItem>
-        <SettingItem title="开始时自动播放单词语音">
-          <Switch
-            checked={settings.practice.isAutoPlayAudio}
-            onCheckedChange={(checked) => updatePracticeSettings({ isAutoPlayAudio: checked })}
-          />
-        </SettingItem>
+        {isIos() ? null : (
+          <SettingItem title="开始时自动播放单词语音">
+            <Switch
+              checked={settings.practice.isAutoPlayAudio}
+              onCheckedChange={(checked) => updatePracticeSettings({ isAutoPlayAudio: checked })}
+            />
+          </SettingItem>
+        )}
         <SettingItem title="卡片设置">
           <Drawer
             open={cardConfigDrawer.isOpen}

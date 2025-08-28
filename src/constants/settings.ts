@@ -7,7 +7,7 @@ export const defaultSettings = {
   practice: {
     isShuffle: true,
     hiddenInCard: Object.keys(FlashCardItemNameMap),
-    isAutoPlayAudio: true,
+    isAutoPlayAudio: false,
   },
   speech: {
     language: 'zh-CN',
