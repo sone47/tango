@@ -55,9 +55,7 @@ const VocabularyEditForm: React.FC<VocabularyEditFormProps> = ({
     word: vocabulary?.word || '',
     definition: vocabulary?.definition || '',
     partOfSpeech: vocabulary?.partOfSpeech || PartOfSpeechEnum.unknown,
-    example: vocabulary?.example || '',
     wordAudio: vocabulary?.wordAudio || '',
-    exampleAudio: vocabulary?.exampleAudio || '',
   }
 
   const form = useFormHelper<VocabularyFormData>(defaultValues, zodResolver(vocabularyFormSchema))
