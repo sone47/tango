@@ -165,22 +165,30 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
                         <Skeleton className="h-4 w-[250px]" />
                       ) : (
                         <Typography.Text type="secondary" size="sm" className="!font-medium">
-                          {example.example.slice(0, example.wordPosition)}
-                          <span className="text-primary">
-                            {example.example.slice(
-                              example.wordPosition,
-                              example.wordPosition + word.word.length
-                            )}
-                          </span>
-                          {example.example.slice(example.wordPosition + word.word.length)}
+                          {example.wordPosition >= 0 ? (
+                            <>
+                              {example.example.slice(0, example.wordPosition)}
+                              <span className="text-primary">
+                                {example.example.slice(
+                                  example.wordPosition,
+                                  example.wordPosition + word.word.length
+                                )}
+                              </span>
+                              {example.example.slice(example.wordPosition + word.word.length)}
+                            </>
+                          ) : (
+                            example.example
+                          )}
                         </Typography.Text>
                       )}
                       {example.isGenerating && !example.translation ? (
                         <Skeleton className="h-4 w-[200px]" />
                       ) : (
-                        <Typography.Text type="secondary" size="xs">
-                          {example.translation}
-                        </Typography.Text>
+                        example.translation && (
+                          <Typography.Text type="secondary" size="xs">
+                            {example.translation}
+                          </Typography.Text>
+                        )
                       )}
                     </div>
                     <div className="flex flex-col items-end justify-between gap-1 w-4">
