@@ -83,7 +83,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
 
     if (isGenerating) return
 
-    if (!checkGenerateEnabled()) {
+    if (event && !checkGenerateEnabled()) {
       generateDisabledDialog.show()
       return
     }
