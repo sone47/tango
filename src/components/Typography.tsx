@@ -21,12 +21,12 @@ interface TitleProps extends BaseTypographyProps {
 }
 
 interface TextProps extends BaseTypographyProps {
-  size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl'
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   weight?: 'light' | 'normal' | 'medium' | 'semibold' | 'bold'
 }
 
 interface ParagraphProps extends BaseTypographyProps {
-  size?: 'sm' | 'base' | 'lg'
+  size?: 'sm' | 'md' | 'lg'
   ellipsis?: boolean | { rows?: number }
   copyable?: boolean
   editable?: boolean
@@ -117,7 +117,7 @@ const Text = ({
     const sizeStyles = {
       xs: 'text-xs',
       sm: 'text-sm',
-      base: 'text-base',
+      md: 'text-md',
       lg: 'text-lg',
       xl: 'text-xl',
     }
@@ -154,7 +154,7 @@ const Text = ({
 }
 
 const Paragraph = ({
-  size = 'base',
+  size = 'md',
   ellipsis,
   children,
   className = '',
@@ -166,7 +166,7 @@ const Paragraph = ({
   const getSizeStyles = () => {
     const sizeStyles = {
       sm: 'text-sm',
-      base: 'text-base',
+      md: 'text-md',
       lg: 'text-lg',
     }
     return sizeStyles[size]

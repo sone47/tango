@@ -121,12 +121,13 @@ const CardPackConfigModal = () => {
             variant="primary"
             onClick={() => handleCardPackConfigConfirm(isShuffle, proficiency)}
             className="flex-1"
+            size="lg"
             disabled={!filteredWordsCount}
           >
             开始学习
           </Button>
           <Shuffle
-            className="w-6 h-6 cursor-pointer"
+            className="size-7 cursor-pointer"
             color={isShuffle ? 'var(--color-blue-600)' : 'var(--color-gray-400)'}
             onClick={() => setIsShuffle(!isShuffle)}
           />
