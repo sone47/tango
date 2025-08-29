@@ -20,6 +20,7 @@ export interface ButtonProps extends React.ComponentProps<'button'> {
   icon?: LucideIcon
   loading?: boolean
   asChild?: boolean
+  round?: boolean
 }
 
 const Button = ({
@@ -32,6 +33,7 @@ const Button = ({
   className = '',
   asChild = false,
   onClick,
+  round = false,
   ...props
 }: ButtonProps) => {
   const mapVariant = (v: ButtonProps['variant']) => {
@@ -68,7 +70,7 @@ const Button = ({
       sm: 'text-sm',
       md: 'text-md',
       lg: 'text-md',
-      xl: 'text-xl',
+      xl: 'text-lg',
       default: 'text-base',
       icon: 'text-base',
     }
@@ -103,7 +105,7 @@ const Button = ({
       disabled={isDisabled}
       onClick={(event) => onClick?.(event)}
       asChild={asChild}
-      className={cn(getExtraStyles(), 'gap-2', textSize(size), className)}
+      className={cn(getExtraStyles(), 'gap-2', textSize(size), className, round && 'rounded-full')}
       {...props}
     >
       {loading && (

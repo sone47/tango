@@ -26,10 +26,10 @@ const PracticeContent = () => {
       <div className="relative flex flex-col items-center justify-center gap-4 h-full pb-16">
         <PartyPopper className="size-16 text-primary" />
         <div className="flex flex-col items-center">
-          <Typography.Title level={3} className="text-foreground">
+          <Typography.Title level={4} className="text-foreground">
             恭喜！
           </Typography.Title>
-          <Typography.Title level={4} className="text-muted-foreground">
+          <Typography.Title level={5} className="text-muted-foreground">
             你已经完成了本次学习~
           </Typography.Title>
           <Confetti ref={confettiRef} className="absolute left-0 top-0 z-0 size-full" />
