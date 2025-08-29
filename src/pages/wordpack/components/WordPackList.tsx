@@ -1,3 +1,4 @@
+import { isNil } from 'lodash'
 import { OctagonX } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'
@@ -16,14 +17,14 @@ import { WordPack } from '@/types'
 
 const WordPackList = () => {
   const navigate = useNavigate()
-  const { currentWordPackId, currentWordPack, setCurrentWordPackId } = useCurrentWordPack()
+  const { currentWordPackId, setCurrentWordPackId } = useCurrentWordPack()
   const { allWordPacks, loading, error, hasData, fetchWordPacks } = useWordPackStore()
   const deleteAlertDialog = useAlertDialog()
 
   const activeWordPack = useRef<WordPack | null>(null)
 
   useEffect(() => {
-    if (currentWordPack || !hasData) return
+    if (!isNil(currentWordPackId) || !hasData) return
 
     // if deleted pack is a selected pack, then pick a existing pack
     setCurrentWordPackId(allWordPacks[0].id!)
