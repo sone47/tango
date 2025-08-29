@@ -88,10 +88,14 @@ const Speak = ({
   const { start, isGlobalLoading, audio: ttsAudio } = useTTS(text)
 
   useEffect(() => {
-    if (autoPlay) {
-      playButtonRef.current?.click()
+    start()
+  }, [])
+
+  useEffect(() => {
+    if (ttsAudio.arrayBuffers.length && !autoPlay) {
+      ttsAudio.stop()
     }
-  }, [autoPlay])
+  }, [ttsAudio.arrayBuffers.length])
 
   const handlePlay = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -111,15 +115,11 @@ const Speak = ({
   }
 
   const handleTTSPlay = () => {
-    if (ttsAudio.arrayBuffers.length) {
-      if (ttsAudio.isPlaying) {
-        ttsAudio.stop()
-      }
-
-      ttsAudio.play()
-    } else {
-      start()
+    if (ttsAudio.isPlaying) {
+      ttsAudio.stop()
     }
+
+    ttsAudio.play()
   }
 
   return (
