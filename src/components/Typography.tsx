@@ -104,7 +104,7 @@ const Title = ({
 }
 
 const Text = ({
-  size = 'base',
+  size = 'md',
   weight = 'normal',
   children,
   className = '',
