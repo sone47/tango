@@ -10,8 +10,8 @@ interface SpeakProps {
   text: string
   autoPlay?: boolean
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
-  onPlay?: () => void
   buttonProps?: React.ComponentProps<typeof Button>
+  disabled?: boolean
 }
 
 const iconSizeMap = {
@@ -80,55 +80,89 @@ const Speak = ({
   audioUrl,
   autoPlay = false,
   size = 'md',
-  onPlay,
   buttonProps,
+  disabled,
 }: SpeakProps) => {
   const playButtonRef = useRef<HTMLButtonElement>(null)
+  const urlAudioRef = useRef<HTMLAudioElement>(null)
+  const hasPlayed = useRef(false)
 
   const { start, isGlobalLoading, audio: ttsAudio } = useTTS(text)
 
+  const isUrlPlay = !!audioUrl
+
   useEffect(() => {
-    start()
+    if (isUrlPlay) {
+      urlAudioRef.current = new Audio(audioUrl)
+    } else {
+      start()
+    }
   }, [])
 
   useEffect(() => {
-    if (ttsAudio.arrayBuffers.length && !autoPlay) {
-      ttsAudio.stop()
-    }
-  }, [ttsAudio.arrayBuffers.length])
+    if (isUrlPlay) return
 
-  const handlePlay = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (ttsAudio.arrayBuffers.length) {
+      if (autoPlay) {
+        if (!hasPlayed.current) {
+          handlePlay()
+        }
+      } else {
+        handleStop()
+      }
+    }
+  }, [ttsAudio.arrayBuffers.length, autoPlay])
+
+  useEffect(() => {
+    if (!isUrlPlay) return
+
+    if (autoPlay && !hasPlayed.current) {
+      handlePlay()
+    }
+  }, [autoPlay])
+
+  useEffect(() => {
+    if (!disabled) return
+
+    handleStop()
+  }, [disabled])
+
+  const handlePlay = () => {
+    if (disabled) return
+
+    if (isUrlPlay) {
+      urlAudioRef.current?.play()
+    } else {
+      ttsAudio.play()
+    }
+
+    hasPlayed.current = true
+  }
+
+  const handleStop = () => {
+    if (isUrlPlay) {
+      urlAudioRef.current?.pause()
+    } else {
+      if (ttsAudio.isPlaying) {
+        ttsAudio.stop()
+      }
+    }
+  }
+
+  const handlePlayClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
 
-    if (audioUrl) {
-      handleUrlPlay()
-    } else {
-      handleTTSPlay()
-    }
-
-    onPlay?.()
-  }
-
-  const handleUrlPlay = () => {
-    const audio = new Audio(audioUrl)
-    audio.play()
-  }
-
-  const handleTTSPlay = () => {
-    if (ttsAudio.isPlaying) {
-      ttsAudio.stop()
-    }
-
-    ttsAudio.play()
+    handleStop()
+    handlePlay()
   }
 
   return (
     <Button
       ref={playButtonRef}
       variant="ghost"
-      onClick={handlePlay}
+      onClick={handlePlayClick}
       className="!p-0 h-auto"
-      disabled={isGlobalLoading}
+      disabled={isGlobalLoading || disabled}
       {...buttonProps}
     >
       {isGlobalLoading ? (

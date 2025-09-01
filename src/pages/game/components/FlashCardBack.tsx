@@ -45,7 +45,6 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
 
   const [isScrolling, setIsScrolling] = useState(false)
   const [examples, setExamples] = useState<Example[]>([])
-  const [isPlayed, setIsPlayed] = useState(false)
 
   useEffect(() => {
     if (isScrolling) {
@@ -71,12 +70,6 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
       },
     ])
   }, [content, translation, isGenerating])
-
-  useEffect(() => {
-    if (!isGenerating) {
-      setIsPlayed(false)
-    }
-  }, [isGenerating])
 
   const handleGenerateExample = async (event?: React.MouseEvent) => {
     event?.stopPropagation()
@@ -205,10 +198,8 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
                           <Speak
                             text={example.content}
                             audioUrl={example.isAi ? '' : example.audio}
-                            autoPlay={isFlipped && index === examples.length - 1 && !isPlayed}
-                            onPlay={() => {
-                              setIsPlayed(true)
-                            }}
+                            autoPlay={isFlipped && index === examples.length - 1}
+                            disabled={!isFlipped}
                           />
                           {example.isAi && (
                             <Badge variant="secondary" className="font-medium">
