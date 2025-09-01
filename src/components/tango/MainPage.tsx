@@ -27,7 +27,7 @@ const MainPage = () => {
   const activeTab = getActiveTabFromPath(location.pathname)
 
   const handleTabChange = (tab: TabType) => {
-    navigate(tabs.find((t) => t.id === tab)?.path || '/')
+    navigate(tabs.find((t) => t.id === tab)?.path || '/', { replace: true })
   }
 
   const ActiveComponent = tabs.find((t) => t.id === activeTab)?.component || PracticeTab
