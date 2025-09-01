@@ -103,7 +103,7 @@ const Speak = ({
     if (isUrlPlay) return
 
     if (ttsAudio.arrayBuffers.length) {
-      if (autoPlay) {
+      if (autoPlay && !disabled) {
         if (!hasPlayed.current) {
           handlePlay()
         }

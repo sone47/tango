@@ -138,7 +138,11 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
   return (
     <>
       <div
-        className={cn('flex-1 w-full backface-hidden rotate-y-180 flex flex-col p-4', className)}
+        className={cn(
+          'flex-1 w-full backface-hidden rotate-y-180 flex flex-col p-4',
+          isFlipped ? '' : 'opacity-0',
+          className
+        )}
       >
         <div className="flex-1 flex flex-col justify-center text-center gap-3">
           <Typography.Title level={5}>例句</Typography.Title>

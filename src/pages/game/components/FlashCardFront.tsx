@@ -6,6 +6,7 @@ import { FlashCardItemEnum, FlashCardItemNameMap } from '@/constants/flashCard'
 import { LanguageEnum, PartOfSpeechEnum, partOfSpeechToLanguageMap } from '@/constants/language'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { useSettings } from '@/hooks/useSettings'
+import { cn } from '@/lib/utils'
 import { usePracticeStore } from '@/stores/practiceStore'
 import { CardRevealState } from '@/types'
 
@@ -13,7 +14,7 @@ import RevealOverlay from './RevealOverlay'
 
 const cardItemNames = Object.keys(FlashCardItemNameMap) as (keyof typeof FlashCardItemNameMap)[]
 
-const FlashCardFront = () => {
+const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
   const { settings } = useSettings()
   const { currentWordIndex, revealState, updateState, shuffledWords } = usePracticeStore()
   const { currentWordPack } = useCurrentWordPack()
@@ -54,7 +55,12 @@ const FlashCardFront = () => {
   }
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full p-4 backface-hidden flex flex-col">
+    <div
+      className={cn(
+        'absolute top-0 left-0 w-full h-full p-4 backface-hidden flex flex-col',
+        isFlipped ? 'opacity-0' : ''
+      )}
+    >
       {/* 内容区域 */}
       <div className="flex-1 flex flex-col justify-center items-center space-y-8 min-h-0">
         {word.word && (
@@ -67,6 +73,7 @@ const FlashCardFront = () => {
               variant: 'primary',
               className: '!size-10 !p-8 rounded-2xl',
             }}
+            disabled={isFlipped}
           />
         )}
         <RevealOverlay

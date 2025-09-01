@@ -191,7 +191,7 @@ const FlashCard = () => {
                 className={isFlipped ? 'rotate-y-180' : ''}
               />
             )}
-            <FlashCardFront />
+            <FlashCardFront isFlipped={isFlipped} />
             <FlashCardBack
               className="absolute top-0 left-0 w-full h-full p-4"
               word={word}
