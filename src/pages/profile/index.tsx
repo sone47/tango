@@ -20,11 +20,9 @@ const ProfileTab = () => {
   }, [viewId])
 
   return (
-    <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="h-full overflow-auto p-4 space-y-6 profile-scroll-container">
-        <StudyStats />
-        <WordPackManagement />
-      </div>
+    <div className="space-y-6">
+      <StudyStats />
+      <WordPackManagement />
     </div>
   )
 }

@@ -34,9 +34,11 @@ const MainPage = () => {
 
   return (
     <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col mobile-safe-area">
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-y-auto">
         <Header title={titleMap[activeTab]} />
-        <ActiveComponent />
+        <div className="flex-1 overflow-y-auto p-4">
+          <ActiveComponent />
+        </div>
       </div>
       <TabBar tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
     </div>

@@ -20,7 +20,7 @@ const Header = ({ title }: HeaderProps) => {
   }
 
   return (
-    <div className="w-full flex justify-between items-center bg-background backdrop-blur-sm p-2 pl-4">
+    <div className="w-full flex justify-between items-center bg-background backdrop-blur-sm p-2 pl-4 shadow-md">
       <Typography.Title level={4} className="!font-bold">
         {title}
       </Typography.Title>
