@@ -42,7 +42,7 @@ const PracticeContent = () => {
             className="rounded-lg"
             onClick={handleContinueLearning}
           >
-            继续学习
+            完成学习
           </Button>
           <Button
             variant="outline"
