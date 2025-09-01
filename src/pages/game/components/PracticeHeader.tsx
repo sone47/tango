@@ -1,4 +1,4 @@
-import { ChevronLeft, History } from 'lucide-react'
+import { ChevronLeft, History, Settings } from 'lucide-react'
 import { useNavigate } from 'react-router'
 
 import AlertDialog from '@/components/AlertDialog'
@@ -15,6 +15,10 @@ const PracticeHeader = () => {
     navigate(-1)
   }
 
+  const handleSettingsClick = () => {
+    navigate('/settings')
+  }
+
   return (
     <div className="flex items-center justify-between p-2 bg-background">
       <AlertDialog
@@ -23,18 +27,20 @@ const PracticeHeader = () => {
         confirmText="退出本次学习"
         cancelText="继续学习"
         onConfirm={handleExitPractice}
-        trigger={<Button variant="ghost" size="md" icon={ChevronLeft} className="" />}
+        trigger={<Button variant="ghost" size="md" icon={ChevronLeft} />}
       ></AlertDialog>
 
       <Typography.Title level={6}>{selectedCardPack?.name}</Typography.Title>
 
-      <Button
-        variant="ghost"
-        size="md"
-        onClick={() => updateState({ showHistoryPool: true })}
-        icon={History}
-        className="text-primary"
-      ></Button>
+      <div className="flex items-center">
+        <Button
+          variant="ghost"
+          size="md"
+          onClick={() => updateState({ showHistoryPool: true })}
+          icon={History}
+        ></Button>
+        <Button variant="ghost" size="md" icon={Settings} onClick={handleSettingsClick} />
+      </div>
     </div>
   )
 }

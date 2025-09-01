@@ -20,25 +20,13 @@ const Header = ({ title }: HeaderProps) => {
   }
 
   return (
-    <div className="w-full flex justify-between items-center bg-background backdrop-blur-sm py-2 px-6">
+    <div className="w-full flex justify-between items-center bg-background backdrop-blur-sm p-2 pl-4">
       <Typography.Title level={4} className="!font-bold">
         {title}
       </Typography.Title>
-      <div className="flex items-center gap-6">
-        <Button
-          variant="ghost"
-          size="md"
-          className="!p-0"
-          icon={RefreshCw}
-          onClick={handleSyncClick}
-        />
-        <Button
-          variant="ghost"
-          size="md"
-          className="!p-0"
-          icon={Settings}
-          onClick={handleSettingsClick}
-        />
+      <div className="flex items-center">
+        <Button variant="ghost" size="md" icon={RefreshCw} onClick={handleSyncClick} />
+        <Button variant="ghost" size="md" icon={Settings} onClick={handleSettingsClick} />
       </div>
     </div>
   )
