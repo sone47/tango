@@ -97,35 +97,33 @@ const Speak = ({
     } else {
       start()
     }
+
+    return handleStop
   }, [])
 
   useEffect(() => {
     if (isUrlPlay) return
 
-    if (ttsAudio.arrayBuffers.length) {
-      if (autoPlay && !disabled) {
-        if (!hasPlayed.current) {
-          handlePlay()
-        }
-      } else {
-        handleStop()
-      }
-    }
-  }, [ttsAudio.arrayBuffers.length, autoPlay])
-
-  useEffect(() => {
-    if (!isUrlPlay) return
+    if (!ttsAudio.arrayBuffers.length) return
 
     if (autoPlay && !hasPlayed.current) {
       handlePlay()
     }
-  }, [autoPlay])
+  }, [ttsAudio.arrayBuffers.length, autoPlay, disabled])
+
+  useEffect(() => {
+    if (!isUrlPlay) return
+
+    if (autoPlay && !hasPlayed.current && !disabled) {
+      handlePlay()
+    }
+  }, [autoPlay, disabled])
 
   useEffect(() => {
     if (!disabled) return
 
     handleStop()
-  }, [disabled])
+  }, [disabled, ttsAudio.arrayBuffers.length])
 
   const handlePlay = () => {
     if (disabled) return
