@@ -66,7 +66,7 @@ const CardpackList = ({ wordPack }: CardpackListProps) => {
   const items = cardPacks.map((cardPack) => ({
     id: cardPack.id.toString(),
     title: (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2" id={`cardpack-${cardPack.id}`}>
         {cardPack.name}
         <Edit
           className="w-4 h-4 text-primary cursor-pointer"
@@ -78,7 +78,7 @@ const CardpackList = ({ wordPack }: CardpackListProps) => {
       </div>
     ),
     content: (
-      <div id={`cardpack-${cardPack.id}`} className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         {cardPack.words.map((word) => (
           <WordItem
             key={word.id}

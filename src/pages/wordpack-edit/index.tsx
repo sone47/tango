@@ -1,112 +1,37 @@
-import { isNumber } from 'lodash'
-import { Check, Edit, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
-import Button from '@/components/Button'
-import Input from '@/components/Input'
 import Page from '@/components/Page'
-import Typography from '@/components/Typography'
 import { wordPackService } from '@/services/wordPackService'
 import { WordPack } from '@/types'
 
 import CardpackList from './components/CardpackList'
+import WordpackEditTitle from './components/WordpackEditTitle'
 
 export default function WordPackEditPage() {
   const navigate = useNavigate()
   const { id } = useParams()
 
-  const [wordPack, setWordPack] = useState<WordPack | null>(null)
-  const [isWordPackEdit, setIsWordPackEdit] = useState(false)
-  const [wordPackName, setWordPackName] = useState('')
+  const [wordPack, setWordPack] = useState<WordPack>()
+  const wordPackId = useMemo(() => +id!, [id])
 
   useEffect(() => {
-    fetchWordPack()
-  }, [])
-
-  useEffect(() => {
-    if (wordPack) {
-      setWordPackName(wordPack.name)
+    if (isNaN(wordPackId)) {
+      navigate('/wordpack', { replace: true })
+      return
     }
-  }, [wordPack])
 
-  if (!isNumber(+id!)) {
-    navigate('/wordpack', { replace: true })
-    return
-  }
-
-  const wordPackId = +id!
+    fetchWordPack()
+  }, [wordPackId])
 
   const fetchWordPack = async () => {
     const wordPack = await wordPackService.getWordPackById(wordPackId)
     setWordPack(wordPack!)
   }
 
-  const handleWordPackNameConfirm = () => {
-    setIsWordPackEdit(false)
-    if (wordPack) {
-      wordPackService.updateWordPack(wordPack.id, { name: wordPackName })
-    }
-  }
-
-  const handleExitEdit = () => {
-    setIsWordPackEdit(false)
-    setWordPackName(wordPack?.name || '')
-  }
-
   return (
-    <Page
-      title={
-        <div className="flex items-center">
-          {isWordPackEdit ? (
-            <div className="relative flex">
-              <Input
-                className="w-[230px]"
-                size="sm"
-                autoFocus
-                value={wordPackName}
-                onChange={(e) => setWordPackName(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleWordPackNameConfirm()
-                  }
-                }}
-              />
-              <div className="flex items-center gap-2 absolute right-0 top-1/2 translate-x-full -translate-y-1/2 pl-2">
-                <Button
-                  variant="ghost"
-                  className="text-primary !p-0"
-                  size="xs"
-                  icon={Check}
-                  onClick={handleWordPackNameConfirm}
-                />
-                <Button
-                  variant="ghost"
-                  className="text-secondary-foreground !p-0"
-                  size="xs"
-                  icon={X}
-                  onClick={handleExitEdit}
-                />
-              </div>
-            </div>
-          ) : (
-            <div className="relative flex">
-              <Typography.Title level={5} className="max-w-[230px] truncate">
-                {wordPackName}
-              </Typography.Title>
-              <Button
-                variant="ghost"
-                className="text-primary absolute right-0 top-1/2 translate-x-full -translate-y-1/2"
-                size="xs"
-                icon={Edit}
-                onClick={() => setIsWordPackEdit(true)}
-              />
-            </div>
-          )}
-        </div>
-      }
-      hasPadding={false}
-    >
+    <Page title={<WordpackEditTitle wordPack={wordPack} />} hasPadding={false}>
       <div className="px-4">
         <CardpackList wordPack={wordPack} />
       </div>

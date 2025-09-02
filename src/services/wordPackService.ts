@@ -6,6 +6,7 @@ import type { CardPackEntity, ExampleEntity, VocabularyEntity, WordPackEntity } 
 import { cardPackSchema, exampleSchema, vocabularySchema, wordPackSchema } from '@/schemas'
 import type { ExcelParseResult } from '@/utils/excel'
 import { isValidExcelFile, parseExcelFile } from '@/utils/excel'
+import type { QueryOptions } from '@/utils/idbManager'
 
 // 词包导入专用的 Excel 行数据接口
 export interface WordPackExcelRow {
@@ -370,36 +371,14 @@ export class WordPackService {
    * @param options 查询选项
    * @returns 词包列表
    */
-  async getWordPacksBy(options?: {
-    orderBy?: {
-      field: 'createdAt' | 'name'
-      direction: 'asc' | 'desc'
-    }
-    limit?: number
-  }): Promise<WordPackEntity[]> {
+  async getWordPacksBy(options?: QueryOptions): Promise<WordPackEntity[]> {
     try {
       if (!options) {
         // 无参数时返回所有词包
         return await this.wordPackRepo.findAll()
       }
 
-      const queryOptions: {
-        orderBy?: {
-          field: string
-          direction: 'asc' | 'desc'
-        }
-        limit?: number
-      } = {}
-
-      if (options.orderBy) {
-        queryOptions.orderBy = options.orderBy
-      }
-
-      if (options.limit) {
-        queryOptions.limit = options.limit
-      }
-
-      return await this.wordPackRepo.findAll(queryOptions)
+      return await this.wordPackRepo.findAll(options)
     } catch (error) {
       console.error('获取词包列表失败:', error)
       return []
