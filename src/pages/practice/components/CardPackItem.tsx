@@ -28,7 +28,32 @@ const CardPackItem = ({ cardPack, isActive = false }: CardPackItemProps) => {
 
   useEffect(() => {
     if (isActive && cardPackItemRef.current) {
-      cardPackItemRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      let scrollContainer: HTMLElement | null = null
+      let parent = cardPackItemRef.current.parentElement
+
+      while (parent && parent !== document.body) {
+        const style = getComputedStyle(parent)
+        if (
+          style.overflow === 'auto' ||
+          style.overflowY === 'auto' ||
+          style.overflow === 'scroll' ||
+          style.overflowY === 'scroll'
+        ) {
+          scrollContainer = parent
+          break
+        }
+
+        parent = parent.parentElement
+      }
+
+      if (scrollContainer) {
+        const targetScrollTop = cardPackItemRef.current.offsetTop - scrollContainer.offsetTop - 32
+
+        scrollContainer.scrollTo({
+          top: targetScrollTop,
+          behavior: 'smooth',
+        })
+      }
     }
   }, [isActive])
 

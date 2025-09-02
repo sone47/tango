@@ -23,7 +23,7 @@ const CardPackList = () => {
 
   if (loading) {
     return (
-      <div className="h-64">
+      <div className="h-full">
         <Loading text="加载卡包中..." size="md" />
       </div>
     )
