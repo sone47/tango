@@ -1,5 +1,5 @@
 import { isNil } from 'lodash'
-import { Circle, OctagonX, Square, SquareCheckBig } from 'lucide-react'
+import { OctagonX, Square, SquareCheckBig } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
