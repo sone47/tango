@@ -78,7 +78,7 @@ const UploadResultModal = ({
                   </div>
                   <div className="text-center">
                     <div className="font-medium text-primary">{stats.vocabularyCount}</div>
-                    <div className="text-muted-foreground">词汇</div>
+                    <div className="text-muted-foreground">单词</div>
                   </div>
                 </div>
               </div>

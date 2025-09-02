@@ -220,7 +220,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
           ) : (
             <div className="text-center py-4 bg-background rounded-lg flex flex-col gap-2">
               <p className="text-secondary-foreground text-base">暂无例句</p>
-              <p className="text-muted-foreground text-sm">该词汇还没有添加例句</p>
+              <p className="text-muted-foreground text-sm">该单词还没有添加例句</p>
             </div>
           )}
           {word.word && (

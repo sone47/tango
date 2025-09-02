@@ -112,7 +112,7 @@ const CardPackConfigModal = () => {
             </div>
           </div>
           <Typography.Text type="secondary" size="sm" className="text-gray-500">
-            预计学习 {filteredWordsCount} 个词汇
+            预计学习 {filteredWordsCount} 个单词
           </Typography.Text>
         </div>
 

@@ -190,7 +190,7 @@ const VocabularyEditForm: React.FC<VocabularyEditFormProps> = ({
       >
         <div className="flex flex-col gap-2 pt-4">
           <Button type="submit" loading={loading} variant="primary">
-            {isCreate ? '创建词汇' : '保存修改'}
+            {isCreate ? '创建单词' : '保存修改'}
           </Button>
 
           {onCancel && (

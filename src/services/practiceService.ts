@@ -109,7 +109,7 @@ export class PracticeService {
     try {
       const practiceEntity = await this.practiceRepo.findOneBy('vocabularyId', vocabularyId)
       if (!practiceEntity) {
-        console.warn(`找不到词汇ID ${vocabularyId} 的练习记录`)
+        console.warn(`找不到单词ID ${vocabularyId} 的练习记录`)
         return null
       }
 

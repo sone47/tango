@@ -23,7 +23,7 @@ const formatFields: FormatField[] = [
   },
   { label: '例句', example: '勉強すればするほど、難しくなる感じがします。' },
   { label: '卡包名', example: '第一課　出会い' },
-  { label: '词汇音频', example: '' },
+  { label: '单词音频', example: '' },
   { label: '例句音频', example: '' },
 ]
 
