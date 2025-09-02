@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import NavBar from './NavBar'
 
 interface PageProps {
-  title?: string
+  title?: ReactNode
   children: ReactNode
   showNavBar?: boolean
   hasPadding?: boolean

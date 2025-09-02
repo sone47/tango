@@ -473,6 +473,15 @@ export class WordPackService {
       throw error
     }
   }
+
+  async updateWordPack(wordPackId: number, wordPack: Partial<WordPackEntity>): Promise<void> {
+    try {
+      await this.wordPackRepo.update(wordPackId, wordPack)
+    } catch (error) {
+      console.error('更新词包失败:', error)
+      throw error
+    }
+  }
 }
 
 export const wordPackService = new WordPackService()

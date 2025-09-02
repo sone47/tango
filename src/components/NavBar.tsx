@@ -1,11 +1,12 @@
 import { ChevronLeft } from 'lucide-react'
+import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router'
 
 import Button from './Button'
 import Typography from './Typography'
 
 interface NavBarProps {
-  title?: string
+  title?: ReactNode
   onBack?: () => void
   className?: string
 }
@@ -30,7 +31,7 @@ const NavBar = ({ title, onBack, className = '' }: NavBarProps) => {
         size="lg"
         icon={ChevronLeft}
         onClick={handleBack}
-        className="absolute left-2"
+        className="absolute -left-2"
       />
       {title && <Typography.Title level={5}>{title}</Typography.Title>}
     </div>

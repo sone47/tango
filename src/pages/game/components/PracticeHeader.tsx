@@ -28,7 +28,7 @@ const PracticeHeader = () => {
         cancelText="继续学习"
         onConfirm={handleExitPractice}
         trigger={
-          <Button className="absolute left-2" variant="ghost" size="lg" icon={ChevronLeft} />
+          <Button className="absolute -left-2" variant="ghost" size="lg" icon={ChevronLeft} />
         }
       ></AlertDialog>
 

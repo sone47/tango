@@ -5,38 +5,32 @@ import { toast } from 'sonner'
 
 import Accordion from '@/components/Accordion'
 import { cardPackService } from '@/services/cardPackService'
-import { wordPackService } from '@/services/wordPackService'
 import { CardPack, Word, WordPack } from '@/types'
 
 import WordItem from './WordItem'
 
 interface CardpackListProps {
-  wordPackId: number
+  wordPack?: WordPack | null
 }
 
-const CardpackList = ({ wordPackId }: CardpackListProps) => {
-  const [wordPack, setWordPack] = useState<WordPack | null>(null)
+const CardpackList = ({ wordPack }: CardpackListProps) => {
   const [cardPacks, setCardPacks] = useState<CardPack[]>([])
 
   const activeCardPackId = useRef<number | null>(null)
 
-  const fetchWordPack = async () => {
-    const wordPack = await wordPackService.getWordPackById(wordPackId)
-    setWordPack(wordPack)
-  }
-
-  const fetchCardPacks = async () => {
-    const cardPacks = await cardPackService.getCardPacksByWordPackId(wordPackId)
-    setCardPacks(cardPacks)
-  }
-
   useEffect(() => {
-    fetchWordPack()
+    if (isNil(wordPack?.id)) return
+
     fetchCardPacks()
-  }, [wordPackId])
+  }, [wordPack?.id])
 
   if (!wordPack) {
     return <div>Loading...</div>
+  }
+
+  const fetchCardPacks = async () => {
+    const cardPacks = await cardPackService.getCardPacksByWordPackId(wordPack.id)
+    setCardPacks(cardPacks)
   }
 
   const handleValueChange = (value: string) => {

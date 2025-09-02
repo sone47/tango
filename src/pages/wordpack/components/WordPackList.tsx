@@ -99,7 +99,7 @@ const WordPackList = () => {
         <div
           key={wordPack.id}
           className={cn(
-            'w-full flex items-center justify-between text-left p-4 py-3 border-b border-border/50',
+            'w-full flex items-center justify-between gap-2 text-left p-4 py-3 border-b border-border/50',
             isSelected ? 'inset-shadow-sm' : ''
           )}
           onClick={() => handleEdit(wordPack)}
@@ -111,10 +111,10 @@ const WordPackList = () => {
             </p>
           </div>
           {isSelected ? (
-            <SquareCheckBig className="size-5 text-primary"></SquareCheckBig>
+            <SquareCheckBig className="flex-shrink-0 size-5 text-primary"></SquareCheckBig>
           ) : (
             <Square
-              className="size-5"
+              className="flex-shrink-0 size-5"
               onClick={(e) => {
                 e.stopPropagation()
                 handleWordPackSelect(wordPack)
