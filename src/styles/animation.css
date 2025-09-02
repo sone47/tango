@@ -1,0 +1,15 @@
+@layer animation {
+  .custom-animate-ping {
+    animation: custom-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes custom-ping {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 var(--custom-ping-color);
+    }
+    50% {
+      box-shadow: 0 0 0 6px var(--custom-ping-color);
+    }
+  }
+}

@@ -75,12 +75,15 @@ const CardPackItem = ({ cardPack, isActive = false }: CardPackItemProps) => {
   return (
     <div
       ref={cardPackItemRef}
-      className={cn(
-        'relative w-full flex flex-col gap-3 p-4 bg-background/70 rounded-2xl cursor-pointer',
-        isActive && 'border-primary border-2'
-      )}
+      className="relative w-full flex flex-col gap-3 p-4 bg-background/70 rounded-2xl cursor-pointer"
       onClick={handleCardPackClick}
     >
+      {isActive && (
+        <div
+          className="absolute rounded-2xl top-0 left-0 w-full h-full custom-animate-ping opacity-50"
+          style={{ '--custom-ping-color': 'var(--primary)' } as React.CSSProperties}
+        />
+      )}
       <div className="flex items-start gap-2">
         <div className="size-8 bg-muted p-2 rounded-md flex items-center justify-center">
           <TitleIcon className="text-primary" />
@@ -110,6 +113,7 @@ const CardPackItem = ({ cardPack, isActive = false }: CardPackItemProps) => {
       <div className="absolute top-0 right-0 -translate-y-1/3 flex gap-2">
         {displayedWords.map((word, index) => (
           <div
+            key={index}
             className={cn(
               index === 0 && 'z-0 -rotate-30 translate-x-1/3 translate-y-[5px]',
               index === 1 && 'z-1',
