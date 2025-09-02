@@ -102,12 +102,15 @@ const Speak = ({
   }, [])
 
   useEffect(() => {
-    if (isUrlPlay) return
-
-    if (!ttsAudio.arrayBuffers.length) return
+    if (isUrlPlay || !ttsAudio.arrayBuffers.length) return
 
     if (autoPlay && !hasPlayed.current) {
       handlePlay()
+      return
+    }
+
+    if (disabled || !autoPlay) {
+      handleStop()
     }
   }, [ttsAudio.arrayBuffers.length, autoPlay, disabled])
 
@@ -123,7 +126,7 @@ const Speak = ({
     if (!disabled) return
 
     handleStop()
-  }, [disabled, ttsAudio.arrayBuffers.length])
+  }, [disabled])
 
   const handlePlay = () => {
     if (disabled) return
