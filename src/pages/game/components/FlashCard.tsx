@@ -42,9 +42,16 @@ const FlashCard = () => {
     practiceService.getPracticeByVocabularyId(word.id).then((practice) => {
       setProficiency(practice?.proficiency ?? 0)
     })
-
-    resetRevealState()
   }, [word.id])
+
+  useEffect(() => {
+    const actualHiddenInCard = Object.keys(revealState).filter(
+      (key) => revealState[key as keyof typeof revealState]
+    )
+    if (!actualHiddenInCard.length) {
+      resetRevealState()
+    }
+  }, [])
 
   const goToNextCard = async () => {
     updateState({

@@ -22,11 +22,7 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
   const word = shuffledWords[currentWordIndex]
   const partOfSpeechMap = partOfSpeechToLanguageMap[currentWordPack?.language as LanguageEnum] ?? {}
 
-  const isDraggingRef = useRef<Record<keyof CardRevealState, boolean>>({
-    phonetic: false,
-    word: false,
-    definition: false,
-  })
+  const isDraggingRef = useRef<Record<keyof CardRevealState, boolean>>(revealState)
 
   const isFirstCard = currentWordIndex === 0
   const isAllRevealed = cardItemNames.every((name) => revealState[name])

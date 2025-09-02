@@ -8,7 +8,6 @@ interface PracticeState {
   currentWordIndex: number
   shuffledWords: Word[]
   studiedWords: Word[]
-  showCardPackSelector: boolean
   showHistoryPool: boolean
   showCardPackConfig: boolean
   tempSelectedCardPack: CardPack | null
@@ -26,7 +25,6 @@ const initialState: PracticeState = {
   currentWordIndex: 0,
   shuffledWords: [],
   studiedWords: [],
-  showCardPackSelector: true,
   showHistoryPool: false,
   showCardPackConfig: false,
   tempSelectedCardPack: null,
