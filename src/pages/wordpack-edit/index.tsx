@@ -1,5 +1,5 @@
 import { isNumber } from 'lodash'
-import { Check, Edit } from 'lucide-react'
+import { Check, Edit, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
@@ -49,6 +49,11 @@ export default function WordPackEditPage() {
     }
   }
 
+  const handleExitEdit = () => {
+    setIsWordPackEdit(false)
+    setWordPackName(wordPack?.name || '')
+  }
+
   return (
     <Page
       title={
@@ -67,13 +72,22 @@ export default function WordPackEditPage() {
                   }
                 }}
               />
-              <Button
-                variant="ghost"
-                className="text-primary absolute right-0 top-1/2 translate-x-full -translate-y-1/2"
-                size="xs"
-                icon={Check}
-                onClick={handleWordPackNameConfirm}
-              />
+              <div className="flex items-center gap-2 absolute right-0 top-1/2 translate-x-full -translate-y-1/2 pl-2">
+                <Button
+                  variant="ghost"
+                  className="text-primary !p-0"
+                  size="xs"
+                  icon={Check}
+                  onClick={handleWordPackNameConfirm}
+                />
+                <Button
+                  variant="ghost"
+                  className="text-secondary-foreground !p-0"
+                  size="xs"
+                  icon={X}
+                  onClick={handleExitEdit}
+                />
+              </div>
             </div>
           ) : (
             <div className="relative flex">
