@@ -2,6 +2,7 @@ import { ChevronLeft } from 'lucide-react'
 import { useNavigate } from 'react-router'
 
 import Button from './Button'
+import Typography from './Typography'
 
 interface NavBarProps {
   title?: string
@@ -21,17 +22,17 @@ const NavBar = ({ title, onBack, className = '' }: NavBarProps) => {
   }
 
   return (
-    <div className={`bg-background backdrop-blur-lg border-b border-gray-200/50 ${className}`}>
-      <div className="flex items-center justify-center relative px-4 py-3">
-        <Button
-          variant="ghost"
-          size="lg"
-          icon={ChevronLeft}
-          onClick={handleBack}
-          className="absolute left-4 !px-2"
-        />
-        {title && <h1 className="text-lg font-semibold text-foreground">{title}</h1>}
-      </div>
+    <div
+      className={`bg-background backdrop-blur-lg shadow-md flex items-center justify-center relative px-4 py-3 z-1 ${className}`}
+    >
+      <Button
+        variant="ghost"
+        size="lg"
+        icon={ChevronLeft}
+        onClick={handleBack}
+        className="absolute left-2"
+      />
+      {title && <Typography.Title level={5}>{title}</Typography.Title>}
     </div>
   )
 }

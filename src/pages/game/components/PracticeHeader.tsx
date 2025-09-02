@@ -20,19 +20,21 @@ const PracticeHeader = () => {
   }
 
   return (
-    <div className="flex items-center justify-between p-2 bg-background">
+    <div className="relative py-3 flex items-center justify-center bg-background">
       <AlertDialog
         title="确定要退出本次学习吗？"
         description=" "
         confirmText="退出本次学习"
         cancelText="继续学习"
         onConfirm={handleExitPractice}
-        trigger={<Button variant="ghost" size="md" icon={ChevronLeft} />}
+        trigger={
+          <Button className="absolute left-2" variant="ghost" size="lg" icon={ChevronLeft} />
+        }
       ></AlertDialog>
 
-      <Typography.Title level={6}>{selectedCardPack?.name}</Typography.Title>
+      <Typography.Title level={5}>{selectedCardPack?.name}</Typography.Title>
 
-      <div className="flex items-center">
+      <div className="absolute right-2 flex items-center">
         <Button
           variant="ghost"
           size="md"
