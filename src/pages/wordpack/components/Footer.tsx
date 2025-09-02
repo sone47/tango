@@ -46,8 +46,8 @@ const Footer = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <Button className="w-full" onClick={handleImportFromLibrary}>
+    <div className="flex flex-col gap-2 p-4 bg-muted/50">
+      <Button size="lg" className="w-full rounded-full" onClick={handleImportFromLibrary}>
         从词包库导入词包
       </Button>
       <Drawer
@@ -59,7 +59,7 @@ const Footer = () => {
         showCancel={true}
         showCloseButton={false}
         trigger={
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" size="lg" className="w-full rounded-full">
             导入自定义词包
           </Button>
         }

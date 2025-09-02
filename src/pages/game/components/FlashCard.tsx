@@ -164,7 +164,7 @@ const FlashCard = () => {
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
       <div
-        className="z-1 flex-1 perspective-1000 min-h-0"
+        className="z-1 flex-1 perspective-[1000px] min-h-0"
         onClick={handleCardFlip}
         onDoubleClick={handleDoubleClick}
       >
@@ -179,7 +179,7 @@ const FlashCard = () => {
         >
           <motion.div
             className={cn(
-              'relative flex flex-col h-full transform-style-preserve-3d transition-all duration-200 rounded-3xl shadow-2xl p-4',
+              'relative flex flex-col h-full transform-3d transition-all duration-200 rounded-3xl shadow-2xl p-4',
               isFlipped ? 'rotate-y-180' : '',
               isFlipped ? 'bg-gradient-to-br from-blue-50 to-indigo-100' : 'bg-white',
               swipePrompt === SwipePrompt.Correct

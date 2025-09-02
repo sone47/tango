@@ -1,4 +1,4 @@
-import { MoreHorizontal, Package } from 'lucide-react'
+import { MoreHorizontal, Package, SquareCheckBig } from 'lucide-react'
 import { ReactElement } from 'react'
 import { Link, useNavigate } from 'react-router'
 
@@ -6,9 +6,10 @@ import Button from '@/components/Button'
 import Card from '@/components/Card'
 import EmptyWordPack from '@/components/EmptyWordPack'
 import Typography from '@/components/Typography'
-import WordPackItem from '@/components/WordPackItem'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
+import { cn } from '@/lib/utils'
 import { useWordPackStore } from '@/stores/wordPackStore'
+import { toLocaleDateString } from '@/utils/date'
 
 const ProgressSection = () => {
   const navigate = useNavigate()
@@ -27,11 +28,20 @@ const ProgressSection = () => {
   if (!content) {
     if (currentWordPack) {
       content = (
-        <WordPackItem
-          wordPack={currentWordPack}
-          isSelected
-          className="bg-gradient-to-r from-blue-100 to-indigo-100 border-2 border-primary shadow-lg rounded-2xl"
-        />
+        <div
+          className={cn(
+            'bg-gradient-to-r from-blue-50 to-indigo-50 flex items-center justify-between w-full text-left p-4 rounded-2xl'
+          )}
+        >
+          <div className="flex flex-col items-start gap-1">
+            <Typography.Title level={6}>{currentWordPack.name}</Typography.Title>
+            <p className="text-sm text-muted-foreground">
+              创建时间:{' '}
+              {currentWordPack.createdAt ? toLocaleDateString(currentWordPack.createdAt) : '未知'}
+            </p>
+          </div>
+          <SquareCheckBig className="size-4 text-primary"></SquareCheckBig>
+        </div>
       )
     } else {
       content = (

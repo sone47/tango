@@ -1,5 +1,5 @@
 import { isNil } from 'lodash'
-import { OctagonX } from 'lucide-react'
+import { Circle, OctagonX, Square, SquareCheckBig } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
@@ -8,12 +8,13 @@ import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'
 import SwipeAction from '@/components/common/SwipeAction'
 import EmptyWordPack from '@/components/EmptyWordPack'
 import Loading from '@/components/Loading'
-import WordPackItem from '@/components/WordPackItem'
-import { spacing } from '@/constants/styles'
+import Typography from '@/components/Typography'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
+import { cn } from '@/lib/utils'
 import { wordPackService } from '@/services/wordPackService'
 import { useWordPackStore } from '@/stores/wordPackStore'
 import { WordPack } from '@/types'
+import { toLocaleDateString } from '@/utils/date'
 
 const WordPackList = () => {
   const navigate = useNavigate()
@@ -95,12 +96,34 @@ const WordPackList = () => {
 
     return {
       node: (
-        <div key={wordPack.id} className="w-full" onClick={() => handleWordPackSelect(wordPack)}>
-          <WordPackItem wordPack={wordPack} isSelected={isSelected} className="bg-background" />
+        <div
+          key={wordPack.id}
+          className={cn(
+            'w-full flex items-center justify-between text-left p-4 py-3 border-b border-border/50',
+            isSelected ? 'inset-shadow-sm' : ''
+          )}
+          onClick={() => handleEdit(wordPack)}
+        >
+          <div className="flex flex-col gap-1">
+            <Typography.Title level={6}>{wordPack.name}</Typography.Title>
+            <p className="text-xs text-muted-foreground">
+              创建时间: {wordPack.createdAt ? toLocaleDateString(wordPack.createdAt) : '未知'}
+            </p>
+          </div>
+          {isSelected ? (
+            <SquareCheckBig className="size-5 text-primary"></SquareCheckBig>
+          ) : (
+            <Square
+              className="size-5"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleWordPackSelect(wordPack)
+              }}
+            ></Square>
+          )}
         </div>
       ),
       item: wordPack,
-      className: isSelected ? 'border-primary border-2' : 'w-full',
     }
   })
 
@@ -109,12 +132,6 @@ const WordPackList = () => {
       <SwipeAction
         trailingActions={[
           {
-            key: 'edit',
-            text: '编辑',
-            className: 'bg-primary text-primary-foreground min-w-[72px] !justify-center',
-            onClick: handleEdit,
-          },
-          {
             key: 'delete',
             text: '删除',
             className: 'bg-destructive text-destructive-foreground min-w-[72px] !justify-center',
@@ -122,8 +139,6 @@ const WordPackList = () => {
           },
         ]}
         list={list}
-        className={spacing.listItems}
-        itemClassName="rounded-2xl border-1"
       ></SwipeAction>
 
       <AlertDialog

@@ -14,8 +14,8 @@ const WordPackManagePage = () => {
   }, [])
 
   return (
-    <Page title="词包管理">
-      <div className="h-full flex flex-col gap-4 pb-4">
+    <Page title="词包管理" hasPadding={false}>
+      <div className="h-full flex flex-col bg-background">
         <WordPackList />
         <Footer />
       </div>
