@@ -17,8 +17,8 @@ export interface DialogProps {
   open?: boolean
   onOpenChange?: (open: boolean) => void
   trigger?: React.ReactNode
-  title?: string
-  description?: string
+  title?: React.ReactNode
+  description?: React.ReactNode
   children?: React.ReactNode
   showCloseButton?: boolean
   footer?: React.ReactNode
@@ -100,20 +100,25 @@ export function Dialog({
       {(footer || showCancel || showConfirm) && (
         <DialogFooter>
           {footer || (
-            <>
+            <div className="flex gap-2">
+              {showConfirm && (
+                <Button
+                  variant={confirmVariant}
+                  onClick={handleConfirm}
+                  disabled={confirmDisabled}
+                  className="flex-1"
+                >
+                  {confirmText}
+                </Button>
+              )}
               {showCancel && (
-                <DialogClose asChild>
+                <DialogClose asChild className="flex-1">
                   <Button variant="outline" onClick={handleCancel}>
                     {cancelText}
                   </Button>
                 </DialogClose>
               )}
-              {showConfirm && (
-                <Button variant={confirmVariant} onClick={handleConfirm} disabled={confirmDisabled}>
-                  {confirmText}
-                </Button>
-              )}
-            </>
+            </div>
           )}
         </DialogFooter>
       )}
