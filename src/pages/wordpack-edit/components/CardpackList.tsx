@@ -1,5 +1,4 @@
 import { isNil } from 'lodash'
-import { Edit } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -7,6 +6,7 @@ import Accordion from '@/components/Accordion'
 import { cardPackService } from '@/services/cardPackService'
 import { CardPack, Word, WordPack } from '@/types'
 
+import TextEditor from './TextEditor'
 import WordItem from './WordItem'
 
 interface CardpackListProps {
@@ -15,6 +15,7 @@ interface CardpackListProps {
 
 const CardpackList = ({ wordPack }: CardpackListProps) => {
   const [cardPacks, setCardPacks] = useState<CardPack[]>([])
+  const [editingCardPackIds, setEditingCardPackIds] = useState<number[]>([])
 
   const activeCardPackId = useRef<number | null>(null)
 
@@ -58,22 +59,32 @@ const CardpackList = ({ wordPack }: CardpackListProps) => {
     }
   }
 
-  const handleEditCardPack = (cardPack: CardPack) => {
-    toast.warning('🚧 施工中，敬请期待')
-    console.log(cardPack)
+  const handleCardPackNameConfirm = async (id: number, newName: string) => {
+    try {
+      await cardPackService.updateCardPack(id, { name: newName })
+      setEditingCardPackIds(editingCardPackIds.filter((id) => id !== id))
+    } catch {
+      toast.error('更新卡包名称失败')
+    }
+  }
+
+  const handleEditCardPackId = (editId: number, isEdit: boolean) => {
+    if (isEdit) {
+      setEditingCardPackIds([...editingCardPackIds, editId])
+    } else {
+      setEditingCardPackIds(editingCardPackIds.filter((id) => id !== editId))
+    }
   }
 
   const items = cardPacks.map((cardPack) => ({
     id: cardPack.id.toString(),
     title: (
       <div className="flex items-center gap-2" id={`cardpack-${cardPack.id}`}>
-        {cardPack.name}
-        <Edit
-          className="w-4 h-4 text-primary cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation()
-            handleEditCardPack(cardPack)
-          }}
+        <TextEditor
+          isEdit={editingCardPackIds.includes(cardPack.id)}
+          value={cardPack.name}
+          onConfirm={(newName) => handleCardPackNameConfirm(cardPack.id, newName)}
+          onEditStateChange={(isEdit) => handleEditCardPackId(cardPack.id, isEdit)}
         />
       </div>
     ),

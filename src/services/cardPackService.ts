@@ -78,6 +78,10 @@ export class CardPackService {
       return null
     }
   }
+
+  async updateCardPack(id: number, data: Partial<CardPackEntity>) {
+    return this.cardPackRepo.update(id, data)
+  }
 }
 
 export const cardPackService = new CardPackService()
