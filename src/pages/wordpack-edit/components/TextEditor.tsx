@@ -48,7 +48,7 @@ const TextEditor = ({
         <div className="relative flex">
           <Input
             className="w-[230px]"
-            size="sm"
+            size="md"
             autoFocus
             value={text}
             onChange={(e) => setText(e.target.value)}

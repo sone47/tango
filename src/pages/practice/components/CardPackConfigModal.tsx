@@ -120,7 +120,7 @@ const CardPackConfigModal = () => {
           <Button
             variant="primary"
             onClick={() => handleCardPackConfigConfirm(isShuffle, proficiency)}
-            className="flex-1"
+            className="flex-1 rounded-full"
             size="lg"
             disabled={!filteredWordsCount}
           >
