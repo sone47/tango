@@ -19,7 +19,7 @@ const WordItem = ({ language, word, onEditSuccess }: WordItemProps) => {
       : partOfSpeechMap[word.partOfSpeech]
 
   return (
-    <div className="flex flex-row gap-2 bg-background rounded-md p-3">
+    <div className="flex flex-row gap-2 bg-card rounded-md p-3">
       <div className="flex-1 flex flex-col gap-1">
         <Typography.Text>
           {word.word} | {word.phonetic}

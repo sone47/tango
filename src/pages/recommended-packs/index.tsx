@@ -97,7 +97,7 @@ const RecommendedPacksPage = () => {
             }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="bg-background rounded-xl p-4 shadow-xs"
+            className="bg-card rounded-xl p-4 border-1"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">

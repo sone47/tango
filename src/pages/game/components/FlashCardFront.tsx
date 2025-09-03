@@ -2,6 +2,7 @@ import { isNil } from 'lodash'
 import { useRef } from 'react'
 
 import Speak from '@/components/Speak'
+import Typography from '@/components/Typography'
 import { FlashCardItemEnum, FlashCardItemNameMap } from '@/constants/flashCard'
 import { LanguageEnum, PartOfSpeechEnum, partOfSpeechToLanguageMap } from '@/constants/language'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
@@ -118,16 +119,20 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
       </div>
 
       {/* 底部提示 */}
-      <div className="text-center text-xs text-gray-500 mb-2 flex-shrink-0 space-y-1">
+      <Typography.Text
+        type="secondary"
+        size="xs"
+        className="flex-shrink-0 flex flex-col items-center gap-1"
+      >
         {isAllRevealed ? (
           <>
-            <div>点击卡片查看例句</div>
-            <div>上滑「已掌握」· 下滑「未掌握」</div>
+            <span>点击卡片查看例句</span>
+            <span>上滑「已掌握」· 下滑「未掌握」</span>
           </>
         ) : (
-          <div>双击卡片快速显示所有内容</div>
+          <span>双击卡片快速显示所有内容</span>
         )}
-      </div>
+      </Typography.Text>
     </div>
   )
 }

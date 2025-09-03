@@ -40,14 +40,7 @@ const UploadResultModal = ({
   }
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="上传结果"
-      icon={Upload}
-      iconColor="blue"
-      maxWidth="sm"
-    >
+    <Modal isOpen={isOpen} onClose={onClose} title="上传结果" icon={Upload} iconHasBg maxWidth="sm">
       <div className="text-center space-y-4">
         <div className="space-y-2">
           <div

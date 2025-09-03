@@ -1,25 +1,3 @@
-// 颜色系统
-export const colors = {
-  gradients: {
-    blue: 'bg-gradient-to-r from-blue-50 to-indigo-50',
-    blueHover: 'hover:from-blue-100 hover:to-indigo-100',
-    blueActive: 'bg-gradient-to-r from-blue-100 to-indigo-100',
-    green: 'bg-gradient-to-r from-green-50 to-emerald-50',
-    greenButton: 'bg-gradient-to-r from-green-500 to-emerald-500',
-    purple: 'bg-gradient-to-r from-purple-50 to-violet-50',
-    orange: 'bg-gradient-to-r from-orange-50 to-amber-50',
-    red: 'bg-gradient-to-r from-red-50 to-rose-50',
-  },
-  icon: {
-    blue: 'bg-blue-100 text-blue-600',
-    green: 'bg-green-100 text-green-600',
-    purple: 'bg-purple-100 text-purple-600',
-    orange: 'bg-orange-100 text-orange-600',
-    red: 'bg-red-100 text-red-600',
-    yellow: 'bg-yellow-100 text-yellow-600',
-  },
-} as const
-
 // 基础组件样式
 export const baseStyles = {
   iconContainer: 'size-8 rounded-lg flex items-center justify-center',

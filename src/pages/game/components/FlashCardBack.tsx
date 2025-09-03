@@ -163,7 +163,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
                 {examples.map((example, index) => (
                   <div
                     key={example.id}
-                    className="w-full min-h-[50px] flex items-stretch space-between gap-1 bg-background rounded-lg p-4"
+                    className="w-full min-h-[50px] flex items-stretch space-between gap-1 bg-card rounded-lg p-4"
                   >
                     <div className="flex-1 flex flex-col justify-start gap-2 text-left">
                       {example.isGenerating && !example.content ? (
@@ -218,7 +218,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
               </AnimatedList>
             </div>
           ) : (
-            <div className="text-center py-4 bg-background rounded-lg flex flex-col gap-2">
+            <div className="text-center py-4 bg-card rounded-lg flex flex-col gap-2">
               <p className="text-secondary-foreground text-base">暂无例句</p>
               <p className="text-muted-foreground text-sm">该单词还没有添加例句</p>
             </div>
@@ -232,7 +232,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
           )}
         </div>
 
-        <Typography.Text type="secondary" size="sm" className="text-center">
+        <Typography.Text type="secondary" size="xs" className="text-center">
           点击返回正面
         </Typography.Text>
       </div>

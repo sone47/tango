@@ -20,7 +20,7 @@ const PracticeHeader = () => {
   }
 
   return (
-    <div className="relative h-12 py-3 flex items-center justify-center bg-background">
+    <div className="relative h-12 py-3 flex items-center justify-center bg-card border-b-1">
       <AlertDialog
         title="确定要退出本次学习吗？"
         description=" "

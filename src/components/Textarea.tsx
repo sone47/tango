@@ -142,7 +142,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         />
 
         {showCount && maxLength && (
-          <div className="absolute bottom-2 right-2 text-xs text-muted-foreground bg-background/80 px-1 rounded">
+          <div className="absolute bottom-2 right-2 text-xs text-muted-foreground bg-card/80 px-1 rounded">
             {String(currentValue).length}/{maxLength}
           </div>
         )}

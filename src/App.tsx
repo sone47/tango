@@ -25,7 +25,7 @@ function App() {
 
   if (isInitializing) {
     return (
-      <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="h-full">
         <Loading text="加载中..." />
       </div>
     )

@@ -70,7 +70,7 @@ const ExcelTemplateViewer = () => {
         <div className="overflow-x-auto">
           <div className="min-w-max">
             {/* Excel列标识行 */}
-            <div className="flex bg-background border-b border-border">
+            <div className="flex bg-card border-b border-border">
               {excelColumns.map((col) => (
                 <div
                   key={col}
@@ -82,7 +82,7 @@ const ExcelTemplateViewer = () => {
             </div>
 
             {/* 表头内容行 */}
-            <div className="flex bg-background border-b border-border">
+            <div className="flex bg-card border-b border-border">
               {formatFields.map((field) => (
                 <div
                   key={field.label}
@@ -94,7 +94,7 @@ const ExcelTemplateViewer = () => {
             </div>
 
             {/* 示例数据行 */}
-            <div className="flex bg-background border-b">
+            <div className="flex bg-card border-b">
               {formatFields.map((field, index) => (
                 <div
                   key={index}

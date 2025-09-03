@@ -1,12 +1,12 @@
 import { round } from 'lodash'
-import { BookOpen } from 'lucide-react'
+import { Book, BookOpen } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import EmptyWordPack from '@/components/EmptyWordPack'
 import Loading from '@/components/Loading'
 import Modal from '@/components/Modal'
 import { Progress } from '@/components/ui/progress'
-import { baseStyles, colors, spacing } from '@/constants/styles'
+import { baseStyles, spacing } from '@/constants/styles'
 import { practiceService } from '@/services/practiceService'
 import { useWordPackStore } from '@/stores/wordPackStore'
 import type { WordPack } from '@/types'
@@ -83,12 +83,12 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
             {progressData.map((item) => (
               <div
                 key={item.wordPack.id}
-                className={`p-4 rounded-2xl border border-gray-200 ${colors.gradients.blue} transition-all hover:shadow-md`}
+                className="p-4 rounded-2xl border bg-card transition-all hover:shadow-md"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 flex-1">
-                    <div className={`${baseStyles.iconContainer} ${colors.icon.blue}`}>
-                      <BookOpen size={20} />
+                    <div className={`${baseStyles.iconContainer} text-primary bg-background`}>
+                      {item.progress ? <BookOpen size={20} /> : <Book size={20} />}
                     </div>
                     <h3 className="font-semibold text-gray-900 truncate">{item.wordPack.name}</h3>
                   </div>
@@ -108,7 +108,7 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
       </div>
 
       {!!progressData.length && (
-        <div className="mt-6 p-4 bg-gray-50 rounded-xl text-center text-sm text-gray-600">
+        <div className="mt-6 p-4 bg-muted rounded-xl text-center text-sm text-muted-foreground">
           {loading ? '正在计算学习进度...' : `共 ${progressData.length} 个词包`}
         </div>
       )}

@@ -95,7 +95,7 @@ export default function PracticeSettings() {
           >
             <>
               <div className="flex-1 flex justify-center items-center">
-                <div className="bg-background border h-[80px] w-[100px] rounded-md flex flex-col items-center gap-2 p-1">
+                <div className="bg-card border h-[80px] w-[100px] rounded-md flex flex-col items-center gap-2 p-1">
                   <div
                     className={cn(
                       'h-1/3 w-full rounded-xs transition-all duration-300 bg-blue-200',

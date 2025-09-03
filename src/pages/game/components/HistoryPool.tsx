@@ -75,24 +75,12 @@ const HistoryPool = () => {
             <CarouselContent>
               {studiedWords.map((word) => (
                 <CarouselItem key={word.id}>
-                  <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 flex flex-col justify-between gap-4">
+                  <div className="h-full rounded-2xl p-6 flex flex-col justify-between gap-4">
                     <div className="flex flex-col items-center gap-3">
                       <span className="text-xl font-medium text-gray-800">{word.phonetic}</span>
                       <span className="text-3xl font-bold text-gray-900">{word.word}</span>
                       <span className="text-lg text-gray-700">{word.definition}</span>
                     </div>
-
-                    {/* <div className="bg-background p-4 rounded-xl">
-                      <p className="text-sm text-gray-600 mb-2 font-medium">例句:</p>
-                      {word.example ? (
-                        <p className="text-gray-800 leading-relaxed">{word.example}</p>
-                      ) : (
-                        <div className="text-center py-2">
-                          <p className="text-gray-500">暂无例句</p>
-                          <p className="text-gray-400 text-sm mt-1">该词汇还没有添加例句</p>
-                        </div>
-                      )}
-                    </div> */}
                   </div>
                 </CarouselItem>
               ))}

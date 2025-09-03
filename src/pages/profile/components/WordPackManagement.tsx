@@ -30,7 +30,7 @@ const ProgressSection = () => {
       content = (
         <div
           className={cn(
-            'bg-gradient-to-r from-blue-50 to-indigo-50 flex items-center justify-between w-full text-left p-4 rounded-2xl'
+            'bg-muted/50 flex items-center justify-between w-full text-left p-4 rounded-2xl'
           )}
         >
           <div className="flex flex-col items-start gap-1">
@@ -61,12 +61,18 @@ const ProgressSection = () => {
   const customTitle = (
     <div className="flex items-center justify-between w-full">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-blue-100 text-blue-600">
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-background text-primary">
           <Package size={20} />
         </div>
         <h2 className="text-lg font-semibold text-gray-900">词包管理</h2>
       </div>
-      <Button variant="ghost" size="sm" icon={MoreHorizontal} onClick={handleViewMore}>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="text-secondary-foreground"
+        icon={MoreHorizontal}
+        onClick={handleViewMore}
+      >
         查看更多
       </Button>
     </div>

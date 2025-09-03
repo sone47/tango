@@ -20,7 +20,7 @@ interface TabsProps {
 
 const Tabs = ({ tabs, activeTab, onTabChange, className = '' }: TabsProps) => {
   return (
-    <div className={`bg-background/80 backdrop-blur-lg border-t border-border ${className}`}>
+    <div className={`bg-card backdrop-blur-lg border-t border-border ${className}`}>
       <div className="flex items-center justify-around py-3">
         {tabs.map((tab) => (
           <motion.button

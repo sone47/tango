@@ -3,10 +3,10 @@ import { Calendar, Package, TrendingUp } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 
 import Card from '@/components/Card'
-import StatCard from '@/components/StatCard'
 import { layout } from '@/constants/styles'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { useModalState } from '@/hooks/useModalState'
+import StatCard from '@/pages/profile/components/StatCard'
 import { practiceService } from '@/services/practiceService'
 
 import TodayStudyModal from './TodayStudyModal'
@@ -65,20 +65,18 @@ const StudyStats = () => {
 
   return (
     <>
-      <Card title="学习统计" icon={TrendingUp} iconColor="blue">
+      <Card title="学习统计" icon={TrendingUp} iconHasBg>
         <div className={layout.gridCols2}>
           <StatCard
             title="今日学习"
             value={loading ? '-' : todayPracticeCount}
             icon={Calendar}
-            color="blue"
             onClick={todayStudyModal.open}
           />
           <StatCard
             title="词包进度"
             value={progressLoading ? '-' : `${round(currentWordPackProgress * 100, 2)}%`}
             icon={Package}
-            color="blue"
             onClick={wordPackProgressModal.open}
           />
         </div>

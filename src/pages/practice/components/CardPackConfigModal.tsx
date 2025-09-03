@@ -85,7 +85,7 @@ const CardPackConfigModal = () => {
       onClose={handleCardPackConfigCancel}
       title="配置卡包"
       icon={Settings}
-      iconColor="blue"
+      iconHasBg
       maxWidth="sm"
     >
       <div className="flex flex-col gap-6">

@@ -3,14 +3,14 @@ import { motion } from 'motion/react'
 import type { ReactNode } from 'react'
 
 import { Card as UICard, CardContent, CardHeader } from '@/components/ui/card'
-import { baseStyles, colors } from '@/constants/styles'
+import { baseStyles } from '@/constants/styles'
 import { cn } from '@/lib/utils'
 
 interface CardProps {
   children: ReactNode
   title?: ReactNode
   icon?: LucideIcon
-  iconColor?: keyof typeof colors.icon
+  iconHasBg?: boolean
   className?: string
   contentClassName?: string
   delay?: number
@@ -22,7 +22,7 @@ const Card = ({
   children,
   title,
   icon: Icon,
-  iconColor,
+  iconHasBg,
   className = '',
   contentClassName = '',
   delay = 0,
@@ -31,13 +31,13 @@ const Card = ({
 }: CardProps) => {
   const renderTitle = () => {
     return (
-      <div className={cn('flex items-center', iconColor ? 'gap-3' : '')}>
+      <div className={cn('flex items-center', iconHasBg ? 'gap-3' : '')}>
         {Icon && (
           <div
             className={cn(
               baseStyles.iconContainerLarge,
-              iconColor ? colors.icon[iconColor] : '',
-              iconColor ? 'justify-center' : 'justify-start'
+              iconHasBg ? 'bg-background text-primary' : '',
+              iconHasBg ? 'justify-center' : 'justify-start'
             )}
           >
             <Icon size={20} />
@@ -55,7 +55,7 @@ const Card = ({
     </>
   )
 
-  const cardClassName = cn('backdrop-blur-sm shadow-lg border-none gap-2', className)
+  const cardClassName = cn('backdrop-blur-sm shadow-none border-1 gap-2', className)
 
   if (onClick) {
     return (

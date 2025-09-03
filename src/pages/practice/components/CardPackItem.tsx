@@ -16,7 +16,7 @@ interface CardPackItemProps {
 
 const WordCard = ({ word }: { word: Word }) => {
   return (
-    <div className="w-[48px] h-[64px] p-2 bg-background text-muted-foreground flex items-center justify-center text-xs rounded-md shadow-lg">
+    <div className="w-[48px] h-[64px] p-2 bg-card text-muted-foreground flex items-center justify-center text-xs rounded-md shadow-lg">
       {word.word}
     </div>
   )
@@ -75,7 +75,7 @@ const CardPackItem = ({ cardPack, isActive = false }: CardPackItemProps) => {
   return (
     <div
       ref={cardPackItemRef}
-      className="relative w-full flex flex-col gap-3 p-4 bg-background/70 rounded-2xl cursor-pointer"
+      className="relative w-full flex flex-col gap-3 p-4 bg-card/70 rounded-2xl cursor-pointer border-1"
       onClick={handleCardPackClick}
     >
       {isActive && (
@@ -85,7 +85,7 @@ const CardPackItem = ({ cardPack, isActive = false }: CardPackItemProps) => {
         />
       )}
       <div className="flex items-start gap-2">
-        <div className="size-8 bg-muted p-2 rounded-md flex items-center justify-center">
+        <div className="size-8 bg-background p-2 rounded-md flex items-center justify-center">
           <TitleIcon className="text-primary" />
         </div>
         <div className="flex-1 flex flex-col gap-2">

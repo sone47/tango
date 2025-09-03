@@ -24,7 +24,7 @@ const NavBar = ({ title, onBack, className = '' }: NavBarProps) => {
 
   return (
     <div
-      className={`bg-background backdrop-blur-lg flex items-center justify-center relative px-4 py-3 z-1 ${className}`}
+      className={`bg-card backdrop-blur-lg flex items-center justify-center relative px-4 py-3 z-1 border-b-1 ${className}`}
     >
       <Button
         variant="ghost"

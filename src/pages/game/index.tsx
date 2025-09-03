@@ -19,7 +19,7 @@ export default function GamePage() {
 
   return (
     <>
-      <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
+      <div className="h-full flex flex-col">
         <PracticeHeader />
         <PracticeContent />
       </div>

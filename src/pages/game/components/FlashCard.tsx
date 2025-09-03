@@ -179,9 +179,9 @@ const FlashCard = () => {
         >
           <motion.div
             className={cn(
-              'relative flex flex-col h-full transform-3d transition-all duration-200 rounded-3xl shadow-2xl p-4',
+              'relative flex flex-col h-full transform-3d transition-all duration-200 rounded-3xl p-4 border-1',
               isFlipped ? 'rotate-y-180' : '',
-              isFlipped ? 'bg-gradient-to-br from-blue-50 to-indigo-100' : 'bg-white',
+              isFlipped ? 'bg-muted' : 'bg-card',
               swipePrompt === SwipePrompt.Correct
                 ? 'border-2 border-green-300 shadow-[0_0_20px_rgba(34,197,94,0.3)]'
                 : '',
@@ -215,7 +215,7 @@ const FlashCard = () => {
         onChangeComplete={handleProficiencyChangeComplete}
         disabled={!isAllRevealed}
         size="lg"
-        className="bg-background p-4"
+        className="bg-card p-4"
       />
     </motion.div>
   )

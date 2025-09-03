@@ -33,7 +33,7 @@ const MainPage = () => {
   const ActiveComponent = tabs.find((t) => t.id === activeTab)?.component || PracticeTab
 
   return (
-    <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col mobile-safe-area">
+    <div className="h-full flex flex-col mobile-safe-area">
       <div className="flex-1 flex flex-col overflow-y-auto">
         <Header title={titleMap[activeTab]} />
         <div className="flex-1 overflow-y-auto p-4">

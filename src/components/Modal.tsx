@@ -3,7 +3,7 @@ import { X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { ReactNode } from 'react'
 
-import { baseStyles, colors } from '@/constants/styles'
+import { baseStyles } from '@/constants/styles'
 
 import Button from './Button'
 
@@ -13,7 +13,7 @@ interface ModalProps {
   children: ReactNode
   title?: string
   icon?: LucideIcon
-  iconColor?: keyof typeof colors.icon
+  iconHasBg?: boolean
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl'
   showCloseButton?: boolean
   className?: string
@@ -25,7 +25,7 @@ const Modal = ({
   children,
   title,
   icon: Icon,
-  iconColor,
+  iconHasBg,
   maxWidth = 'sm',
   showCloseButton = true,
   className = '',
@@ -72,7 +72,7 @@ const Modal = ({
                   <div className="flex items-center gap-3">
                     {Icon && (
                       <div
-                        className={`${baseStyles.iconContainerLarge} ${iconColor ? colors.icon[iconColor] : ''}`}
+                        className={`${baseStyles.iconContainerLarge} ${iconHasBg ? 'bg-background text-primary' : ''}`}
                       >
                         <Icon size={20} />
                       </div>
