@@ -41,7 +41,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
   const generateDisabledDialog = useAlertDialog()
   const generateExampleFailedDialog = useAlertDialog()
   const isFirstRender = useIsFirstRender()
-  const { content, translation, isGenerating, generateExample } = useExampleStream()
+  const { content, translation, isGenerating, generateExample } = useExampleStream(word.word)
 
   const [isScrolling, setIsScrolling] = useState(false)
   const [examples, setExamples] = useState<Example[]>([])
@@ -96,7 +96,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
         },
       ])
 
-      generateExample(word.word)
+      generateExample()
     } catch (error) {
       console.error(error)
       if (error instanceof AuthenticationError) {
