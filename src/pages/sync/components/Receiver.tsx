@@ -233,7 +233,7 @@ export default function Receiver() {
                   disabled={!hasValidServerConfig}
                 />
                 <Button
-                  variant="outline"
+                  variant="primary"
                   size="sm"
                   onClick={handleConnect}
                   disabled={!remotePeerId.trim() || connected || !hasValidServerConfig}
