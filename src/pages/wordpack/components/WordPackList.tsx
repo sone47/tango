@@ -111,10 +111,10 @@ const WordPackList = () => {
             </p>
           </div>
           {isSelected ? (
-            <SquareCheckBig className="flex-shrink-0 size-5 text-primary"></SquareCheckBig>
+            <SquareCheckBig className="flex-shrink-0 size-6 text-primary"></SquareCheckBig>
           ) : (
             <Square
-              className="flex-shrink-0 size-5"
+              className="flex-shrink-0 size-6"
               onClick={(e) => {
                 e.stopPropagation()
                 handleWordPackSelect(wordPack)

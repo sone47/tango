@@ -40,7 +40,7 @@ const ProgressSection = () => {
               {currentWordPack.createdAt ? toLocaleDateString(currentWordPack.createdAt) : '未知'}
             </p>
           </div>
-          <SquareCheckBig className="size-4 text-primary"></SquareCheckBig>
+          <SquareCheckBig className="size-6 text-primary"></SquareCheckBig>
         </div>
       )
     } else {
