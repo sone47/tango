@@ -47,7 +47,7 @@ const TextEditor = ({
       {isEdit ? (
         <div className="relative flex">
           <Input
-            className="w-48 !ring-0 shadow-none border-x-0 border-t-0 !border-b-1 border-primary rounded-none p-0 text-lg h-7"
+            className="w-48 shadow-none border-x-0 border-t-0 !border-b-1 border-primary rounded-none p-0 text-lg h-7"
             size="md"
             autoFocus
             value={text}

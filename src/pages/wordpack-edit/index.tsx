@@ -53,7 +53,7 @@ export default function WordPackEditPage() {
             value: 'word',
             className: 'flex-1 overflow-y-auto',
             component: (
-              <Card className="h-full py-0" contentClassName="h-full overflow-y-auto pt-4">
+              <Card className="h-full p-0" contentClassName="h-full overflow-y-auto p-0">
                 <WordList wordPack={wordPack} />
               </Card>
             ),

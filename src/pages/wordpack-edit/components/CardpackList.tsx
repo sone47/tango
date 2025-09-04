@@ -92,7 +92,7 @@ const CardpackList = ({ wordPack }: CardpackListProps) => {
   const items = cardPacks.map((cardPack) => ({
     id: cardPack.id.toString(),
     title: (
-      <div className="flex items-center gap-2" id={`cardpack-${cardPack.id}`}>
+      <div className="flex items-center gap-2 py-4" id={`cardpack-${cardPack.id}`}>
         <TextEditor
           isEdit={editingCardPackIds.includes(cardPack.id)}
           value={cardPack.name}
@@ -102,7 +102,7 @@ const CardpackList = ({ wordPack }: CardpackListProps) => {
       </div>
     ),
     content: (
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 pl-4">
         {cardPack.words.map((word) => (
           <WordItem
             key={word.id}
@@ -120,7 +120,7 @@ const CardpackList = ({ wordPack }: CardpackListProps) => {
       items={items}
       onValueChange={handleValueChange}
       className="-my-4"
-      triggerClassName="text-lg items-center text-foreground"
+      triggerClassName="text-xl items-center text-foreground py-0"
       contentClassName="p-0"
     />
   )

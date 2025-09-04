@@ -38,7 +38,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const getVariantStyles = () => {
       const variants = {
         default: '',
-        ghost: 'border-0 bg-gray-100 focus-visible:bg-white focus-visible:ring-2',
+        ghost: 'border-0 bg-gray-100 focus-visible:bg-white',
       }
       return variants[variant]
     }

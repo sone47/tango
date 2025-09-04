@@ -34,11 +34,11 @@ interface ParagraphProps extends BaseTypographyProps {
 
 const getTypeStyles = (type: BaseTypographyProps['type'] = 'default') => {
   const typeStyles = {
-    default: 'text-gray-900',
-    secondary: 'text-gray-600',
+    default: 'text-foreground',
+    secondary: 'text-secondary-foreground',
     success: 'text-green-600',
     warning: 'text-amber-600',
-    danger: 'text-red-600',
+    danger: 'text-destructive',
   }
   return typeStyles[type]
 }

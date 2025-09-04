@@ -19,12 +19,12 @@ const WordItem = ({ language, word, onEditSuccess }: WordItemProps) => {
       : partOfSpeechMap[word.partOfSpeech]
 
   return (
-    <div className="flex flex-row gap-2 bg-card rounded-md p-3">
-      <div className="flex-1 flex flex-col gap-1">
-        <Typography.Text>
+    <div className="flex flex-row gap-2">
+      <div className="flex-1 flex flex-col gap-1 truncate w-full">
+        <Typography.Text className="truncate">
           {word.word} | {word.phonetic}
         </Typography.Text>
-        <Typography.Text type="secondary" size="sm">
+        <Typography.Text type="secondary" size="sm" className="truncate">
           {partOfSpeech && `[${partOfSpeech}]`}
           {word.definition}
         </Typography.Text>
