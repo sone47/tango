@@ -87,7 +87,7 @@ const Speak = ({
   const urlAudioRef = useRef<HTMLAudioElement>(null)
   const hasPlayed = useRef(false)
 
-  const { start, isGlobalLoading, audio: ttsAudio } = useTTS(text)
+  const { start, mutate, isGlobalLoading, audio: ttsAudio } = useTTS(text)
 
   const isUrlPlay = !!audioUrl
 
@@ -98,7 +98,13 @@ const Speak = ({
       start()
     }
 
-    return handleStop
+    return () => {
+      if (!isUrlPlay) {
+        mutate()
+      }
+
+      handleStop()
+    }
   }, [])
 
   useEffect(() => {

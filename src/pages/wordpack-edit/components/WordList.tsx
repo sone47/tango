@@ -1,4 +1,5 @@
 import { useDebounce } from '@uidotdev/usehooks'
+import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { List } from 'react-window'
 
@@ -8,7 +9,6 @@ import { cardPackService } from '@/services/cardPackService'
 import { Word, WordPack } from '@/types'
 
 import WordItem from './WordItem'
-import { Search } from 'lucide-react'
 
 interface WordListProps {
   wordPack?: WordPack | null
