@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
+import Card from '@/components/Card'
 import Page from '@/components/Page'
+import { Tabs } from '@/components/Tabs'
 import { wordPackService } from '@/services/wordPackService'
 import { WordPack } from '@/types'
 
 import CardpackList from './components/CardpackList'
+import WordList from './components/WordList'
 import WordpackEditTitle from './components/WordpackEditTitle'
 
 export default function WordPackEditPage() {
@@ -30,10 +33,33 @@ export default function WordPackEditPage() {
   }
 
   return (
-    <Page title={<WordpackEditTitle wordPack={wordPack} />} hasPadding={false}>
-      <div className="px-4">
-        <CardpackList wordPack={wordPack} />
-      </div>
+    <Page title={<WordpackEditTitle wordPack={wordPack} />}>
+      <Tabs
+        className="flex flex-col h-full overflow-y-auto"
+        defaultValue="cardpack"
+        tabs={[
+          {
+            label: '卡包维度',
+            value: 'cardpack',
+            className: 'flex-1 overflow-y-auto',
+            component: (
+              <Card className="h-full py-0" contentClassName="h-full overflow-y-auto pt-4">
+                <CardpackList wordPack={wordPack} />
+              </Card>
+            ),
+          },
+          {
+            label: '单词维度',
+            value: 'word',
+            className: 'flex-1 overflow-y-auto',
+            component: (
+              <Card className="h-full py-0" contentClassName="h-full overflow-y-auto pt-4">
+                <WordList wordPack={wordPack} />
+              </Card>
+            ),
+          },
+        ]}
+      />
     </Page>
   )
 }

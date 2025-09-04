@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import Accordion from '@/components/Accordion'
+import Loading from '@/components/Loading'
 import { cardPackService } from '@/services/cardPackService'
 import { CardPack, Word, WordPack } from '@/types'
 
@@ -15,6 +16,7 @@ interface CardpackListProps {
 
 const CardpackList = ({ wordPack }: CardpackListProps) => {
   const [cardPacks, setCardPacks] = useState<CardPack[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const [editingCardPackIds, setEditingCardPackIds] = useState<number[]>([])
 
   const activeCardPackId = useRef<number | null>(null)
@@ -22,16 +24,21 @@ const CardpackList = ({ wordPack }: CardpackListProps) => {
   useEffect(() => {
     if (isNil(wordPack?.id)) return
 
-    fetchCardPacks()
+    fetchCardPacks(wordPack.id)
   }, [wordPack?.id])
 
-  if (!wordPack) {
-    return <div>Loading...</div>
+  if (isLoading) {
+    return <Loading />
   }
 
-  const fetchCardPacks = async () => {
-    const cardPacks = await cardPackService.getCardPacksByWordPackId(wordPack.id)
-    setCardPacks(cardPacks)
+  const fetchCardPacks = async (wordPackId: number) => {
+    setIsLoading(true)
+    try {
+      const cardPacks = await cardPackService.getCardPacksByWordPackId(wordPackId)
+      setCardPacks(cardPacks)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleValueChange = (value: string) => {
@@ -112,7 +119,9 @@ const CardpackList = ({ wordPack }: CardpackListProps) => {
     <Accordion
       items={items}
       onValueChange={handleValueChange}
+      className="-my-4"
       triggerClassName="text-lg items-center text-foreground"
+      contentClassName="p-0"
     />
   )
 }
