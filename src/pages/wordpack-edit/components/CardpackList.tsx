@@ -62,7 +62,13 @@ const CardpackList = ({ wordPack }: CardpackListProps) => {
   const handleCardPackNameConfirm = async (id: number, newName: string) => {
     try {
       await cardPackService.updateCardPack(id, { name: newName })
+
       setEditingCardPackIds(editingCardPackIds.filter((id) => id !== id))
+      setCardPacks(
+        cardPacks.map((cardPack) =>
+          cardPack.id === id ? { ...cardPack, name: newName } : cardPack
+        )
+      )
     } catch {
       toast.error('更新卡包名称失败')
     }

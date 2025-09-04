@@ -22,6 +22,7 @@ const WordpackEditTitle = ({ wordPack }: { wordPack?: WordPack }) => {
       }
 
       await wordPackService.updateWordPack(wordPack.id, { name: newName })
+      wordPack.name = newName
 
       setIsWordPackEdit(false)
     } catch {

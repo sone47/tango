@@ -47,7 +47,7 @@ const TextEditor = ({
       {isEdit ? (
         <div className="relative flex">
           <Input
-            className="w-[230px]"
+            className="w-56 !ring-0 shadow-none border-x-0 border-t-0 !border-b-1 border-primary rounded-none p-0 text-lg h-7"
             size="md"
             autoFocus
             value={text}
@@ -59,21 +59,21 @@ const TextEditor = ({
             }}
           />
           <div className="flex items-center gap-2 absolute right-0 top-1/2 translate-x-full -translate-y-1/2 pl-2">
-            <Check className="w-4 h-4 text-primary cursor-pointer" onClick={handleEditConfirm} />
+            <Check className="size-5 text-primary cursor-pointer" onClick={handleEditConfirm} />
             <X
-              className="w-4 h-4 text-secondary-foreground cursor-pointer"
+              className="size-5 text-secondary-foreground cursor-pointer"
               onClick={handleExitEdit}
             />
           </div>
         </div>
       ) : (
         <div className="relative flex flex-row gap-2">
-          <Typography.Title level={5} className="max-w-[230px] truncate">
+          <Typography.Title level={5} className="max-w-64 truncate">
             {text}
           </Typography.Title>
           <div>
             <Edit
-              className="w-4 h-4 text-primary cursor-pointer absolute right-0 top-1/2 translate-x-full -translate-y-1/2"
+              className="size-5 text-primary cursor-pointer absolute right-0 top-1/2 translate-x-full -translate-y-1/2"
               onClick={handleEditClick}
             />
           </div>
