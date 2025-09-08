@@ -109,7 +109,8 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
         >
           <div className="flex items-center justify-center h-12">
             <span className="text-lg text-gray-700">
-              {word.partOfSpeech === PartOfSpeechEnum.unknown || isNil(word.partOfSpeech)
+              {word.partOfSpeech === PartOfSpeechEnum.unknown ||
+              isNil(partOfSpeechMap[word.partOfSpeech])
                 ? ''
                 : `[${partOfSpeechMap[word.partOfSpeech]}]`}
               {word.definition}

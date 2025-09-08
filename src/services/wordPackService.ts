@@ -353,9 +353,9 @@ export class WordPackService {
 
         return {
           ...rawData,
-          partOfSpeech: rawData.partOfSpeech
-            ? (+partOfSpeechMap[rawData.partOfSpeech] as PartOfSpeechEnum)
-            : PartOfSpeechEnum.unknown,
+          partOfSpeech: isNil(partOfSpeechMap[rawData.partOfSpeech!])
+            ? PartOfSpeechEnum.unknown
+            : (+partOfSpeechMap[rawData.partOfSpeech!] as PartOfSpeechEnum),
         }
       }),
     }))
