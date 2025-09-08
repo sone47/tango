@@ -43,7 +43,7 @@ const ActionContent = ({
   return (
     <div
       className={cn(
-        'h-full flex items-center p-2 text-sm font-medium text-secondary-foreground select-none',
+        'h-full flex items-center p-2 text-sm font-medium text-secondary-foreground',
         className
       )}
     >

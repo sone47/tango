@@ -44,7 +44,7 @@ const getTypeStyles = (type: BaseTypographyProps['type'] = 'default') => {
 }
 
 const getDisabledStyles = (disabled?: boolean) => {
-  return disabled ? 'opacity-40 cursor-not-allowed select-none' : ''
+  return disabled ? 'opacity-40 cursor-not-allowed' : ''
 }
 
 const getDecorationStyles = (props: BaseTypographyProps) => {

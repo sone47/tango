@@ -58,7 +58,7 @@ const ProficiencySlider = ({
   return (
     <div
       className={cn(
-        'backdrop-blur-sm rounded-2xl transition-opacity duration-300 flex-shrink-0 flex flex-col gap-4 select-none border-1',
+        'backdrop-blur-sm rounded-2xl transition-opacity duration-300 flex-shrink-0 flex flex-col gap-4 border-1',
         className
       )}
     >
