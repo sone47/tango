@@ -1,11 +1,11 @@
-import { isNil } from 'lodash'
 import { useRef } from 'react'
 
 import Speak from '@/components/Speak'
 import Typography from '@/components/Typography'
 import { FlashCardItemEnum, FlashCardItemNameMap } from '@/constants/flashCard'
-import { LanguageEnum, PartOfSpeechEnum, partOfSpeechToLanguageMap } from '@/constants/language'
+import { LanguageEnum } from '@/constants/language'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
+import { usePartOfSpeechText } from '@/hooks/usePartOfSpeechText'
 import { useSettings } from '@/hooks/useSettings'
 import { cn } from '@/lib/utils'
 import { usePracticeStore } from '@/stores/practiceStore'
@@ -19,9 +19,9 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
   const { settings } = useSettings()
   const { currentWordIndex, revealState, updateState, shuffledWords } = usePracticeStore()
   const { currentWordPack } = useCurrentWordPack()
+  const { getPartOfSpeechText } = usePartOfSpeechText(currentWordPack?.language as LanguageEnum)
 
   const word = shuffledWords[currentWordIndex]
-  const partOfSpeechMap = partOfSpeechToLanguageMap[currentWordPack?.language as LanguageEnum] ?? {}
 
   const isDraggingRef = useRef<Record<keyof CardRevealState, boolean>>(revealState)
 
@@ -82,7 +82,14 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
           showGuide={isFirstCard && guideItemName === FlashCardItemEnum.phonetic}
         >
           <div className="flex items-center justify-center gap-2 h-12">
-            <span className="text-xl font-medium text-gray-800">{word.phonetic}</span>
+            <span
+              className={cn(
+                'text-xl font-medium text-gray-800',
+                !revealState.phonetic && 'truncate'
+              )}
+            >
+              {word.phonetic}
+            </span>
           </div>
         </RevealOverlay>
 
@@ -95,7 +102,11 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
           showGuide={isFirstCard && guideItemName === FlashCardItemEnum.word}
         >
           <div className="flex items-center justify-center h-16">
-            <span className="text-3xl font-bold text-gray-900">{word.word}</span>
+            <span
+              className={cn('text-3xl font-bold text-gray-900', !revealState.word && 'truncate')}
+            >
+              {word.word}
+            </span>
           </div>
         </RevealOverlay>
 
@@ -108,11 +119,10 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
           showGuide={isFirstCard && guideItemName === FlashCardItemEnum.definition}
         >
           <div className="flex items-center justify-center h-12">
-            <span className="text-lg text-gray-700">
-              {word.partOfSpeech === PartOfSpeechEnum.unknown ||
-              isNil(partOfSpeechMap[word.partOfSpeech])
-                ? ''
-                : `[${partOfSpeechMap[word.partOfSpeech]}]`}
+            <span className={cn('text-lg text-gray-700', !revealState.definition && 'truncate')}>
+              {getPartOfSpeechText(word.partOfSpeech)
+                ? `[${getPartOfSpeechText(word.partOfSpeech)}]`
+                : ''}
               {word.definition}
             </span>
           </div>

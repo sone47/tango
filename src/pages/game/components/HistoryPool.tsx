@@ -4,11 +4,16 @@ import { useCallback, useEffect, useState } from 'react'
 import Modal from '@/components/Modal'
 import ProficiencySlider from '@/components/ProficiencySlider'
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import { LanguageEnum } from '@/constants/language'
+import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
+import { usePartOfSpeechText } from '@/hooks/usePartOfSpeechText'
 import { practiceService } from '@/services/practiceService'
 import { usePracticeStore } from '@/stores/practiceStore'
 
 const HistoryPool = () => {
+  const { currentWordPack } = useCurrentWordPack()
   const { studiedWords, showHistoryPool, updateState } = usePracticeStore()
+  const { getPartOfSpeechText } = usePartOfSpeechText(currentWordPack?.language as LanguageEnum)
 
   const [api, setApi] = useState<CarouselApi>()
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -75,12 +80,17 @@ const HistoryPool = () => {
             <CarouselContent>
               {studiedWords.map((word) => (
                 <CarouselItem key={word.id}>
-                  <div className="h-full rounded-2xl p-6 flex flex-col justify-between gap-4">
-                    <div className="flex flex-col items-center gap-3">
-                      <span className="text-xl font-medium text-gray-800">{word.phonetic}</span>
-                      <span className="text-3xl font-bold text-gray-900">{word.word}</span>
-                      <span className="text-lg text-gray-700">{word.definition}</span>
-                    </div>
+                  <div className="h-full p-6 rounded-2xl bg-muted flex flex-col items-center justify-center gap-3">
+                    <span className="text-xl font-medium text-secondary-foreground">
+                      {word.phonetic}
+                    </span>
+                    <span className="text-3xl font-bold text-foreground">{word.word}</span>
+                    <span className="text-lg text-muted-foreground">
+                      {getPartOfSpeechText(word.partOfSpeech)
+                        ? `[${getPartOfSpeechText(word.partOfSpeech)}]`
+                        : ''}
+                      {word.definition}
+                    </span>
                   </div>
                 </CarouselItem>
               ))}
@@ -89,8 +99,9 @@ const HistoryPool = () => {
 
           {/* 熟练度调整 */}
           {currentWord && (
-            <div className="bg-gray-50 rounded-2xl p-4">
+            <div className="bg-gray-50 rounded-2xl">
               <ProficiencySlider
+                className="p-4"
                 value={practiceData[currentWord.id] ?? 0}
                 onChange={updateProficiency}
                 onChangeComplete={handleProficiencyChangeComplete}
