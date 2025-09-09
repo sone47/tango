@@ -41,8 +41,10 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/profile" element={<MainPage />} />
         <Route path="/game" element={<GamePage />} />
-        <Route path="/wordpack" element={<WordpackPage />} />
-        <Route path="/wordpack/edit/:id" element={<WordPackEditPage />} />
+        <Route path="wordpack">
+          <Route path="" element={<WordpackPage />} />
+          <Route path=":id" element={<WordPackEditPage />} />
+        </Route>
         <Route path="/recommended-packs" element={<RecommendedPacksPage />} />
         <Route path="settings">
           <Route path="" element={<SettingsPage />} />

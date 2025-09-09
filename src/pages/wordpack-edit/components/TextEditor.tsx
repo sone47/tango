@@ -1,12 +1,17 @@
-import { Check, Edit, X } from 'lucide-react'
+import { Edit } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+import Drawer from '@/components/Drawer'
 import Input from '@/components/Input'
 import Typography from '@/components/Typography'
+import { cn } from '@/lib/utils'
 
 interface TextEditorProps {
   value: string
   isEdit: boolean
+  editable?: boolean
+  drawerTitle?: string
+  titleWidth?: number
   onConfirm: (text: string) => void
   onEditStateChange: (isEdit: boolean) => void
 }
@@ -14,6 +19,9 @@ interface TextEditorProps {
 const TextEditor = ({
   value: originalText,
   isEdit,
+  editable,
+  drawerTitle,
+  titleWidth,
   onConfirm,
   onEditStateChange,
 }: TextEditorProps) => {
@@ -31,55 +39,58 @@ const TextEditor = ({
 
   const handleExitEdit = () => {
     setText(originalText)
-    onEditStateChange(false)
   }
 
   const handleEditStateChange = (isEdit: boolean) => {
     onEditStateChange(isEdit)
   }
 
-  const handleEditClick = () => {
-    handleEditStateChange(true)
-  }
-
   return (
-    <div className="flex items-center" onClick={(e) => e.stopPropagation()}>
-      {isEdit ? (
-        <div className="relative flex">
-          <Input
-            className="w-48 shadow-none border-x-0 border-t-0 !border-b-1 border-primary rounded-none p-0 text-lg h-7"
-            size="md"
-            autoFocus
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleEditConfirm()
-              }
-            }}
-          />
-          <div className="flex items-center gap-2 absolute right-0 top-1/2 translate-x-full -translate-y-1/2 pl-2">
-            <Check className="size-5 text-primary cursor-pointer" onClick={handleEditConfirm} />
-            <X
-              className="size-5 text-secondary-foreground cursor-pointer"
-              onClick={handleExitEdit}
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="relative flex flex-row gap-2">
-          <Typography.Title level={5} className="max-w-56 truncate">
-            {text}
+    <>
+      <div
+        className="flex items-center"
+        onClick={(e) => {
+          e.stopPropagation()
+
+          if ((e.target as HTMLElement)?.getAttribute('data-slot') === 'drawer-overlay') {
+            onEditStateChange(false)
+          }
+        }}
+      >
+        <div className="relative">
+          <Typography.Title level={5} className="truncate" style={{ maxWidth: titleWidth }}>
+            {originalText}
           </Typography.Title>
-          <div>
-            <Edit
-              className="size-5 text-primary cursor-pointer absolute right-0 top-1/2 translate-x-full -translate-y-1/2"
-              onClick={handleEditClick}
-            />
-          </div>
+          {editable && (
+            <div>
+              <Drawer
+                trigger={
+                  <Edit className="size-5 text-primary cursor-pointer absolute -right-2 top-1/2 translate-x-full -translate-y-1/2" />
+                }
+                open={isEdit}
+                onOpenChange={handleEditStateChange}
+                title={drawerTitle}
+                showConfirm
+                showCancel
+                onConfirm={handleEditConfirm}
+                onCancel={handleExitEdit}
+              >
+                <Input
+                  autoFocus
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleEditConfirm()
+                    }
+                  }}
+                />
+              </Drawer>
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </div>
+    </>
   )
 }
 

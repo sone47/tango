@@ -1,4 +1,4 @@
-import { AlertTriangle } from 'lucide-react'
+import { Frown } from 'lucide-react'
 
 import Button from './Button'
 
@@ -9,25 +9,29 @@ interface ErrorDisplayProps {
   retryText?: string
 }
 
-const ErrorDisplay = ({ title, message, onRetry, retryText = '重试' }: ErrorDisplayProps) => {
+const ErrorDisplay = ({
+  title,
+  message = '如多次重试仍无法解决，请联系开发者',
+  onRetry,
+  retryText = '重试',
+}: ErrorDisplayProps) => {
   return (
-    <div className="h-full bg-gradient-to-br from-red-50 to-rose-50 flex items-center justify-center p-6">
-      <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-sm border border-red-50 p-8 max-w-sm w-full">
-        <div className="flex flex-col items-center text-center gap-3">
-          <div className="w-20 h-20 bg-red-50 rounded-2xl flex items-center justify-center">
-            <AlertTriangle className="w-10 h-10 text-red-500" strokeWidth={1.5} />
-          </div>
+    <div className="h-full bg-background flex items-center justify-center">
+      <div className="flex flex-col items-center text-center gap-6">
+        <Frown className="size-12 text-secondary-foreground" strokeWidth={1.5} />
+        <div>
+          {title && <h2 className="text-lg font-semibold text-foreground">{title}</h2>}
 
-          {title && <h2 className="text-lg font-semibold text-gray-900">{title}</h2>}
-
-          {message && <p className="text-gray-600 text-sm leading-relaxed">{message}</p>}
-
-          {onRetry && (
-            <Button onClick={onRetry} variant="primary" size="md" className="w-full">
-              {retryText}
-            </Button>
+          {message && (
+            <p className="text-secondary-foreground text-sm leading-relaxed">{message}</p>
           )}
         </div>
+
+        {onRetry && (
+          <Button onClick={onRetry} variant="primary" size="md" className="w-full rounded-full">
+            {retryText}
+          </Button>
+        )}
       </div>
     </div>
   )

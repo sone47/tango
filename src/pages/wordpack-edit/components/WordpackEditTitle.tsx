@@ -6,7 +6,12 @@ import { WordPack } from '@/types'
 
 import TextEditor from './TextEditor'
 
-const WordpackEditTitle = ({ wordPack }: { wordPack?: WordPack }) => {
+interface WordpackEditTitleProps {
+  wordPack?: WordPack
+  editable: boolean
+}
+
+const WordpackEditTitle = ({ wordPack, editable }: WordpackEditTitleProps) => {
   const [isWordPackEdit, setIsWordPackEdit] = useState(false)
 
   const handleWordPackNameConfirm = async (newName: string) => {
@@ -33,7 +38,10 @@ const WordpackEditTitle = ({ wordPack }: { wordPack?: WordPack }) => {
   return (
     <TextEditor
       isEdit={isWordPackEdit}
+      editable={editable}
+      titleWidth={200}
       value={wordPack?.name ?? ''}
+      drawerTitle="编辑词包名称"
       onConfirm={handleWordPackNameConfirm}
       onEditStateChange={setIsWordPackEdit}
     />

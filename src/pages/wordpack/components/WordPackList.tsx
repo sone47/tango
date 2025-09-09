@@ -66,7 +66,7 @@ const WordPackList = () => {
   }
 
   const handleEdit = (wordPack: WordPack) => {
-    navigate(`/wordpack/edit/${wordPack.id}`)
+    navigate(`/wordpack/${wordPack.id}`)
   }
 
   const handleDeleteConfirm = async () => {

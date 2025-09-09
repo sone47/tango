@@ -12,9 +12,10 @@ import WordItem from './WordItem'
 
 interface CardpackListProps {
   wordPack?: WordPack | null
+  editable: boolean
 }
 
-const CardpackList = ({ wordPack }: CardpackListProps) => {
+const CardpackList = ({ wordPack, editable }: CardpackListProps) => {
   const [cardPacks, setCardPacks] = useState<CardPack[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [editingCardPackIds, setEditingCardPackIds] = useState<number[]>([])
@@ -95,7 +96,9 @@ const CardpackList = ({ wordPack }: CardpackListProps) => {
       <div className="flex items-center gap-2 py-4" id={`cardpack-${cardPack.id}`}>
         <TextEditor
           isEdit={editingCardPackIds.includes(cardPack.id)}
+          editable={editable}
           value={cardPack.name}
+          drawerTitle="编辑卡包名称"
           onConfirm={(newName) => handleCardPackNameConfirm(cardPack.id, newName)}
           onEditStateChange={(isEdit) => handleEditCardPackId(cardPack.id, isEdit)}
         />

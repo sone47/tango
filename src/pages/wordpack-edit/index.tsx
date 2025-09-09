@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
+import Button from '@/components/Button'
 import Card from '@/components/Card'
+import ErrorDisplay from '@/components/ErrorDisplay'
+import Loading from '@/components/Loading'
 import Page from '@/components/Page'
 import { Tabs } from '@/components/Tabs'
 import { wordPackService } from '@/services/wordPackService'
@@ -15,7 +18,10 @@ export default function WordPackEditPage() {
   const navigate = useNavigate()
   const { id } = useParams()
 
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
   const [wordPack, setWordPack] = useState<WordPack>()
+  const [isEdit, setIsEdit] = useState(false)
   const wordPackId = useMemo(() => +id!, [id])
 
   useEffect(() => {
@@ -28,12 +34,43 @@ export default function WordPackEditPage() {
   }, [wordPackId])
 
   const fetchWordPack = async () => {
-    const wordPack = await wordPackService.getWordPackById(wordPackId)
-    setWordPack(wordPack!)
+    setIsLoading(true)
+    try {
+      const wordPack = await wordPackService.getWordPackById(wordPackId)
+      if (!wordPack) {
+        throw new Error('词包不存在')
+      }
+      setWordPack(wordPack!)
+    } catch (error) {
+      setError(error as Error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (error) {
+    return <ErrorDisplay title="加载失败" onRetry={fetchWordPack} />
   }
 
   return (
-    <Page title={<WordpackEditTitle wordPack={wordPack} />}>
+    <Page
+      title={
+        <>
+          <WordpackEditTitle wordPack={wordPack} editable={isEdit} />
+          <Button
+            className="absolute right-4 top-1/2 -translate-y-1/2  p-0"
+            variant="link"
+            onClick={() => setIsEdit((prev) => !prev)}
+          >
+            {isEdit ? '完成' : '编辑'}
+          </Button>
+        </>
+      }
+    >
       <Tabs
         className="flex flex-col h-full overflow-y-auto"
         defaultValue="cardpack"
@@ -44,7 +81,7 @@ export default function WordPackEditPage() {
             className: 'flex-1 overflow-y-auto',
             component: (
               <Card className="h-full py-0" contentClassName="h-full overflow-y-auto pt-4">
-                <CardpackList wordPack={wordPack} />
+                <CardpackList wordPack={wordPack} editable={isEdit} />
               </Card>
             ),
           },

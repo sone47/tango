@@ -20,6 +20,10 @@ const ProgressSection = () => {
     navigate('/wordpack')
   }
 
+  const handleViewWordPack = () => {
+    navigate(`/wordpack/${currentWordPack?.id}`)
+  }
+
   let content: ReactElement | null = null
   if (!wordPackStore.hasData) {
     content = <EmptyWordPack showImportButton />
@@ -30,10 +34,11 @@ const ProgressSection = () => {
       content = (
         <div
           className={cn(
-            'bg-muted/50 flex items-center justify-between w-full text-left p-4 rounded-2xl'
+            'bg-muted/50 flex items-center justify-betwee gap-2 w-full text-left p-4 rounded-2xl cursor-pointer'
           )}
+          onClick={handleViewWordPack}
         >
-          <div className="flex flex-col items-start gap-1">
+          <div className="flex-1 flex flex-col items-start gap-1">
             <Typography.Title level={6}>{currentWordPack.name}</Typography.Title>
             <p className="text-sm text-muted-foreground">
               创建时间:{' '}
