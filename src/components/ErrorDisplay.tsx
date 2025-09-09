@@ -1,4 +1,5 @@
 import { Frown } from 'lucide-react'
+import { Link } from 'react-router'
 
 import Button from './Button'
 
@@ -27,11 +28,18 @@ const ErrorDisplay = ({
           )}
         </div>
 
-        {onRetry && (
-          <Button onClick={onRetry} variant="primary" size="md" className="w-full rounded-full">
-            {retryText}
-          </Button>
-        )}
+        <div className="w-full flex flex-col gap-2">
+          {onRetry && (
+            <Button onClick={onRetry} variant="primary" size="md" className="w-full rounded-full">
+              {retryText}
+            </Button>
+          )}
+          <Link to="/" replace>
+            <Button variant="ghost" className="text-secondary-foreground">
+              回到首页
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   )

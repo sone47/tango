@@ -11,7 +11,7 @@ export default function Component() {
         </h1>
         <p className="text-gray-500">页面不存在</p>
       </div>
-      <Link to="/">
+      <Link to="/" replace>
         <Button className="px-8">回到首页</Button>
       </Link>
     </div>
