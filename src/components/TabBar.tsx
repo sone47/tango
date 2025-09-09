@@ -20,7 +20,7 @@ interface TabsProps {
 
 const Tabs = ({ tabs, activeTab, onTabChange, className = '' }: TabsProps) => {
   return (
-    <div className={`bg-card backdrop-blur-lg border-t border-border ${className}`}>
+    <div className={`bg-card border-border border-t backdrop-blur-lg ${className}`}>
       <div className="flex items-center justify-around py-3">
         {tabs.map((tab) => (
           <motion.button
@@ -29,7 +29,7 @@ const Tabs = ({ tabs, activeTab, onTabChange, className = '' }: TabsProps) => {
             className={`flex flex-col items-center justify-center gap-1 transition-colors ${
               activeTab === tab.id
                 ? 'text-primary font-semibold'
-                : 'text-muted-foreground/80 hover:text-muted-foreground hover:font-semibold hover:scale-105'
+                : 'text-muted-foreground/80 hover:text-muted-foreground hover:scale-105 hover:font-semibold'
             }`}
             whileTap={{ scale: 0.95 }}
           >

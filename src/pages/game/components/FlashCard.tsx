@@ -157,14 +157,14 @@ const FlashCard = () => {
 
   return (
     <motion.div
-      className="w-full max-w-sm h-full flex flex-col gap-4"
+      className="flex h-full w-full max-w-sm flex-col gap-4"
       key={word.id}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
       <div
-        className="z-1 flex-1 perspective-[1000px] min-h-0"
+        className="z-1 min-h-0 flex-1 perspective-[1000px]"
         onClick={handleCardFlip}
         onDoubleClick={handleDoubleClick}
       >
@@ -200,7 +200,7 @@ const FlashCard = () => {
             )}
             <FlashCardFront isFlipped={isFlipped} />
             <FlashCardBack
-              className="absolute top-0 left-0 w-full h-full p-4"
+              className="absolute top-0 left-0 h-full w-full p-4"
               word={word}
               isFlipped={isFlipped}
               onScroll={handleExampleScroll}

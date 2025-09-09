@@ -47,7 +47,7 @@ export default function SuccessModal({ isOpen, importedWordPackId, onClose }: Su
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="导入成功">
-      <div className="flex flex-col gap-8 items-center">
+      <div className="flex flex-col items-center gap-8">
         <Typography.Text type="secondary">「{wordPackName}」导入成功！</Typography.Text>
         <Button variant="primary" onClick={handleStartLearning} className="w-full">
           开始学习

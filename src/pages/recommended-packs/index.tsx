@@ -74,16 +74,16 @@ const RecommendedPacksPage = () => {
 
     if (!recommendedPacks.length) {
       return (
-        <div className="text-center py-8 text-gray-500">
-          <Star className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">暂无推荐词包</h3>
+        <div className="py-8 text-center text-gray-500">
+          <Star className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+          <h3 className="mb-2 text-lg font-medium text-gray-900">暂无推荐词包</h3>
           <p className="text-sm text-gray-600">请稍后再试</p>
         </div>
       )
     }
 
     return (
-      <div className="h-full overflow-y-auto space-y-3">
+      <div className="h-full space-y-3 overflow-y-auto">
         {recommendedPacks.map((pack, index) => (
           <motion.div
             key={index}
@@ -97,17 +97,17 @@ const RecommendedPacksPage = () => {
             }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="bg-card rounded-xl p-4 border-1"
+            className="bg-card rounded-xl border-1 p-4"
           >
             <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <Typography.Title level={6} className="truncate">
                   {pack.name}
                 </Typography.Title>
                 <Typography.Text type="secondary" size="sm">
                   {pack.description}
                 </Typography.Text>
-                <div className="text-xs text-gray-500 mt-2">作者: {pack.author}</div>
+                <div className="mt-2 text-xs text-gray-500">作者: {pack.author}</div>
               </div>
 
               <Button
@@ -117,7 +117,7 @@ const RecommendedPacksPage = () => {
                 disabled={importingIndex === index}
                 loading={importingIndex === index}
                 icon={Download}
-                className="flex-shrink-0"
+                className="shrink-0"
               >
                 导入
               </Button>

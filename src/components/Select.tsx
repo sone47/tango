@@ -81,7 +81,7 @@ const Select: React.FC<SelectProps> = ({
       <SelectItem key={option.value} value={option.value} disabled={option.disabled}>
         <div className="flex items-center gap-2">
           {Icon && (
-            <div className="flex-shrink-0 w-4 h-4 flex items-center justify-center">
+            <div className="flex h-4 w-4 shrink-0 items-center justify-center">
               <Icon size={14} className="text-gray-600" />
             </div>
           )}
@@ -138,7 +138,7 @@ const Select: React.FC<SelectProps> = ({
             {selectedOption && (
               <div className="flex items-center gap-2">
                 {SelectedIcon && (
-                  <div className="flex-shrink-0 w-4 h-4 flex items-center justify-center">
+                  <div className="flex h-4 w-4 shrink-0 items-center justify-center">
                     <SelectedIcon size={14} className="text-gray-600" />
                   </div>
                 )}

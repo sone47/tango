@@ -142,7 +142,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         />
 
         {showCount && maxLength && (
-          <div className="absolute bottom-2 right-2 text-xs text-muted-foreground bg-card/80 px-1 rounded">
+          <div className="text-muted-foreground bg-card/80 absolute right-2 bottom-2 rounded px-1 text-xs">
             {String(currentValue).length}/{maxLength}
           </div>
         )}
@@ -155,7 +155,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           {label && (
             <label
               htmlFor={props.id}
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
               {label}
             </label>
@@ -163,7 +163,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
           {textareaElement}
 
-          <div className="flex justify-between items-start">
+          <div className="flex items-start justify-between">
             <div className="flex-1">
               {(description || error) && (
                 <p
@@ -176,7 +176,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             </div>
 
             {showCount && !maxLength && (
-              <p className="text-xs text-muted-foreground ml-2">
+              <p className="text-muted-foreground ml-2 text-xs">
                 {String(currentValue).length} 字符
               </p>
             )}

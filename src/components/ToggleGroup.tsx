@@ -72,7 +72,7 @@ export function ToggleGroup({
             className={option.className}
             aria-label={option.label}
           >
-            {option.icon && <span className="flex-shrink-0">{option.icon}</span>}
+            {option.icon && <span className="shrink-0">{option.icon}</span>}
             <span>{option.label}</span>
           </ToggleGroupItem>
         ))}
@@ -98,7 +98,7 @@ export function ToggleGroup({
           className={option.className}
           aria-label={option.label}
         >
-          {option.icon && <span className="flex-shrink-0">{option.icon}</span>}
+          {option.icon && <span className="shrink-0">{option.icon}</span>}
           <span>{option.label}</span>
         </ToggleGroupItem>
       ))}

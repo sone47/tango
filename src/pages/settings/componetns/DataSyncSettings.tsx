@@ -41,7 +41,7 @@ export default function DataSyncSettings() {
 
   return (
     <SettingItem title="数据同步" icon={Share2} isCard>
-      <div className="space-y-4 w-full">
+      <div className="w-full space-y-4">
         <SettingItem title="接收策略">
           <Select
             className="w-[136px]"
@@ -59,7 +59,7 @@ export default function DataSyncSettings() {
         </SettingItem>
 
         <SettingItem title="ICE/TURN 服务器">
-          <div className="flex items-center justify-end gap-2 w-[136px]">
+          <div className="flex w-[136px] items-center justify-end gap-2">
             <Drawer
               className="h-full"
               contentClassName="flex flex-col gap-4"

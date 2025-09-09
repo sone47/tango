@@ -66,30 +66,30 @@ const TodayStudyModal = ({ isOpen, onClose }: TodayStudyModalProps) => {
       maxWidth="md"
       className="max-h-[80vh]"
     >
-      <div className="overflow-auto max-h-96">
+      <div className="max-h-96 overflow-auto">
         {loading ? (
           <div className="h-64">
             <Loading text="正在加载学习记录..." size="md" />
           </div>
         ) : todayStudy.length === 0 ? (
-          <div className="text-center py-8">
-            <div className="w-16 h-16 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+          <div className="py-8 text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
               <Calendar size={24} className="text-gray-400" />
             </div>
             <p className="text-gray-500">今天还没有学习记录</p>
-            <p className="text-sm text-gray-400 mt-1">快去学习吧～</p>
+            <p className="mt-1 text-sm text-gray-400">快去学习吧～</p>
           </div>
         ) : (
           <div className="space-y-3">
             {todayStudy.map(({ practice, word }) => (
-              <div key={practice.vocabularyId} className="p-4 bg-gray-50 rounded-xl">
-                <div className="flex items-center justify-between mb-2">
+              <div key={practice.vocabularyId} className="rounded-xl bg-gray-50 p-4">
+                <div className="mb-2 flex items-center justify-between">
                   <h4 className="text-gray-900">{word!.phonetic}</h4>
                   <ProficiencyBadge proficiency={practice.proficiency} size="sm" />
                 </div>
-                <p className="font-medium text-sm text-gray-900 mb-1">{word!.word}</p>
-                <p className="text-sm text-gray-700 mb-2">{word!.definition}</p>
-                <p className="text-xs text-gray-500 flex justify-between">
+                <p className="mb-1 text-sm font-medium text-gray-900">{word!.word}</p>
+                <p className="mb-2 text-sm text-gray-700">{word!.definition}</p>
+                <p className="flex justify-between text-xs text-gray-500">
                   <span>练习次数: {practice.practiceCount} 次</span>
                   <span>最后练习: {format(practice.lastPracticeTime)}</span>
                 </p>

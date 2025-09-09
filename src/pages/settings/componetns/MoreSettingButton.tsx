@@ -20,7 +20,7 @@ export default function MoreSettingButton({ label, path, icon: Icon }: MoreSetti
     <Button
       variant="outline"
       size="lg"
-      className="w-full flex items-center justify-between rounded-xl text-sm"
+      className="flex w-full items-center justify-between rounded-xl text-sm"
       onClick={handleClick}
     >
       <div className="flex items-center gap-2">

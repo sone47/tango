@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import Drawer from '@/components/Drawer'
 import Input from '@/components/Input'
 import Typography from '@/components/Typography'
-import { cn } from '@/lib/utils'
 
 interface TextEditorProps {
   value: string
@@ -65,7 +64,7 @@ const TextEditor = ({
             <div>
               <Drawer
                 trigger={
-                  <Edit className="size-5 text-primary cursor-pointer absolute -right-2 top-1/2 translate-x-full -translate-y-1/2" />
+                  <Edit className="text-primary absolute top-1/2 -right-2 size-5 translate-x-full -translate-y-1/2 cursor-pointer" />
                 }
                 open={isEdit}
                 onOpenChange={handleEditStateChange}

@@ -62,9 +62,9 @@ const WordList = ({ wordPack }: WordListProps) => {
   }
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="mx-4 mt-4 relative">
-        <Search className="h-full absolute left-3 size-4 top-1/2 -translate-y-1/2 text-muted-foreground/70"></Search>
+    <div className="flex h-full flex-col">
+      <div className="relative mx-4 mt-4">
+        <Search className="text-muted-foreground/70 absolute top-1/2 left-3 size-4 h-full -translate-y-1/2"></Search>
         <Input className="pl-10" placeholder="查询你要修改的单词" onChange={handleSearch} />
       </div>
       <div className="flex-1 overflow-y-auto">

@@ -98,6 +98,7 @@ const CardpackList = ({ wordPack, editable }: CardpackListProps) => {
           isEdit={editingCardPackIds.includes(cardPack.id)}
           editable={editable}
           value={cardPack.name}
+          titleWidth={240}
           drawerTitle="编辑卡包名称"
           onConfirm={(newName) => handleCardPackNameConfirm(cardPack.id, newName)}
           onEditStateChange={(isEdit) => handleEditCardPackId(cardPack.id, isEdit)}

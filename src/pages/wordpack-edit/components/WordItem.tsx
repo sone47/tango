@@ -20,7 +20,7 @@ const WordItem = ({ language, word, onEditSuccess }: WordItemProps) => {
 
   return (
     <div className="flex flex-row gap-2">
-      <div className="flex-1 flex flex-col gap-1 truncate w-full">
+      <div className="flex w-full flex-1 flex-col gap-1 truncate">
         <Typography.Text className="truncate">
           {word.word} | {word.phonetic}
         </Typography.Text>

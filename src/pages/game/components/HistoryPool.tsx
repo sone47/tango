@@ -80,12 +80,12 @@ const HistoryPool = () => {
             <CarouselContent>
               {studiedWords.map((word) => (
                 <CarouselItem key={word.id}>
-                  <div className="h-full p-6 rounded-2xl bg-muted flex flex-col items-center justify-center gap-3">
-                    <span className="text-xl font-medium text-secondary-foreground">
+                  <div className="bg-muted flex h-full flex-col items-center justify-center gap-3 rounded-2xl p-6">
+                    <span className="text-secondary-foreground text-xl font-medium">
                       {word.phonetic}
                     </span>
-                    <span className="text-3xl font-bold text-foreground">{word.word}</span>
-                    <span className="text-lg text-muted-foreground">
+                    <span className="text-foreground text-3xl font-bold">{word.word}</span>
+                    <span className="text-muted-foreground text-lg">
                       {getPartOfSpeechText(word.partOfSpeech)
                         ? `[${getPartOfSpeechText(word.partOfSpeech)}]`
                         : ''}
@@ -99,7 +99,7 @@ const HistoryPool = () => {
 
           {/* 熟练度调整 */}
           {currentWord && (
-            <div className="bg-gray-50 rounded-2xl">
+            <div className="rounded-2xl bg-gray-50">
               <ProficiencySlider
                 className="p-4"
                 value={practiceData[currentWord.id] ?? 0}
@@ -111,11 +111,11 @@ const HistoryPool = () => {
           )}
         </div>
       ) : (
-        <div className="text-center py-12">
-          <div className="w-20 h-20 bg-gray-100 rounded-full mb-4 mx-auto flex items-center justify-center">
+        <div className="py-12 text-center">
+          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
             <Star size={24} className="text-gray-400" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">暂无历史学习记录</h3>
+          <h3 className="mb-2 text-lg font-semibold text-gray-800">暂无历史学习记录</h3>
           <p className="text-gray-600">快去学习吧～</p>
         </div>
       )}

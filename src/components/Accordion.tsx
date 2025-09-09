@@ -78,9 +78,9 @@ const Accordion: React.FC<AccordionSingleProps | AccordionMultipleProps> = ({
     const Icon = item.icon
 
     const triggerContent = (
-      <div className="flex items-center gap-3 flex-1">
+      <div className="flex flex-1 items-center gap-3">
         {Icon && (
-          <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
+          <div className="flex h-5 w-5 shrink-0 items-center justify-center">
             <Icon size={18} className="text-muted-foreground" />
           </div>
         )}

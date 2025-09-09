@@ -86,7 +86,7 @@ export default function DebugLogger({
           readOnly
           value={logText}
           placeholder="暂无日志"
-          className="h-32 text-xs font-mono"
+          className="h-32 font-mono text-xs"
         />
       )}
     </div>

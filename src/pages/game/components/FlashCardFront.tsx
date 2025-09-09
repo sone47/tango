@@ -59,7 +59,7 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
       )}
     >
       {/* 内容区域 */}
-      <div className="flex-1 flex flex-col justify-center items-center space-y-8 min-h-0">
+      <div className="flex min-h-0 flex-1 flex-col items-center justify-center space-y-8">
         {word.word && (
           <Speak
             text={word.word}
@@ -81,7 +81,7 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
           onDragEnd={(offsetX) => handleRevealDragEnd(FlashCardItemEnum.phonetic, offsetX)}
           showGuide={isFirstCard && guideItemName === FlashCardItemEnum.phonetic}
         >
-          <div className="flex items-center justify-center gap-2 h-12">
+          <div className="flex h-12 items-center justify-center gap-2">
             <span
               className={cn(
                 'text-xl font-medium text-gray-800',
@@ -101,7 +101,7 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
           onDragEnd={(offsetX) => handleRevealDragEnd(FlashCardItemEnum.word, offsetX)}
           showGuide={isFirstCard && guideItemName === FlashCardItemEnum.word}
         >
-          <div className="flex items-center justify-center h-16">
+          <div className="flex h-16 items-center justify-center">
             <span
               className={cn('text-3xl font-bold text-gray-900', !revealState.word && 'truncate')}
             >
@@ -118,7 +118,7 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
           onDragEnd={(offsetX) => handleRevealDragEnd(FlashCardItemEnum.definition, offsetX)}
           showGuide={isFirstCard && guideItemName === FlashCardItemEnum.definition}
         >
-          <div className="flex items-center justify-center h-12">
+          <div className="flex h-12 items-center justify-center">
             <span className={cn('text-lg text-gray-700', !revealState.definition && 'truncate')}>
               {getPartOfSpeechText(word.partOfSpeech)
                 ? `[${getPartOfSpeechText(word.partOfSpeech)}]`
@@ -133,7 +133,7 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
       <Typography.Text
         type="secondary"
         size="xs"
-        className="flex-shrink-0 flex flex-col items-center gap-1"
+        className="flex shrink-0 flex-col items-center gap-1"
       >
         {isAllRevealed ? (
           <>

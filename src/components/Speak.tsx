@@ -168,7 +168,7 @@ const Speak = ({
       ref={playButtonRef}
       variant="ghost"
       onClick={handlePlayClick}
-      className="!p-0 h-auto"
+      className="h-auto !p-0"
       disabled={isGlobalLoading || disabled}
       {...buttonProps}
     >

@@ -1,9 +1,9 @@
 export default function DataSyncConfigGuide() {
   return (
-    <div className="prose prose-sm max-w-none space-y-4 text-foreground">
+    <div className="prose prose-sm text-foreground max-w-none space-y-4">
       <div className="space-y-3">
         <h3 className="text-base font-semibold">配置服务器</h3>
-        <p className="text-sm text-muted-foreground leading-relaxed">
+        <p className="text-muted-foreground text-sm leading-relaxed">
           设备配对需要配置ICE/TURN服务器来建立连接。推荐以下配置方案：
         </p>
       </div>
@@ -11,17 +11,17 @@ export default function DataSyncConfigGuide() {
       <div className="space-y-3">
         <div className="space-y-2">
           <p className="text-sm font-medium">方案一：免费服务器（推荐）</p>
-          <div className="bg-muted/50 p-3 rounded-lg space-y-1 text-xs text-muted-foreground">
+          <div className="bg-muted/50 text-muted-foreground space-y-1 rounded-lg p-3 text-xs">
             <p>stun:stun.l.google.com:19302</p>
             <p>用户名和密码留空即可</p>
           </div>
 
-          <p className="text-sm font-medium mt-4">方案二：付费TURN服务器</p>
-          <div className="bg-muted/50 p-3 rounded-lg space-y-2">
-            <p className="text-xs text-muted-foreground">
+          <p className="mt-4 text-sm font-medium">方案二：付费TURN服务器</p>
+          <div className="bg-muted/50 space-y-2 rounded-lg p-3">
+            <p className="text-muted-foreground text-xs">
               如果免费服务器无法正常配对，推荐使用以下服务商：
             </p>
-            <ul className="text-xs text-muted-foreground space-y-1 ml-4 list-disc">
+            <ul className="text-muted-foreground ml-4 list-disc space-y-1 text-xs">
               <li>expressturn.com（每月免费额度）</li>
               <li>xirsys.com（每月免费额度）</li>
             </ul>
@@ -31,10 +31,10 @@ export default function DataSyncConfigGuide() {
 
       <div className="space-y-3">
         <h3 className="text-base font-semibold">配置示例</h3>
-        <div className="bg-muted/50 p-3 rounded-lg space-y-3">
+        <div className="bg-muted/50 space-y-3 rounded-lg p-3">
           <div>
-            <p className="text-xs font-medium mb-1">免费STUN服务器配置：</p>
-            <div className="text-xs space-y-1">
+            <p className="mb-1 text-xs font-medium">免费STUN服务器配置：</p>
+            <div className="space-y-1 text-xs">
               <div>
                 服务器地址：
                 <code>stun:stun.l.google.com:19302</code>
@@ -49,8 +49,8 @@ export default function DataSyncConfigGuide() {
           </div>
 
           <div>
-            <p className="text-xs font-medium mb-1">TURN服务器配置示例：</p>
-            <div className="text-xs space-y-1">
+            <p className="mb-1 text-xs font-medium">TURN服务器配置示例：</p>
+            <div className="space-y-1 text-xs">
               <div>
                 服务器地址：
                 <code>turn:your-server.com:3478</code>

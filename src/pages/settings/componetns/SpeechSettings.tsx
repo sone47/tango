@@ -35,7 +35,7 @@ export default function SpeechSettings() {
 
   return (
     <SettingItem title="语音设置" icon={Headphones} isCard>
-      <div className="space-y-4 w-full">
+      <div className="w-full space-y-4">
         <SettingItem title="语言">
           <Select
             className="w-[136px]"

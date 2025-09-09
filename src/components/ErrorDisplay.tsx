@@ -17,18 +17,18 @@ const ErrorDisplay = ({
   retryText = '重试',
 }: ErrorDisplayProps) => {
   return (
-    <div className="h-full bg-background flex items-center justify-center">
-      <div className="flex flex-col items-center text-center gap-6">
-        <Frown className="size-12 text-secondary-foreground" strokeWidth={1.5} />
+    <div className="bg-background flex h-full items-center justify-center">
+      <div className="flex flex-col items-center gap-6 text-center">
+        <Frown className="text-secondary-foreground size-12" strokeWidth={1.5} />
         <div>
-          {title && <h2 className="text-lg font-semibold text-foreground">{title}</h2>}
+          {title && <h2 className="text-foreground text-lg font-semibold">{title}</h2>}
 
           {message && (
             <p className="text-secondary-foreground text-sm leading-relaxed">{message}</p>
           )}
         </div>
 
-        <div className="w-full flex flex-col gap-2">
+        <div className="flex w-full flex-col gap-2">
           {onRetry && (
             <Button onClick={onRetry} variant="primary" size="md" className="w-full rounded-full">
               {retryText}

@@ -19,7 +19,7 @@ export default function GamePage() {
 
   return (
     <>
-      <div className="h-full flex flex-col">
+      <div className="flex h-full flex-col">
         <PracticeHeader />
         <PracticeContent />
       </div>

@@ -46,7 +46,7 @@ const Modal = ({
         <>
           {/* 背景遮罩 */}
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -56,7 +56,7 @@ const Modal = ({
           {/* 模态框内容 */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
-              className={`bg-white rounded-3xl shadow-2xl ${getMaxWidthClass(maxWidth)} w-full max-h-[80vh] overflow-hidden ${className}`}
+              className={`rounded-3xl bg-white shadow-2xl ${getMaxWidthClass(maxWidth)} max-h-[80vh] w-full overflow-hidden ${className}`}
               initial={{ opacity: 0, scale: 0.5, y: 0, transition: { duration: 0 } }}
               animate={{
                 opacity: 1,
@@ -68,7 +68,7 @@ const Modal = ({
             >
               {/* 标题栏 */}
               {(title || Icon || showCloseButton) && (
-                <div className="flex items-center justify-between p-6 border-b border-gray-100">
+                <div className="flex items-center justify-between border-b border-gray-100 p-6">
                   <div className="flex items-center gap-3">
                     {Icon && (
                       <div
@@ -85,7 +85,7 @@ const Modal = ({
                       size="sm"
                       onClick={onClose}
                       icon={X}
-                      className="!p-2 !min-w-0 !w-auto !h-auto bg-gray-100 rounded-full hover:bg-gray-200"
+                      className="!h-auto !w-auto !min-w-0 rounded-full bg-gray-100 !p-2 hover:bg-gray-200"
                     >
                       {''}
                     </Button>

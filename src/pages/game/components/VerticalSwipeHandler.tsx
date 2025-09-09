@@ -69,7 +69,7 @@ const VerticalSwipeHandler = ({
 
   return (
     <motion.div
-      className="w-full h-full"
+      className="h-full w-full"
       drag={enabled && !isSwipingOut ? 'y' : false}
       dragSnapToOrigin={true}
       dragElastic={1}

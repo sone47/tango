@@ -220,7 +220,7 @@ const Blockquote = ({
   return (
     <blockquote
       className={clsx(
-        'border-l-4 border-gray-300 pl-4 italic text-gray-700 mb-4',
+        'mb-4 border-l-4 border-gray-300 pl-4 text-gray-700 italic',
         getTypeStyles(type),
         getDisabledStyles(disabled),
         getDecorationStyles(decorationProps),
@@ -263,7 +263,7 @@ const Link = ({
       target={target}
       rel={rel}
       className={clsx(
-        'text-blue-600 hover:text-blue-800 underline transition-colors cursor-pointer',
+        'cursor-pointer text-blue-600 underline transition-colors hover:text-blue-800',
         getTypeStyles(type),
         getDisabledStyles(disabled),
         getDecorationStyles(decorationProps),

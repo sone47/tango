@@ -216,7 +216,7 @@ export default function Receiver() {
             <div className="flex flex-col">
               {receiveProgress.map((item, index) => (
                 <div key={index} className="flex items-center gap-2">
-                  <item.icon className={`w-4 h-4 ${item.iconClassName}`} />
+                  <item.icon className={`h-4 w-4 ${item.iconClassName}`} />
                   <Typography.Text size="xs">{item.text}</Typography.Text>
                 </div>
               ))}
@@ -271,7 +271,7 @@ export default function Receiver() {
               variant="secondary"
               size="sm"
               icon={Download}
-              className="w-full pointer-events-none"
+              className="pointer-events-none w-full"
             >
               导入数据文件
             </Button>

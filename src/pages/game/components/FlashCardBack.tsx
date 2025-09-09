@@ -144,11 +144,11 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
           className
         )}
       >
-        <div className="flex-1 flex flex-col justify-center text-center gap-3">
+        <div className="flex flex-1 flex-col justify-center gap-3 text-center">
           <Typography.Title level={5}>例句</Typography.Title>
           {examples.length > 0 ? (
             <div
-              className="max-h-[300px] overflow-y-auto flex flex-col gap-3"
+              className="flex max-h-[300px] flex-col gap-3 overflow-y-auto"
               onClick={(e) => {
                 e.stopPropagation()
               }}
@@ -163,9 +163,9 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
                 {examples.map((example, index) => (
                   <div
                     key={example.id}
-                    className="w-full min-h-[50px] flex items-stretch space-between gap-1 bg-card rounded-lg p-4"
+                    className="space-between bg-card flex min-h-[50px] w-full items-stretch gap-1 rounded-lg p-4"
                   >
-                    <div className="flex-1 flex flex-col justify-start gap-2 text-left">
+                    <div className="flex flex-1 flex-col justify-start gap-2 text-left">
                       {example.isGenerating && !example.content ? (
                         <Skeleton className="h-4 w-[250px]" />
                       ) : (
@@ -196,7 +196,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
                         )
                       )}
                     </div>
-                    <div className="flex flex-col items-end justify-between gap-1 w-4">
+                    <div className="flex w-4 flex-col items-end justify-between gap-1">
                       {!example.isGenerating && (
                         <>
                           <Speak
@@ -218,7 +218,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
               </AnimatedList>
             </div>
           ) : (
-            <div className="text-center py-4 bg-card rounded-lg flex flex-col gap-2">
+            <div className="bg-card flex flex-col gap-2 rounded-lg py-4 text-center">
               <p className="text-secondary-foreground text-base">暂无例句</p>
               <p className="text-muted-foreground text-sm">该单词还没有添加例句</p>
             </div>
@@ -251,7 +251,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
         open={generateExampleFailedDialog.isOpen}
         onOpenChange={generateExampleFailedDialog.setIsOpen}
         title={
-          <div className="flex items-center justify-center gap-2 text-destructive">
+          <div className="text-destructive flex items-center justify-center gap-2">
             <AlertTriangle size={20} />
             <span>生成例句失败</span>
           </div>

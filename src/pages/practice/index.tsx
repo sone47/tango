@@ -53,7 +53,7 @@ export default function PracticeTab() {
     <>
       {(isNil(latestCardPackId) ||
         !cardPacks.find((cardPack) => cardPack.id === latestCardPackId)) && (
-        <div className="bg-card text-primary/90 p-2 shadow-lg rounded-full text-center font-bold mb-4">
+        <div className="bg-card text-primary/90 mb-4 rounded-full p-2 text-center font-bold shadow-lg">
           选择卡包，开始学习吧~
         </div>
       )}

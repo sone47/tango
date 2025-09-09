@@ -37,12 +37,12 @@ const ProgressBar = ({
   return (
     <div className={className}>
       {showPercentage && (
-        <div className="flex justify-between text-sm text-gray-600 mb-1">
+        <div className="mb-1 flex justify-between text-sm text-gray-600">
           <span>进度</span>
           <span>{progress}%</span>
         </div>
       )}
-      <div className={`w-full bg-gray-200 rounded-full ${getHeightClass(height)}`}>
+      <div className={`w-full rounded-full bg-gray-200 ${getHeightClass(height)}`}>
         <div
           className={`
             ${getHeightClass(height)} 

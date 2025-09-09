@@ -38,14 +38,14 @@ const ProgressSection = () => {
           )}
           onClick={handleViewWordPack}
         >
-          <div className="flex-1 flex flex-col items-start gap-1">
+          <div className="flex flex-1 flex-col items-start gap-1">
             <Typography.Title level={6}>{currentWordPack.name}</Typography.Title>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               创建时间:{' '}
               {currentWordPack.createdAt ? toLocaleDateString(currentWordPack.createdAt) : '未知'}
             </p>
           </div>
-          <SquareCheckBig className="size-6 text-primary"></SquareCheckBig>
+          <SquareCheckBig className="text-primary size-6"></SquareCheckBig>
         </div>
       )
     } else {
@@ -53,7 +53,7 @@ const ProgressSection = () => {
         <Typography.Text type="secondary" className="text-md">
           未选择词包，请前往
           <Link to="/wordpack">
-            <Button variant="link" className="p-0 text-md">
+            <Button variant="link" className="text-md p-0">
               词包管理页
             </Button>
           </Link>
@@ -64,9 +64,9 @@ const ProgressSection = () => {
   }
 
   const customTitle = (
-    <div className="flex items-center justify-between w-full">
+    <div className="flex w-full items-center justify-between">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-background text-primary">
+        <div className="bg-background text-primary flex h-10 w-10 items-center justify-center rounded-xl">
           <Package size={20} />
         </div>
         <h2 className="text-lg font-semibold text-gray-900">词包管理</h2>

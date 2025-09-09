@@ -62,7 +62,7 @@ export default function WordPackEditPage() {
         <>
           <WordpackEditTitle wordPack={wordPack} editable={isEdit} />
           <Button
-            className="absolute right-4 top-1/2 -translate-y-1/2  p-0"
+            className="absolute top-1/2 right-4 -translate-y-1/2  p-0"
             variant="link"
             onClick={() => setIsEdit((prev) => !prev)}
           >
@@ -72,7 +72,7 @@ export default function WordPackEditPage() {
       }
     >
       <Tabs
-        className="flex flex-col h-full overflow-y-auto"
+        className="flex h-full flex-col overflow-y-auto"
         defaultValue="cardpack"
         tabs={[
           {

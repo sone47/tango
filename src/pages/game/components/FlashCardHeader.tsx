@@ -36,7 +36,7 @@ const FlashCardHeader = ({
   return (
     <div className="z-1">
       <div className={cn(baseClasses, className)}>
-        <div className={`${variantClasses[variant]} px-3 py-1 rounded-full text-sm font-medium`}>
+        <div className={`${variantClasses[variant]} rounded-full px-3 py-1 text-sm font-medium`}>
           {currentIndex + 1}/{totalCount}
         </div>
         <WordEditButton

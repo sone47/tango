@@ -61,7 +61,7 @@ export default function PracticeSettings() {
 
   return (
     <SettingItem title="练习设置" icon={BookCheck} isCard>
-      <div className="space-y-4 w-full">
+      <div className="w-full space-y-4">
         <SettingItem title="开始时自动洗牌">
           <Switch
             checked={settings.practice.isShuffle}
@@ -94,8 +94,8 @@ export default function PracticeSettings() {
             showCancel
           >
             <>
-              <div className="flex-1 flex justify-center items-center">
-                <div className="bg-card border h-[80px] w-[100px] rounded-md flex flex-col items-center gap-2 p-1">
+              <div className="flex flex-1 items-center justify-center">
+                <div className="bg-card flex h-[80px] w-[100px] flex-col items-center gap-2 rounded-md border p-1">
                   <div
                     className={cn(
                       'h-1/3 w-full rounded-xs transition-all duration-300 bg-blue-200',
@@ -118,7 +118,7 @@ export default function PracticeSettings() {
                   ></div>
                 </div>
               </div>
-              <div className="flex-1 flex flex-col gap-2">
+              <div className="flex flex-1 flex-col gap-2">
                 {hiddenInCardOptions.map((option) => (
                   <SettingItem key={option.value} title={option.label} titleClassName="text-md">
                     <Switch

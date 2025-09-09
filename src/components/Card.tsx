@@ -43,7 +43,7 @@ const Card = ({
             <Icon size={20} />
           </div>
         )}
-        {title && <h2 className="text-lg font-semibold text-gray-900 w-full flex-1">{title}</h2>}
+        {title && <h2 className="text-foreground w-full flex-1 text-lg font-semibold">{title}</h2>}
       </div>
     )
   }
@@ -63,7 +63,7 @@ const Card = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay }}
-        className="text-left w-full"
+        className="w-full text-left"
         onClick={onClick}
         whileTap={whileTap ? { scale: 0.98 } : undefined}
       >

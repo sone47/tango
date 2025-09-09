@@ -23,8 +23,8 @@ const PracticeContent = () => {
 
   if (currentWordIndex >= shuffledWords.length) {
     return (
-      <div className="relative flex flex-col items-center justify-center gap-4 h-full pb-16">
-        <PartyPopper className="size-16 text-primary" />
+      <div className="relative flex h-full flex-col items-center justify-center gap-4 pb-16">
+        <PartyPopper className="text-primary size-16" />
         <div className="flex flex-col items-center">
           <Typography.Title level={4} className="text-foreground">
             恭喜！
@@ -32,10 +32,10 @@ const PracticeContent = () => {
           <Typography.Title level={5} className="text-muted-foreground">
             你已经完成了本次学习~
           </Typography.Title>
-          <Confetti ref={confettiRef} className="absolute left-0 top-0 z-0 size-full" />
+          <Confetti ref={confettiRef} className="absolute top-0 left-0 z-0 size-full" />
         </div>
 
-        <div className="relative flex flex-col gap-3 w-full px-8">
+        <div className="relative flex w-full flex-col gap-3 px-8">
           <Button
             variant="primary"
             size="xl"
@@ -58,7 +58,7 @@ const PracticeContent = () => {
   }
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-4">
+    <div className="flex flex-1 flex-col items-center justify-center p-4">
       <FlashCard />
     </div>
   )

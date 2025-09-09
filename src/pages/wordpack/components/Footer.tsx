@@ -46,7 +46,7 @@ const Footer = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2 p-4 bg-muted/50">
+    <div className="bg-muted/50 flex flex-col gap-2 p-4">
       <Button size="lg" className="w-full rounded-full" onClick={handleImportFromLibrary}>
         从词包库导入词包
       </Button>

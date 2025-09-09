@@ -46,7 +46,7 @@ const ImportSection = ({ onFinish }: ImportSectionProps) => {
 
   return (
     <>
-      <div className="bg-muted p-4 rounded-xl mb-4">
+      <div className="bg-muted mb-4 rounded-xl p-4">
         <ExcelTemplateViewer />
       </div>
 
@@ -61,7 +61,7 @@ const ImportSection = ({ onFinish }: ImportSectionProps) => {
         <Button
           variant="primary"
           icon={Upload}
-          className="w-full pointer-events-none"
+          className="pointer-events-none w-full"
           loading={isUploading}
         >
           {isUploading ? '正在导入...' : '上传 Excel 文件'}

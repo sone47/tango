@@ -83,19 +83,19 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
             {progressData.map((item) => (
               <div
                 key={item.wordPack.id}
-                className="p-4 rounded-2xl border bg-card transition-all hover:shadow-md"
+                className="bg-card rounded-2xl border p-4 transition-all hover:shadow-md"
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 flex-1">
+                  <div className="flex flex-1 items-center gap-3">
                     <div className={`${baseStyles.iconContainer} text-primary bg-background`}>
                       {item.progress ? <BookOpen size={20} /> : <Book size={20} />}
                     </div>
-                    <h3 className="font-semibold text-gray-900 truncate">{item.wordPack.name}</h3>
+                    <h3 className="truncate font-semibold text-gray-900">{item.wordPack.name}</h3>
                   </div>
                 </div>
 
                 <div className="mt-3">
-                  <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
+                  <div className="mb-1 flex items-center justify-between text-xs text-gray-500">
                     <span>学习进度</span>
                     <span>{round(item.progress * 100, 2)}%</span>
                   </div>
@@ -108,7 +108,7 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
       </div>
 
       {!!progressData.length && (
-        <div className="mt-6 p-4 bg-muted rounded-xl text-center text-sm text-muted-foreground">
+        <div className="bg-muted text-muted-foreground mt-6 rounded-xl p-4 text-center text-sm">
           {loading ? '正在计算学习进度...' : `共 ${progressData.length} 个词包`}
         </div>
       )}

@@ -66,15 +66,15 @@ const ExcelTemplateViewer = () => {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="border border-border rounded-lg overflow-hidden">
+      <div className="border-border overflow-hidden rounded-lg border">
         <div className="overflow-x-auto">
           <div className="min-w-max">
             {/* Excel列标识行 */}
-            <div className="flex bg-card border-b border-border">
+            <div className="bg-card border-border flex border-b">
               {excelColumns.map((col) => (
                 <div
                   key={col}
-                  className="w-32 px-3 py-2 text-xs font-medium text-foreground text-center border-r border-border last:border-r-0 flex-shrink-0"
+                  className="text-foreground border-border w-32 shrink-0 border-r px-3 py-2 text-center text-xs font-medium last:border-r-0"
                 >
                   {col}
                 </div>
@@ -82,11 +82,11 @@ const ExcelTemplateViewer = () => {
             </div>
 
             {/* 表头内容行 */}
-            <div className="flex bg-card border-b border-border">
+            <div className="bg-card border-border flex border-b">
               {formatFields.map((field) => (
                 <div
                   key={field.label}
-                  className="w-32 px-3 py-3 text-sm font-medium text-foreground text-center border-r border-border last:border-r-0 flex-shrink-0"
+                  className="text-foreground border-border w-32 shrink-0 border-r px-3 py-3 text-center text-sm font-medium last:border-r-0"
                 >
                   {field.label}
                 </div>
@@ -94,11 +94,11 @@ const ExcelTemplateViewer = () => {
             </div>
 
             {/* 示例数据行 */}
-            <div className="flex bg-card border-b">
+            <div className="bg-card flex border-b">
               {formatFields.map((field, index) => (
                 <div
                   key={index}
-                  className="w-32 px-3 py-3 text-sm text-foreground text-center border-r border-border last:border-r-0 flex-shrink-0"
+                  className="text-foreground border-border w-32 shrink-0 border-r px-3 py-3 text-center text-sm last:border-r-0"
                 >
                   {field.example || '(空)'}
                 </div>

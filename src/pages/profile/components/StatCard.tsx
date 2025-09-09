@@ -11,12 +11,12 @@ interface StatCardProps {
 
 const StatCard = ({ title, value, icon: Icon, onClick, children }: StatCardProps) => {
   return (
-    <button className="bg-muted/50 p-4 rounded-xl text-left" onClick={onClick}>
-      <div className="flex items-center gap-2 mb-2">
+    <button className="bg-muted/50 rounded-xl p-4 text-left" onClick={onClick}>
+      <div className="mb-2 flex items-center gap-2">
         <Icon size={16} className="text-primary" />
-        <span className={`text-sm font-medium text-foreground`}>{title}</span>
+        <span className={`text-foreground text-sm font-medium`}>{title}</span>
       </div>
-      <p className={`text-2xl font-bold text-foreground`}>{value}</p>
+      <p className={`text-foreground text-2xl font-bold`}>{value}</p>
       {children}
     </button>
   )

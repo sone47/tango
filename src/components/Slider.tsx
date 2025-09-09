@@ -63,7 +63,7 @@ const Slider = ({
     if (!showValue) return null
 
     return (
-      <div className="text-xs font-medium text-gray-600 min-w-[2.5rem] text-center">
+      <div className="min-w-[2.5rem] text-center text-xs font-medium text-gray-600">
         {displayValue}
       </div>
     )
@@ -111,7 +111,7 @@ const Slider = ({
   )
 
   return (
-    <div className="flex-1 relative flex items-center">
+    <div className="relative flex flex-1 items-center">
       {sliderElement}
       {renderValueDisplay()}
     </div>

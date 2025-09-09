@@ -41,7 +41,7 @@ const UploadResultModal = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="上传结果" icon={Upload} iconHasBg maxWidth="sm">
-      <div className="text-center space-y-4">
+      <div className="space-y-4 text-center">
         <div className="space-y-2">
           <div
             className={`flex items-center justify-center gap-2 text-lg font-semibold ${isSuccess ? 'text-primary' : 'text-destructive'}`}
@@ -54,23 +54,23 @@ const UploadResultModal = ({
             <h3>{isSuccess ? '导入成功' : '导入失败'}</h3>
           </div>
 
-          <div className="text-sm space-y-2">
+          <div className="space-y-2 text-sm">
             {/* 显示消息 */}
             {message && <p className="text-muted-foreground">{message}</p>}
 
             {/* 显示成功统计信息 */}
             {isSuccess && stats && (
-              <div className="bg-muted border rounded-lg p-3">
+              <div className="bg-muted rounded-lg border p-3">
                 <Typography.Title level={6} className="mb-2">
                   导入统计
                 </Typography.Title>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div className="text-center">
-                    <div className="font-medium text-primary">{stats.cardPackCount}</div>
+                    <div className="text-primary font-medium">{stats.cardPackCount}</div>
                     <div className="text-muted-foreground">卡包</div>
                   </div>
                   <div className="text-center">
-                    <div className="font-medium text-primary">{stats.vocabularyCount}</div>
+                    <div className="text-primary font-medium">{stats.vocabularyCount}</div>
                     <div className="text-muted-foreground">单词</div>
                   </div>
                 </div>
@@ -79,12 +79,12 @@ const UploadResultModal = ({
 
             {/* 显示错误信息 */}
             {!isSuccess && errors && errors.length > 0 && (
-              <div className="bg-muted border rounded-lg p-3">
+              <div className="bg-muted rounded-lg border p-3">
                 <Typography.Title level={6} className="mb-2">
                   错误详情
                 </Typography.Title>
                 <div className="max-h-40 overflow-y-auto">
-                  <ul className="flex flex-col items-start gap-1 text-xs text-muted-foreground space-y-1 list-disc list-inside">
+                  <ul className="text-muted-foreground flex list-inside list-disc flex-col items-start gap-1 space-y-1 text-xs">
                     {errors.map((error, index) => (
                       <li key={index}>{error}</li>
                     ))}

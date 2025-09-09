@@ -21,9 +21,9 @@ const Loading: FC<LoadingProps> = ({ text = 'Loading...', size = 'md', className
   }
 
   return (
-    <div className={`h-full flex items-center justify-center ${className}`}>
+    <div className={`flex h-full items-center justify-center ${className}`}>
       <div className="text-center">
-        <Loader2 className={`animate-spin text-primary mx-auto mb-4 ${sizeClasses[size]}`} />
+        <Loader2 className={`text-primary mx-auto mb-4 animate-spin ${sizeClasses[size]}`} />
         <p className={`text-muted-foreground ${textSizeClasses[size]}`}>{text}</p>
       </div>
     </div>

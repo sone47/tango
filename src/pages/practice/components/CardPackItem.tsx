@@ -16,7 +16,7 @@ interface CardPackItemProps {
 
 const WordCard = ({ word }: { word: Word }) => {
   return (
-    <div className="w-[48px] h-[64px] p-2 bg-card text-muted-foreground flex items-center justify-center text-xs rounded-md shadow-lg">
+    <div className="bg-card text-muted-foreground flex h-[64px] w-[48px] items-center justify-center rounded-md p-2 text-xs shadow-lg">
       {word.word}
     </div>
   )
@@ -75,22 +75,22 @@ const CardPackItem = ({ cardPack, isActive = false }: CardPackItemProps) => {
   return (
     <div
       ref={cardPackItemRef}
-      className="relative w-full flex flex-col gap-3 p-4 bg-card/70 rounded-2xl cursor-pointer border-1"
+      className="bg-card/70 relative flex w-full cursor-pointer flex-col gap-3 rounded-2xl border-1 p-4"
       onClick={handleCardPackClick}
     >
       {isActive && (
         <div
-          className="absolute rounded-2xl top-0 left-0 w-full h-full custom-animate-ping opacity-50"
+          className="custom-animate-ping absolute top-0 left-0 h-full w-full rounded-2xl opacity-50"
           style={{ '--custom-ping-color': 'var(--primary)' } as React.CSSProperties}
         />
       )}
       <div className="flex items-start gap-2">
-        <div className="size-8 bg-background p-2 rounded-md flex items-center justify-center">
+        <div className="bg-background flex size-8 items-center justify-center rounded-md p-2">
           <TitleIcon className="text-primary" />
         </div>
-        <div className="flex-1 flex flex-col gap-2">
+        <div className="flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-1">
-            <Typography.Title level={5} className="font-semibold max-w-40 truncate">
+            <Typography.Title level={5} className="max-w-40 truncate font-semibold">
               {cardPack.name}
             </Typography.Title>
             <div className="flex items-center gap-3">
@@ -100,7 +100,7 @@ const CardPackItem = ({ cardPack, isActive = false }: CardPackItemProps) => {
               <Typography.Text
                 type="secondary"
                 size="xs"
-                className="text-muted-foreground bg-muted px-2 rounded-sm"
+                className="text-muted-foreground bg-muted rounded-sm px-2"
               >
                 {(cardPack.progress * 100).toFixed(2)}%
               </Typography.Text>
@@ -110,7 +110,7 @@ const CardPackItem = ({ cardPack, isActive = false }: CardPackItemProps) => {
         </div>
       </div>
 
-      <div className="absolute top-0 right-0 -translate-y-1/3 flex gap-2">
+      <div className="absolute top-0 right-0 flex -translate-y-1/3 gap-2">
         {displayedWords.map((word, index) => (
           <div
             key={index}

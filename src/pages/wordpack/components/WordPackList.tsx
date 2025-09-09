@@ -42,7 +42,7 @@ const WordPackList = () => {
   if (error) {
     console.error(error)
     return (
-      <div className="flex-1 flex flex-col items-center justify-center gap-4 text-destructive text-lg font-semibold">
+      <div className="text-destructive flex flex-1 flex-col items-center justify-center gap-4 text-lg font-semibold">
         <OctagonX size={48} />
         <p>加载失败，请重试</p>
       </div>
@@ -106,15 +106,15 @@ const WordPackList = () => {
         >
           <div className="flex flex-col gap-1">
             <Typography.Title level={6}>{wordPack.name}</Typography.Title>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               创建时间: {wordPack.createdAt ? toLocaleDateString(wordPack.createdAt) : '未知'}
             </p>
           </div>
           {isSelected ? (
-            <SquareCheckBig className="flex-shrink-0 size-6 text-primary"></SquareCheckBig>
+            <SquareCheckBig className="text-primary size-6 shrink-0"></SquareCheckBig>
           ) : (
             <Square
-              className="flex-shrink-0 size-6"
+              className="size-6 shrink-0"
               onClick={(e) => {
                 e.stopPropagation()
                 handleWordPackSelect(wordPack)

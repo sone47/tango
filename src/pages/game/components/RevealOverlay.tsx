@@ -114,7 +114,7 @@ const RevealOverlay = ({
 
       {showOverlay && !shouldHide && (
         <motion.div
-          className={`absolute inset-0 ${colors.bg} rounded-md flex items-center justify-center cursor-grab active:cursor-grabbing reveal-overlay`}
+          className={`absolute inset-0 ${colors.bg} reveal-overlay flex cursor-grab items-center justify-center rounded-md active:cursor-grabbing`}
           drag={!isSliding ? 'x' : false}
           dragConstraints={{ left: -200, right: 200 }}
           dragElastic={0.2}
@@ -144,17 +144,17 @@ const RevealOverlay = ({
             scale: 0.95,
           }}
         >
-          <div className={`flex items-center ${colors.text} font-medium relative`}>
+          <div className={`flex items-center ${colors.text} relative font-medium`}>
             {showGuide && !isRevealed && (
               <>
                 {/* 滑动轨迹 */}
                 <motion.div
-                  className="absolute left-14 top-1/2 transform -translate-y-1/2 pointer-events-none"
+                  className="pointer-events-none absolute top-1/2 left-14 -translate-y-1/2"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 >
                   <motion.div
-                    className={`w-16 h-1 bg-gradient-to-r from-transparent ${colors.trackColor} to-transparent rounded-full`}
+                    className={`h-1 w-16 bg-gradient-to-r from-transparent ${colors.trackColor} rounded-full to-transparent`}
                     animate={{
                       x: [-30, 30, -30],
                       opacity: [0.3, 0.7, 0.3],
@@ -168,7 +168,7 @@ const RevealOverlay = ({
                 </motion.div>
                 {/* 小手图标 */}
                 <motion.span
-                  className="absolute left-18 top-1/2 transform -translate-y-1/2 text-2xl pointer-events-none"
+                  className="pointer-events-none absolute top-1/2 left-18 -translate-y-1/2 text-2xl"
                   style={{ opacity: 0.6 }}
                   animate={{
                     x: [-25, 25, -25],
@@ -179,7 +179,7 @@ const RevealOverlay = ({
                     ease: 'easeInOut',
                   }}
                 >
-                  <Pointer className="w-6 h-6" />
+                  <Pointer className="h-6 w-6" />
                 </motion.span>
               </>
             )}
