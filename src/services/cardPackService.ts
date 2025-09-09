@@ -1,5 +1,6 @@
 import { getGlobalIDBManager } from '@/hooks/useDatabase'
 import { type CardPackEntity, cardPackSchema, type WordPackEntity, wordPackSchema } from '@/schemas'
+import { CardPack } from '@/types'
 
 import { practiceService } from './practiceService'
 import { vocabularyService } from './vocabularyService'
@@ -64,7 +65,7 @@ export class CardPackService {
   /**
    * 根据卡包ID获取完整的卡包数据（包含单词）
    */
-  async getCardPackWithWordsById(cardPackId: number): Promise<CardPackEntity | null> {
+  async getCardPackWithWordsById(cardPackId: number): Promise<CardPack | null> {
     try {
       const cardPack = await this.cardPackRepo.findById(cardPackId)
       if (!cardPack) return null
@@ -81,6 +82,14 @@ export class CardPackService {
 
   async updateCardPack(id: number, data: Partial<CardPackEntity>) {
     return this.cardPackRepo.update(id, data)
+  }
+
+  async createCardPack(data: Omit<CardPackEntity, 'id' | 'createdAt' | 'updatedAt' | 'words'>) {
+    return this.cardPackRepo.save(data)
+  }
+
+  async deleteCardPack(id: number) {
+    return this.cardPackRepo.delete(id)
   }
 }
 

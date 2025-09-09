@@ -10,7 +10,7 @@ import { Tabs } from '@/components/Tabs'
 import { wordPackService } from '@/services/wordPackService'
 import { WordPack } from '@/types'
 
-import CardpackList from './components/CardpackList'
+import CardPackTab from './components/CardPackTab'
 import WordList from './components/WordList'
 import WordpackEditTitle from './components/WordpackEditTitle'
 
@@ -60,7 +60,7 @@ export default function WordPackEditPage() {
     <Page
       title={
         <>
-          <WordpackEditTitle wordPack={wordPack} editable={isEdit} />
+          <WordpackEditTitle wordPack={wordPack!} editable={isEdit} />
           <Button
             className="absolute top-1/2 right-4 -translate-y-1/2  p-0"
             variant="link"
@@ -79,11 +79,7 @@ export default function WordPackEditPage() {
             label: '卡包维度',
             value: 'cardpack',
             className: 'flex-1 overflow-y-auto',
-            component: (
-              <Card className="h-full py-0" contentClassName="h-full overflow-y-auto pt-4">
-                <CardpackList wordPack={wordPack} editable={isEdit} />
-              </Card>
-            ),
+            component: <CardPackTab wordPack={wordPack!} isEdit={isEdit} />,
           },
           {
             label: '单词维度',
@@ -91,7 +87,7 @@ export default function WordPackEditPage() {
             className: 'flex-1 overflow-y-auto',
             component: (
               <Card className="h-full p-0" contentClassName="h-full overflow-y-auto p-0">
-                <WordList wordPack={wordPack} />
+                <WordList wordPack={wordPack!} />
               </Card>
             ),
           },

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Drawer from '@/components/Drawer'
 import Input from '@/components/Input'
 import Typography from '@/components/Typography'
+import { toast } from 'sonner'
 
 interface TextEditorProps {
   value: string
@@ -33,6 +34,11 @@ const TextEditor = ({
   }, [originalText])
 
   const handleEditConfirm = async () => {
+    if (!text) {
+      toast.error('名称不能为空')
+      return
+    }
+
     onConfirm(text)
   }
 
