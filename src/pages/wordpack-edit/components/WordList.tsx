@@ -71,7 +71,11 @@ const WordList = ({ wordPack }: WordListProps) => {
         <List
           rowComponent={({ style, index }) => (
             <div style={style} className="p-4">
-              <WordItem language={wordPack!.language} word={searchedWords[index]} />
+              <WordItem
+                language={wordPack!.language}
+                word={searchedWords[index]}
+                wordPackId={wordPack!.id}
+              />
             </div>
           )}
           rowCount={searchedWords.length}

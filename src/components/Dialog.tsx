@@ -40,6 +40,8 @@ export interface DialogProps {
     | 'danger'
   contentClassName?: string
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  openAutoFocus?: boolean
+  closeOnMaskClick?: boolean
 }
 
 export function Dialog({
@@ -61,6 +63,8 @@ export function Dialog({
   confirmVariant = 'default',
   contentClassName,
   maxWidth = 'lg',
+  openAutoFocus = true,
+  closeOnMaskClick = true,
 }: DialogProps) {
   const handleConfirm = () => {
     onConfirm?.()
@@ -87,6 +91,8 @@ export function Dialog({
     <DialogContent
       className={`${getMaxWidthClass()} ${contentClassName || ''}`}
       showCloseButton={showCloseButton}
+      onOpenAutoFocus={openAutoFocus ? undefined : (e) => e.preventDefault()}
+      onPointerDownOutside={closeOnMaskClick ? undefined : (e) => e.preventDefault()}
     >
       {(title || description) && (
         <DialogHeader>
@@ -95,7 +101,7 @@ export function Dialog({
         </DialogHeader>
       )}
 
-      {children && <div className="py-4">{children}</div>}
+      {children && <div>{children}</div>}
 
       {(footer || showCancel || showConfirm) && (
         <DialogFooter>

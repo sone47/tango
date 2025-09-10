@@ -5,6 +5,8 @@ import { cn } from '@/lib/utils'
 
 interface TabsProps {
   defaultValue?: string
+  value?: string
+  onValueChange?: (value: string) => void
   tabs: {
     label: string
     value: string
@@ -15,15 +17,23 @@ interface TabsProps {
   tabListClassName?: string
 }
 
-export function Tabs({ defaultValue, tabs, className, tabListClassName }: TabsProps) {
-  const [activeTab, setActiveTab] = useState(defaultValue)
+export function Tabs({
+  defaultValue,
+  value,
+  onValueChange,
+  tabs,
+  className,
+  tabListClassName,
+}: TabsProps) {
+  const [activeTab, setActiveTab] = useState(value || defaultValue)
 
   const handleTabChange = (value: string) => {
     setActiveTab(value)
+    onValueChange?.(value)
   }
 
   return (
-    <ShadTabs defaultValue={defaultValue} value={activeTab} className={className}>
+    <ShadTabs defaultValue={defaultValue} value={value || activeTab} className={className}>
       <TabsList className={cn('w-full', tabListClassName)}>
         {tabs.map((tab) => (
           <TabsTrigger key={tab.value} value={tab.value} onClick={() => handleTabChange(tab.value)}>
@@ -32,7 +42,7 @@ export function Tabs({ defaultValue, tabs, className, tabListClassName }: TabsPr
         ))}
       </TabsList>
       {tabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value} className={cn('py-2', tab.className)}>
+        <TabsContent key={tab.value} value={tab.value} className={cn('pt-2', tab.className)}>
           {tab.component}
         </TabsContent>
       ))}

@@ -144,13 +144,14 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
         </div>
       ),
       content: (
-        <div className="flex flex-col gap-4 pl-4">
+        <div className="flex flex-col gap-4 pl-4 py-2">
           {cardPack.words.map((word) => (
             <WordItem
               key={word.id}
               word={word}
               language={wordPack!.language}
               onEditSuccess={handleEditWordSuccess}
+              wordPackId={wordPack!.id}
             />
           ))}
         </div>

@@ -13,6 +13,7 @@ import { WordPack } from '@/types'
 import CardPackTab from './components/CardPackTab'
 import WordList from './components/WordList'
 import WordpackEditTitle from './components/WordpackEditTitle'
+import WordCreatingButton from './components/WordCreatingButton'
 
 export default function WordPackEditPage() {
   const navigate = useNavigate()
@@ -23,6 +24,7 @@ export default function WordPackEditPage() {
   const [wordPack, setWordPack] = useState<WordPack>()
   const [isEdit, setIsEdit] = useState(false)
   const wordPackId = useMemo(() => +id!, [id])
+  const [activeTab, setActiveTab] = useState('cardpack')
 
   useEffect(() => {
     if (isNaN(wordPackId)) {
@@ -46,6 +48,10 @@ export default function WordPackEditPage() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleWordCreated = () => {
+    fetchWordPack()
   }
 
   if (isLoading) {
@@ -74,6 +80,8 @@ export default function WordPackEditPage() {
       <Tabs
         className="flex h-full flex-col overflow-y-auto"
         defaultValue="cardpack"
+        value={activeTab}
+        onValueChange={setActiveTab}
         tabs={[
           {
             label: '卡包维度',
@@ -93,6 +101,10 @@ export default function WordPackEditPage() {
           },
         ]}
       />
+
+      {isEdit && wordPack && (
+        <WordCreatingButton wordPack={wordPack} onWordCreated={handleWordCreated} />
+      )}
     </Page>
   )
 }

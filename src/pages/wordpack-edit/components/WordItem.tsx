@@ -9,9 +9,10 @@ interface WordItemProps {
   language: LanguageEnum
   word: Word
   onEditSuccess?: (updatedWord: Word) => void
+  wordPackId: number
 }
 
-const WordItem = ({ language, word, onEditSuccess }: WordItemProps) => {
+const WordItem = ({ language, word, onEditSuccess, wordPackId }: WordItemProps) => {
   const partOfSpeechMap = partOfSpeechToLanguageMap[language] as Record<PartOfSpeechEnum, string>
   const partOfSpeech =
     word.partOfSpeech === PartOfSpeechEnum.unknown || isNil(word.partOfSpeech)
@@ -29,7 +30,7 @@ const WordItem = ({ language, word, onEditSuccess }: WordItemProps) => {
           {word.definition}
         </Typography.Text>
       </div>
-      <WordEditButton wordPackId={word.cardPackId} word={word} onSuccess={onEditSuccess} />
+      <WordEditButton wordPackId={wordPackId} word={word} onSuccess={onEditSuccess} />
     </div>
   )
 }
