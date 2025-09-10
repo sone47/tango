@@ -13,7 +13,7 @@ import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { cn } from '@/lib/utils'
 import { wordPackService } from '@/services/wordPackService'
 import { useWordPackStore } from '@/stores/wordPackStore'
-import { WordPack } from '@/types'
+import { WordPackEntity } from '@/types'
 import { toLocaleDateString } from '@/utils/date'
 
 const WordPackList = () => {
@@ -22,7 +22,7 @@ const WordPackList = () => {
   const { allWordPacks, loading, error, hasData, fetchWordPacks } = useWordPackStore()
   const deleteAlertDialog = useAlertDialog()
 
-  const activeWordPack = useRef<WordPack | null>(null)
+  const activeWordPack = useRef<WordPackEntity | null>(null)
 
   useEffect(() => {
     if (!isNil(currentWordPackId) || !hasData) return
@@ -53,19 +53,19 @@ const WordPackList = () => {
     return <EmptyWordPack showImportButton={false} />
   }
 
-  const handleWordPackSelect = (wordPack: WordPack) => {
+  const handleWordPackSelect = (wordPack: WordPackEntity) => {
     toast.success(`已切换到词包：${wordPack.name}`)
 
     setCurrentWordPackId(wordPack.id!)
     activeWordPack.current = wordPack
   }
 
-  const handleDelete = (wordPack: WordPack) => {
+  const handleDelete = (wordPack: WordPackEntity) => {
     activeWordPack.current = wordPack
     deleteAlertDialog.show()
   }
 
-  const handleEdit = (wordPack: WordPack) => {
+  const handleEdit = (wordPack: WordPackEntity) => {
     navigate(`/wordpack/${wordPack.id}`)
   }
 

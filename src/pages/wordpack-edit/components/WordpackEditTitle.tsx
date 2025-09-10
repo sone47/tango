@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 
 import { wordPackService } from '@/services/wordPackService'
-import { WordPack } from '@/types'
+import { WordPackEntity } from '@/types'
 
 import TextEditor from './TextEditor'
 
 interface WordpackEditTitleProps {
-  wordPack?: WordPack
+  wordPack?: WordPackEntity
   editable: boolean
 }
 

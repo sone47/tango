@@ -6,12 +6,12 @@ import Card from '@/components/Card'
 import Drawer, { useDrawer } from '@/components/Drawer'
 import Input from '@/components/Input'
 import { cardPackService } from '@/services/cardPackService'
-import { WordPack } from '@/types'
+import { WordPackEntity } from '@/types'
 
 import CardpackList, { CardpackListRef } from './CardpackList'
 
 interface CardPackTabProps {
-  wordPack: WordPack
+  wordPack: WordPackEntity
   isEdit: boolean
   onSetIsEdit: (isEdit: boolean) => void
 }

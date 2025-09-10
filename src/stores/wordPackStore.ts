@@ -1,10 +1,10 @@
 import { create } from 'zustand'
 
 import { wordPackService } from '@/services/wordPackService'
-import type { WordPack } from '@/types'
+import type { WordPackEntity } from '@/types'
 
 interface WordPackState {
-  allWordPacks: WordPack[]
+  allWordPacks: WordPackEntity[]
   loading: boolean
   hasData: boolean
   error: string | null

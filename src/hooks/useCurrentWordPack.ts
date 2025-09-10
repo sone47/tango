@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react'
 
 import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys'
 import { wordPackService } from '@/services/wordPackService'
-import type { WordPack } from '@/types'
+import type { WordPackEntity } from '@/types'
 
 interface UseCurrentWordPackResult {
   currentWordPackId: number | null
-  currentWordPack: WordPack | null
+  currentWordPack: WordPackEntity | null
   setCurrentWordPackId: (id: number | null) => void
 }
 
@@ -17,7 +17,7 @@ export const useCurrentWordPack = (): UseCurrentWordPackResult => {
     LOCAL_STORAGE_KEYS.CURRENT_WORD_PACK_ID,
     null
   )
-  const [currentWordPack, setCurrentWordPack] = useState<WordPack | null>(null)
+  const [currentWordPack, setCurrentWordPack] = useState<WordPackEntity | null>(null)
 
   const fetchCurrentWordPack = async (wordPackId: number) => {
     try {

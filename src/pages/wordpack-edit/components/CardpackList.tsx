@@ -9,13 +9,13 @@ import Button from '@/components/Button'
 import Loading from '@/components/Loading'
 import Typography from '@/components/Typography'
 import { cardPackService } from '@/services/cardPackService'
-import { CardPack, Word, WordPack } from '@/types'
+import { CardPack, Word, WordPackEntity } from '@/types'
 
 import TextEditor from './TextEditor'
 import WordItem from './WordItem'
 
 interface CardpackListProps {
-  wordPack?: WordPack | null
+  wordPack?: WordPackEntity | null
   editable: boolean
   onSetIsEdit: () => void
 }

@@ -3,17 +3,17 @@ import { FolderSearch, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { List } from 'react-window'
 
+import Button from '@/components/Button'
 import Input from '@/components/Input'
 import Loading from '@/components/Loading'
+import Typography from '@/components/Typography'
 import { cardPackService } from '@/services/cardPackService'
-import { Word, WordPack } from '@/types'
+import { Word, WordPackEntity } from '@/types'
 
 import WordItem from './WordItem'
-import Typography from '@/components/Typography'
-import Button from '@/components/Button'
 
 interface WordListProps {
-  wordPack?: WordPack | null
+  wordPack?: WordPackEntity | null
   onShowCreatingDialog: () => void
 }
 

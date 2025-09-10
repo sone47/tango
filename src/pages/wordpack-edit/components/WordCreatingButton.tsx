@@ -7,14 +7,14 @@ import Button from '@/components/Button'
 import Dialog, { useDialog } from '@/components/Dialog'
 import VocabularyEditForm, { type VocabularyFormData } from '@/components/VocabularyEditForm'
 import { vocabularyService } from '@/services/vocabularyService'
-import { WordPack } from '@/types'
+import { WordPackEntity } from '@/types'
 
 export interface WordCreatingButtonRef {
   handleClick: (cardPackId?: number) => void
 }
 
 interface WordCreatingButtonProps {
-  wordPack: WordPack
+  wordPack: WordPackEntity
   onWordCreated?: () => void
 }
 

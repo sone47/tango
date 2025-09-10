@@ -9,12 +9,11 @@ import { Progress } from '@/components/ui/progress'
 import { baseStyles, spacing } from '@/constants/styles'
 import { practiceService } from '@/services/practiceService'
 import { useWordPackStore } from '@/stores/wordPackStore'
-import type { WordPack } from '@/types'
+import type { WordPackEntity } from '@/types'
 
 interface WordPackProgressData {
-  wordPack: WordPack
+  wordPack: WordPackEntity
   progress: number
-  totalWords: number
 }
 
 interface WordPackProgressModalProps {
@@ -27,15 +26,6 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
   const [progressData, setProgressData] = useState<WordPackProgressData[]>([])
   const [loading, setLoading] = useState(false)
 
-  // 计算词包总词汇数量
-  const getWordPackWordCount = (wordPack: WordPack): number => {
-    return (
-      wordPack.cardPacks?.reduce((total, cardPack) => {
-        return total + (cardPack.words?.length || 0)
-      }, 0) || 0
-    )
-  }
-
   // 获取词包进度数据
   const fetchWordPackProgress = async () => {
     try {
@@ -43,12 +33,10 @@ const WordPackProgressModal = ({ isOpen, onClose }: WordPackProgressModalProps) 
 
       const progressPromises = allWordPacks.map(async (wordPack) => {
         const progress = await practiceService.calculateWordPackProgress(wordPack.id!)
-        const totalWords = getWordPackWordCount(wordPack)
 
         return {
           wordPack,
           progress,
-          totalWords,
         }
       })
 

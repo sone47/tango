@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate, useLocation, useParams } from 'react-router'
+import { useLocation, useNavigate, useParams } from 'react-router'
 
 import Button from '@/components/Button'
 import Card from '@/components/Card'
@@ -8,7 +8,7 @@ import Loading from '@/components/Loading'
 import Page from '@/components/Page'
 import { Tabs } from '@/components/Tabs'
 import { wordPackService } from '@/services/wordPackService'
-import { WordPack } from '@/types'
+import { WordPackEntity } from '@/types'
 
 import CardPackTab from './components/CardPackTab'
 import WordCreatingButton, { WordCreatingButtonRef } from './components/WordCreatingButton'
@@ -22,7 +22,7 @@ export default function WordPackEditPage() {
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
-  const [wordPack, setWordPack] = useState<WordPack>()
+  const [wordPack, setWordPack] = useState<WordPackEntity>()
   const [isEdit, setIsEdit] = useState(false)
   const wordPackId = useMemo(() => +id!, [id])
   const [activeTab, setActiveTab] = useState('cardpack')
