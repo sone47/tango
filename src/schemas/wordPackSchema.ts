@@ -1,14 +1,11 @@
 import { LanguageEnum } from '@/constants/language'
 
-import type { CardPackEntity } from './cardPackSchema'
-
 export interface WordPackEntity {
   id: number // 自增主键，可选
   name: string // 词包名
   language: LanguageEnum // 语言
   createdAt?: string // 创建时间
   updatedAt?: string // 更新时间
-  cardPacks: CardPackEntity[]
 }
 
 export const wordPackSchema = {
