@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate, useLocation, useParams } from 'react-router'
 
 import Button from '@/components/Button'
 import Card from '@/components/Card'
@@ -11,12 +11,13 @@ import { wordPackService } from '@/services/wordPackService'
 import { WordPack } from '@/types'
 
 import CardPackTab from './components/CardPackTab'
+import WordCreatingButton, { WordCreatingButtonRef } from './components/WordCreatingButton'
 import WordList from './components/WordList'
 import WordpackEditTitle from './components/WordpackEditTitle'
-import WordCreatingButton from './components/WordCreatingButton'
 
 export default function WordPackEditPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { id } = useParams()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -25,6 +26,7 @@ export default function WordPackEditPage() {
   const [isEdit, setIsEdit] = useState(false)
   const wordPackId = useMemo(() => +id!, [id])
   const [activeTab, setActiveTab] = useState('cardpack')
+  const wordCreatingButtonRef = useRef<WordCreatingButtonRef>(null)
 
   useEffect(() => {
     if (isNaN(wordPackId)) {
@@ -34,6 +36,12 @@ export default function WordPackEditPage() {
 
     fetchWordPack()
   }, [wordPackId])
+
+  useEffect(() => {
+    if (location.state?.action === 'add-card') {
+      handleShowWordCreatingDialog(location.state.cardPackId)
+    }
+  }, [location.state])
 
   const fetchWordPack = async () => {
     setIsLoading(true)
@@ -62,6 +70,13 @@ export default function WordPackEditPage() {
     return <ErrorDisplay title="加载失败" onRetry={fetchWordPack} />
   }
 
+  const handleShowWordCreatingDialog = (cardPackId?: number) => {
+    setIsEdit(true)
+    setTimeout(() => {
+      wordCreatingButtonRef.current?.handleClick(cardPackId)
+    }, 30)
+  }
+
   return (
     <Page
       title={
@@ -87,7 +102,7 @@ export default function WordPackEditPage() {
             label: '卡包维度',
             value: 'cardpack',
             className: 'flex-1 overflow-y-auto',
-            component: <CardPackTab wordPack={wordPack!} isEdit={isEdit} />,
+            component: <CardPackTab wordPack={wordPack!} isEdit={isEdit} onSetIsEdit={setIsEdit} />,
           },
           {
             label: '单词维度',
@@ -95,7 +110,10 @@ export default function WordPackEditPage() {
             className: 'flex-1 overflow-y-auto',
             component: (
               <Card className="h-full p-0" contentClassName="h-full overflow-y-auto p-0">
-                <WordList wordPack={wordPack!} />
+                <WordList
+                  wordPack={wordPack!}
+                  onShowCreatingDialog={handleShowWordCreatingDialog}
+                />
               </Card>
             ),
           },
@@ -103,7 +121,11 @@ export default function WordPackEditPage() {
       />
 
       {isEdit && wordPack && (
-        <WordCreatingButton wordPack={wordPack} onWordCreated={handleWordCreated} />
+        <WordCreatingButton
+          wordPack={wordPack}
+          onWordCreated={handleWordCreated}
+          ref={wordCreatingButtonRef}
+        />
       )}
     </Page>
   )

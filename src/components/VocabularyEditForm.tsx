@@ -28,7 +28,7 @@ const vocabularyFormSchema = z.object({
 export type VocabularyFormData = z.infer<typeof vocabularyFormSchema>
 
 export interface VocabularyEditFormProps {
-  vocabulary?: VocabularyEntity
+  vocabulary?: Partial<VocabularyEntity>
   isCreate?: boolean
   onSubmit: (data: VocabularyFormData) => Promise<void>
   onCancel?: () => void
@@ -98,7 +98,9 @@ const VocabularyEditForm: React.FC<VocabularyEditFormProps> = ({
       setCardPacks(packs)
 
       if (isCreate && packs.length === 1) {
-        form.setValue('cardPackId', packs[0].id!)
+        requestAnimationFrame(() => {
+          form.setValue('cardPackId', packs[0].id!)
+        })
       }
     } catch (error) {
       console.error('加载卡包列表失败:', error)

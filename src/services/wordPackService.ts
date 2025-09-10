@@ -461,6 +461,34 @@ export class WordPackService {
       throw error
     }
   }
+
+  /**
+   * 创建新的词包
+   * @param name 词包名称
+   * @param language 词包语言
+   * @returns 创建的词包ID
+   */
+  async createWordPack(name: string, language: LanguageEnum): Promise<number> {
+    try {
+      const existingWordPacks = await this.wordPackRepo.findBy('name', name)
+      if (existingWordPacks.length > 0) {
+        throw new Error(`词包 "${name}" 已存在，请使用不同的名称`)
+      }
+
+      const wordPackData = {
+        name: name.trim(),
+        language,
+        cardPacks: [],
+      }
+
+      const savedWordPack = await this.wordPackRepo.save(wordPackData)
+
+      return savedWordPack.id as number
+    } catch (error) {
+      console.error('创建词包失败:', error)
+      throw error
+    }
+  }
 }
 
 export const wordPackService = new WordPackService()

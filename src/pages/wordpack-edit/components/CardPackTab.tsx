@@ -1,20 +1,22 @@
+import { useRef, useState } from 'react'
+import { toast } from 'sonner'
+
 import Button from '@/components/Button'
 import Card from '@/components/Card'
+import Drawer, { useDrawer } from '@/components/Drawer'
+import Input from '@/components/Input'
+import { cardPackService } from '@/services/cardPackService'
 import { WordPack } from '@/types'
 
 import CardpackList, { CardpackListRef } from './CardpackList'
-import Drawer, { useDrawer } from '@/components/Drawer'
-import Input from '@/components/Input'
-import { toast } from 'sonner'
-import { useRef, useState } from 'react'
-import { cardPackService } from '@/services/cardPackService'
 
 interface CardPackTabProps {
   wordPack: WordPack
   isEdit: boolean
+  onSetIsEdit: (isEdit: boolean) => void
 }
 
-const CardPackTab = ({ wordPack, isEdit }: CardPackTabProps) => {
+const CardPackTab = ({ wordPack, isEdit, onSetIsEdit }: CardPackTabProps) => {
   const drawer = useDrawer()
   const cardpackListRef = useRef<CardpackListRef>(null)
 
@@ -51,6 +53,12 @@ const CardPackTab = ({ wordPack, isEdit }: CardPackTabProps) => {
     }
   }
 
+  const handleOpenCreateDrawer = () => {
+    drawer.open()
+
+    onSetIsEdit(true)
+  }
+
   return (
     <div className="flex h-full flex-col gap-2">
       {isEdit && (
@@ -58,7 +66,7 @@ const CardPackTab = ({ wordPack, isEdit }: CardPackTabProps) => {
           title="新增卡包"
           open={drawer.isOpen}
           onOpenChange={drawer.setIsOpen}
-          trigger={<Button variant="outline">新增卡包</Button>}
+          trigger={<Button variant="outline">添加卡包</Button>}
           onConfirm={handleCreateCardPack}
           showConfirm
           showCancel
@@ -77,7 +85,12 @@ const CardPackTab = ({ wordPack, isEdit }: CardPackTabProps) => {
         </Drawer>
       )}
       <Card className="flex-1 overflow-y-auto py-0" contentClassName="h-full pt-4">
-        <CardpackList ref={cardpackListRef} wordPack={wordPack} editable={isEdit} />
+        <CardpackList
+          ref={cardpackListRef}
+          wordPack={wordPack}
+          editable={isEdit}
+          onSetIsEdit={handleOpenCreateDrawer}
+        />
       </Card>
     </div>
   )

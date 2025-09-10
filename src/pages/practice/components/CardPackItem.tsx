@@ -8,6 +8,8 @@ import { cardPackService } from '@/services/cardPackService'
 import { practiceService } from '@/services/practiceService'
 import { usePracticeStore } from '@/stores/practiceStore'
 import type { CardPack, Word } from '@/types'
+import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'
+import { useNavigate } from 'react-router'
 
 interface CardPackItemProps {
   cardPack: CardPack & { progress: number }
@@ -24,6 +26,9 @@ const WordCard = ({ word }: { word: Word }) => {
 
 const CardPackItem = ({ cardPack, isActive = false }: CardPackItemProps) => {
   const { updateState } = usePracticeStore()
+  const alertDialog = useAlertDialog()
+  const navigator = useNavigate()
+
   const cardPackItemRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -59,6 +64,11 @@ const CardPackItem = ({ cardPack, isActive = false }: CardPackItemProps) => {
 
   const handleCardPackClick = async () => {
     const fullCardPack = await cardPackService.getCardPackWithWordsById(cardPack.id)
+    if (!fullCardPack?.words.length) {
+      alertDialog.show()
+      return
+    }
+
     if (fullCardPack) {
       await practiceService.createPracticesForWords(fullCardPack.words)
 
@@ -123,6 +133,21 @@ const CardPackItem = ({ cardPack, isActive = false }: CardPackItemProps) => {
             <WordCard key={word.id} word={word} />
           </div>
         ))}
+      </div>
+
+      <div onClick={(e) => e.stopPropagation()}>
+        <AlertDialog
+          open={alertDialog.isOpen}
+          onOpenChange={alertDialog.setIsOpen}
+          title="该卡包无法学习"
+          description="当前卡包中无卡片，请先往卡包中添加卡片"
+          confirmText="添加卡片"
+          onConfirm={() => {
+            navigator(`/wordpack/${cardPack.wordPackId}`, {
+              state: { action: 'add-card', cardPackId: cardPack.id },
+            })
+          }}
+        ></AlertDialog>
       </div>
     </div>
   )

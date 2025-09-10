@@ -1,5 +1,5 @@
 import { useDebounce } from '@uidotdev/usehooks'
-import { Search } from 'lucide-react'
+import { FolderSearch, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { List } from 'react-window'
 
@@ -9,12 +9,15 @@ import { cardPackService } from '@/services/cardPackService'
 import { Word, WordPack } from '@/types'
 
 import WordItem from './WordItem'
+import Typography from '@/components/Typography'
+import Button from '@/components/Button'
 
 interface WordListProps {
   wordPack?: WordPack | null
+  onShowCreatingDialog: () => void
 }
 
-const WordList = ({ wordPack }: WordListProps) => {
+const WordList = ({ wordPack, onShowCreatingDialog }: WordListProps) => {
   const [words, setWords] = useState<Word[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [searchText, setSearchText] = useState('')
@@ -42,10 +45,6 @@ const WordList = ({ wordPack }: WordListProps) => {
     }
   }, [wordPack])
 
-  if (isLoading) {
-    return <Loading />
-  }
-
   const fetchWords = async (wordPackId: number) => {
     setIsLoading(true)
     try {
@@ -54,6 +53,26 @@ const WordList = ({ wordPack }: WordListProps) => {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (!words.length) {
+    const handleAddWord = () => {
+      onShowCreatingDialog()
+    }
+
+    return (
+      <div className="flex h-full flex-col items-center justify-center">
+        <FolderSearch className="mb-4 h-12 w-12 text-gray-400" />
+        <Typography.Title level={5}>暂无卡片</Typography.Title>
+        <Button variant="link" onClick={handleAddWord}>
+          添加卡片
+        </Button>
+      </div>
+    )
   }
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {

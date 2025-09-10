@@ -1,20 +1,23 @@
 import { isNil } from 'lodash'
+import { FolderSearch, Trash2 } from 'lucide-react'
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import Accordion from '@/components/Accordion'
+import AlertDialog from '@/components/AlertDialog'
+import Button from '@/components/Button'
 import Loading from '@/components/Loading'
+import Typography from '@/components/Typography'
 import { cardPackService } from '@/services/cardPackService'
 import { CardPack, Word, WordPack } from '@/types'
 
 import TextEditor from './TextEditor'
 import WordItem from './WordItem'
-import { Delete, Trash2 } from 'lucide-react'
-import AlertDialog from '@/components/AlertDialog'
 
 interface CardpackListProps {
   wordPack?: WordPack | null
   editable: boolean
+  onSetIsEdit: () => void
 }
 
 export interface CardpackListRef {
@@ -23,12 +26,22 @@ export interface CardpackListRef {
 }
 
 const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
-  ({ wordPack, editable }, ref) => {
+  ({ wordPack, editable, onSetIsEdit }, ref) => {
     const [cardPacks, setCardPacks] = useState<CardPack[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [editingCardPackIds, setEditingCardPackIds] = useState<number[]>([])
 
     const activeCardPackId = useRef<number | null>(null)
+
+    const fetchCardPacks = async (wordPackId: number) => {
+      setIsLoading(true)
+      try {
+        const cardPacks = await cardPackService.getCardPacksByWordPackId(wordPackId)
+        setCardPacks(cardPacks)
+      } finally {
+        setIsLoading(false)
+      }
+    }
 
     useEffect(() => {
       if (isNil(wordPack?.id)) return
@@ -60,14 +73,16 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
       return <Loading />
     }
 
-    const fetchCardPacks = async (wordPackId: number) => {
-      setIsLoading(true)
-      try {
-        const cardPacks = await cardPackService.getCardPacksByWordPackId(wordPackId)
-        setCardPacks(cardPacks)
-      } finally {
-        setIsLoading(false)
-      }
+    if (!cardPacks.length) {
+      return (
+        <div className="flex h-full flex-col items-center justify-center">
+          <FolderSearch className="mb-4 h-12 w-12 text-gray-400" />
+          <Typography.Title level={5}>暂无卡包</Typography.Title>
+          <Button variant="link" onClick={onSetIsEdit}>
+            添加卡包
+          </Button>
+        </div>
+      )
     }
 
     const handleValueChange = (value: string) => {
@@ -132,7 +147,7 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
           {editable && (
             <div onClick={(e) => e.stopPropagation()}>
               <AlertDialog
-                trigger={<Trash2 className="ml-8 text-destructive size-5 cursor-pointer" />}
+                trigger={<Trash2 className="text-destructive ml-8 size-5 cursor-pointer" />}
                 title="确定要删除该卡包吗？"
                 description="删除后不可恢复，请谨慎操作"
                 confirmText="确认删除"
@@ -144,7 +159,7 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
         </div>
       ),
       content: (
-        <div className="flex flex-col gap-4 pl-4 py-2">
+        <div className="flex flex-col gap-4 py-2 pl-4">
           {cardPack.words.map((word) => (
             <WordItem
               key={word.id}
