@@ -1,8 +1,8 @@
 import { isNil } from 'lodash'
 import { useEffect, useState } from 'react'
 
-import EmptyWordPack from '@/components/EmptyWordPack'
 import Loading from '@/components/Loading'
+import EmptyWordPack from '@/components/tango/EmptyWordPack'
 import { useCardPacks } from '@/hooks/useCardPacks'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { useLastestData } from '@/hooks/useLastestData'

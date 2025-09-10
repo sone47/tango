@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router'
 
 import Button from '@/components/Button'
 import Card from '@/components/Card'
-import EmptyWordPack from '@/components/EmptyWordPack'
+import EmptyWordPack from '@/components/tango/EmptyWordPack'
 import Typography from '@/components/Typography'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { cn } from '@/lib/utils'

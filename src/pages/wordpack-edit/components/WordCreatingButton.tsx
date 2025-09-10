@@ -70,7 +70,7 @@ const WordCreatingButton = ({ wordPack, onWordCreated }: WordCreatingButtonProps
         allowMobileScroll
         bounds="body"
       >
-        <div className="absolute right-6 bottom-6 z-50 w-14 h-14" ref={nodeRef}>
+        <div className="absolute right-6 bottom-6 z-50 h-14 w-14" ref={nodeRef}>
           <Button
             size="lg"
             variant="primary"
@@ -78,9 +78,9 @@ const WordCreatingButton = ({ wordPack, onWordCreated }: WordCreatingButtonProps
             icon={Plus}
             onClick={handleClick}
             className={`
-              size-full cursor-move transition-scale duration-200
-              backdrop-blur-md
-              ${isDragging ? 'scale-110 cursor-grabbing' : 'hover:scale-105 cursor-grab'}
+              transition-scale size-full cursor-move backdrop-blur-md
+              duration-200
+              ${isDragging ? 'scale-110 cursor-grabbing' : 'cursor-grab hover:scale-105'}
             `}
           />
         </div>

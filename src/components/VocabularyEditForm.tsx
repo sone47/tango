@@ -6,13 +6,13 @@ import { LanguageEnum, PartOfSpeechEnum, partOfSpeechToLanguageMap } from '@/con
 import { type VocabularyEntity, type WordPackEntity } from '@/schemas'
 import { cardPackService } from '@/services/cardPackService'
 import { wordPackService } from '@/services/wordPackService'
+import { CardPack } from '@/types'
 
 import Button from './Button'
 import Form, { type FormFieldConfig, useFormHelper } from './Form'
 import Input from './Input'
 import Select, { type SelectOption } from './Select'
 import Textarea from './Textarea'
-import { CardPack } from '@/types'
 
 const vocabularyFormSchema = z.object({
   cardPackId: z.number().min(1, '请选择所属卡包'),

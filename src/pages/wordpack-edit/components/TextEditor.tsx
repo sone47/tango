@@ -1,10 +1,10 @@
 import { Edit } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 import Drawer from '@/components/Drawer'
 import Input from '@/components/Input'
 import Typography from '@/components/Typography'
-import { toast } from 'sonner'
 
 interface TextEditorProps {
   value: string
