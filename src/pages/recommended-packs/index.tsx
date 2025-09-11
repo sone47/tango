@@ -86,44 +86,35 @@ const RecommendedPacksPage = () => {
     return (
       <div className="h-full space-y-3 overflow-y-auto">
         {recommendedPacks.map((pack, index) => (
-          <motion.div
+          <div
             key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              delay: index * 0.08,
-              type: 'spring',
-              stiffness: 400,
-              damping: 17,
-            }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="bg-card rounded-xl border-1 p-4"
+            className="bg-card flex items-start justify-between gap-3 rounded-xl border-1 p-4"
           >
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0 flex-1">
-                <Typography.Title level={6} className="truncate">
-                  {pack.name}
-                </Typography.Title>
-                <Typography.Text type="secondary" size="sm">
-                  {pack.description}
-                </Typography.Text>
-                <div className="mt-2 text-xs text-gray-500">作者: {pack.author}</div>
-              </div>
-
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => handleImportPack(pack, index)}
-                disabled={importingIndex === index}
-                loading={importingIndex === index}
-                icon={Download}
-                className="shrink-0"
-              >
-                导入
-              </Button>
+            <div className="flex-1">
+              <Typography.Title level={6} className="truncate">
+                {pack.name}
+              </Typography.Title>
+              <Typography.Text type="secondary" size="sm">
+                {pack.description}
+              </Typography.Text>
+              <Typography.Text className="text-muted-foreground" size="xs">
+                作者: {pack.author}
+              </Typography.Text>
             </div>
-          </motion.div>
+
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => handleImportPack(pack, index)}
+              disabled={importingIndex === index}
+              loading={importingIndex === index}
+              icon={Download}
+              className="shrink-0"
+              round
+            >
+              导入
+            </Button>
+          </div>
         ))}
       </div>
     )
