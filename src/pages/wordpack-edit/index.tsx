@@ -83,7 +83,7 @@ export default function WordPackEditPage() {
         <>
           <WordpackEditTitle wordPack={wordPack!} editable={isEdit} />
           <Button
-            className="absolute top-1/2 right-4 -translate-y-1/2  p-0"
+            className="absolute top-1/2 right-4 -translate-y-1/2 p-0"
             variant="link"
             onClick={() => setIsEdit((prev) => !prev)}
           >

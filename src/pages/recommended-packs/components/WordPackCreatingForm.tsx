@@ -53,9 +53,7 @@ const WordPackCreatingForm: React.FC<WordPackCreatingFormProps> = ({
       name: 'name',
       label: '词包名称',
       required: true,
-      render: (field) => (
-        <Input {...field} placeholder="请输入词包名称" disabled={loading} autoFocus />
-      ),
+      render: (field) => <Input {...field} placeholder="请输入词包名称" disabled={loading} />,
     },
     {
       name: 'language',

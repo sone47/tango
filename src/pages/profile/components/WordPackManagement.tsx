@@ -71,15 +71,17 @@ const ProgressSection = () => {
         </div>
         <h2 className="text-lg font-semibold text-gray-900">词包管理</h2>
       </div>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="text-secondary-foreground"
-        icon={MoreHorizontal}
-        onClick={handleViewMore}
-      >
-        查看更多
-      </Button>
+      {wordPackStore.hasData && (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-secondary-foreground"
+          icon={MoreHorizontal}
+          onClick={handleViewMore}
+        >
+          查看更多
+        </Button>
+      )}
     </div>
   )
 

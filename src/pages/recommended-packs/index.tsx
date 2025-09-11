@@ -11,6 +11,7 @@ import { recommendedPackService } from '@/services/recommendedPackService'
 import { wordPackService } from '@/services/wordPackService'
 import type { RecommendedPack } from '@/types'
 
+import CustomWordPack from './components/CustomWordPack'
 import SuccessModal from './components/SuccessModal'
 
 const RecommendedPacksPage = () => {
@@ -129,7 +130,16 @@ const RecommendedPacksPage = () => {
   }
 
   return (
-    <Page title="词包库">
+    <Page
+      title={
+        <>
+          词包库
+          <div className="absolute top-1/2 right-4 -translate-y-1/2">
+            <CustomWordPack />
+          </div>
+        </>
+      }
+    >
       {renderContent()}
       <SuccessModal
         isOpen={successImportedModalOpen}
