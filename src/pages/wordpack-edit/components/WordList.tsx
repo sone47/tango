@@ -66,7 +66,7 @@ const WordList = ({ wordPack, onShowCreatingDialog }: WordListProps) => {
 
     return (
       <div className="flex h-full flex-col items-center justify-center">
-        <FolderSearch className="mb-4 h-12 w-12 text-gray-400" />
+        <FolderSearch className="text-muted-foreground mb-4 h-12 w-12" />
         <Typography.Title level={5}>暂无卡片</Typography.Title>
         <Button variant="link" onClick={handleAddWord}>
           添加卡片

@@ -88,8 +88,35 @@ export class CardPackService {
     return this.cardPackRepo.save(data)
   }
 
-  async deleteCardPack(id: number) {
-    return this.cardPackRepo.delete(id)
+  async deleteCardPack(cardPackId: number) {
+    try {
+      await getGlobalIDBManager().transaction(
+        ['cardPacks', 'vocabularies', 'practices'],
+        'readwrite',
+        async (stores) => {
+          const cardPackStore = stores['cardPacks']
+          const vocabularyStore = stores['vocabularies']
+          const practiceStore = stores['practices']
+
+          const vocabularies = await vocabularyStore.index('cardPackId').getAll(cardPackId)
+          for (const vocabulary of vocabularies) {
+            // delete practices
+            const practice = await practiceStore.index('vocabularyId').get(vocabulary.id)
+            if (practice) {
+              await practiceStore.delete(practice.id)
+            }
+            // delete vocabularies
+            await vocabularyStore.delete(vocabulary.id)
+          }
+
+          // delete card packs
+          await cardPackStore.delete(cardPackId)
+        }
+      )
+    } catch (error) {
+      console.error('删除卡包失败:', error)
+      throw error
+    }
   }
 }
 

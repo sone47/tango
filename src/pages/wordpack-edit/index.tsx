@@ -11,7 +11,8 @@ import { wordPackService } from '@/services/wordPackService'
 import { WordPackEntity } from '@/types'
 
 import CardPackTab from './components/CardPackTab'
-import WordCreatingButton, { WordCreatingButtonRef } from './components/WordCreatingButton'
+import WordCreatingButton from './components/WordCreatingButton'
+import WordCreatingDialog, { WordCreatingDialogRef } from './components/WordCreatingDialog'
 import WordList from './components/WordList'
 import WordpackEditTitle from './components/WordpackEditTitle'
 
@@ -24,9 +25,14 @@ export default function WordPackEditPage() {
   const [error, setError] = useState<Error | null>(null)
   const [wordPack, setWordPack] = useState<WordPackEntity>()
   const [isEdit, setIsEdit] = useState(false)
-  const wordPackId = useMemo(() => +id!, [id])
   const [activeTab, setActiveTab] = useState('cardpack')
-  const wordCreatingButtonRef = useRef<WordCreatingButtonRef>(null)
+  const [wordCreatingDialogCardPackId, setWordCreatingDialogCardPackId] = useState<number>()
+  const wordCreatingDialogRef = useRef<WordCreatingDialogRef>(null)
+
+  const wordPackId = useMemo(() => +id!, [id])
+  const showWordCreatingButton = useMemo(() => {
+    return isEdit && wordPack && activeTab === 'word'
+  }, [isEdit, wordPack, activeTab])
 
   useEffect(() => {
     if (isNaN(wordPackId)) {
@@ -71,9 +77,9 @@ export default function WordPackEditPage() {
   }
 
   const handleShowWordCreatingDialog = (cardPackId?: number) => {
-    setIsEdit(true)
     setTimeout(() => {
-      wordCreatingButtonRef.current?.handleClick(cardPackId)
+      setWordCreatingDialogCardPackId(cardPackId)
+      wordCreatingDialogRef.current?.open()
     }, 30)
   }
 
@@ -102,7 +108,14 @@ export default function WordPackEditPage() {
             label: '卡包维度',
             value: 'cardpack',
             className: 'flex-1 overflow-y-auto',
-            component: <CardPackTab wordPack={wordPack!} isEdit={isEdit} onSetIsEdit={setIsEdit} />,
+            component: (
+              <CardPackTab
+                wordPack={wordPack!}
+                isEdit={isEdit}
+                onSetIsEdit={setIsEdit}
+                onCreateWord={handleShowWordCreatingDialog}
+              />
+            ),
           },
           {
             label: '单词维度',
@@ -120,13 +133,14 @@ export default function WordPackEditPage() {
         ]}
       />
 
-      {isEdit && wordPack && (
-        <WordCreatingButton
-          wordPack={wordPack}
-          onWordCreated={handleWordCreated}
-          ref={wordCreatingButtonRef}
-        />
-      )}
+      {showWordCreatingButton && <WordCreatingButton onClick={handleShowWordCreatingDialog} />}
+
+      <WordCreatingDialog
+        ref={wordCreatingDialogRef}
+        cardPackId={wordCreatingDialogCardPackId}
+        wordPackId={wordPackId}
+        onWordCreated={handleWordCreated}
+      />
     </Page>
   )
 }

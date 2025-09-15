@@ -14,9 +14,10 @@ interface CardPackTabProps {
   wordPack: WordPackEntity
   isEdit: boolean
   onSetIsEdit: (isEdit: boolean) => void
+  onCreateWord: (cardPackId: number) => void
 }
 
-const CardPackTab = ({ wordPack, isEdit, onSetIsEdit }: CardPackTabProps) => {
+const CardPackTab = ({ wordPack, isEdit, onSetIsEdit, onCreateWord }: CardPackTabProps) => {
   const drawer = useDrawer()
   const cardpackListRef = useRef<CardpackListRef>(null)
 
@@ -89,7 +90,8 @@ const CardPackTab = ({ wordPack, isEdit, onSetIsEdit }: CardPackTabProps) => {
           ref={cardpackListRef}
           wordPack={wordPack}
           editable={isEdit}
-          onSetIsEdit={handleOpenCreateDrawer}
+          onAddCardPack={handleOpenCreateDrawer}
+          onAddWord={onCreateWord}
         />
       </Card>
     </div>

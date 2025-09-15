@@ -1,6 +1,6 @@
 import { isNil } from 'lodash'
 import { FolderSearch, Trash2 } from 'lucide-react'
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { toast } from 'sonner'
 
 import Accordion from '@/components/Accordion'
@@ -17,7 +17,8 @@ import WordItem from './WordItem'
 interface CardpackListProps {
   wordPack?: WordPackEntity | null
   editable: boolean
-  onSetIsEdit: () => void
+  onAddCardPack: () => void
+  onAddWord: (cardPackId: number) => void
 }
 
 export interface CardpackListRef {
@@ -26,12 +27,11 @@ export interface CardpackListRef {
 }
 
 const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
-  ({ wordPack, editable, onSetIsEdit }, ref) => {
+  ({ wordPack, editable, onAddCardPack, onAddWord }, ref) => {
     const [cardPacks, setCardPacks] = useState<CardPack[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [editingCardPackIds, setEditingCardPackIds] = useState<number[]>([])
-
-    const activeCardPackId = useRef<number | null>(null)
+    const [activeCardPackId, setActiveCardPackId] = useState<number | null>(null)
 
     const fetchCardPacks = async (wordPackId: number) => {
       setIsLoading(true)
@@ -48,6 +48,12 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
 
       fetchCardPacks(wordPack.id)
     }, [wordPack?.id])
+
+    useEffect(() => {
+      if (cardPacks.length === 1) {
+        setActiveCardPackId(cardPacks[0].id)
+      }
+    }, [cardPacks])
 
     const scrollToCardPack = (cardPackId: number) => {
       const cardpack = document.getElementById(`cardpack-${cardPackId}`)
@@ -78,7 +84,7 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
         <div className="flex h-full flex-col items-center justify-center">
           <FolderSearch className="mb-4 h-12 w-12 text-gray-400" />
           <Typography.Title level={5}>暂无卡包</Typography.Title>
-          <Button variant="link" onClick={onSetIsEdit}>
+          <Button variant="link" onClick={onAddCardPack}>
             添加卡包
           </Button>
         </div>
@@ -88,9 +94,9 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
     const handleValueChange = (value: string) => {
       if (isNil(value)) return
 
-      activeCardPackId.current = Number(value)
+      setActiveCardPackId(Number(value))
 
-      scrollToCardPack(activeCardPackId.current)
+      scrollToCardPack(activeCardPackId!)
     }
 
     const handleEditWordSuccess = (updatedWord: Word) => {
@@ -127,8 +133,17 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
     }
 
     const handleDeleteCardPackClick = (id: number) => {
+      if (cardPacks.length === 1) {
+        toast.error('删除失败，请至少保留一个卡包')
+        return
+      }
+
       cardPackService.deleteCardPack(id)
       setCardPacks(cardPacks.filter((cardPack) => cardPack.id !== id))
+    }
+
+    const handleAddWord = (id: number) => {
+      onAddWord(id)
     }
 
     const items = cardPacks.map((cardPack) => ({
@@ -149,7 +164,7 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
               <AlertDialog
                 trigger={<Trash2 className="text-destructive ml-8 size-5 cursor-pointer" />}
                 title="确定要删除该卡包吗？"
-                description="删除后不可恢复，请谨慎操作"
+                description="卡包中的卡片与练习记录也将一并删除，请谨慎操作"
                 confirmText="确认删除"
                 confirmVariant="destructive"
                 onConfirm={() => handleDeleteCardPackClick(cardPack.id)}
@@ -158,7 +173,7 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
           )}
         </div>
       ),
-      content: (
+      content: cardPack.words.length ? (
         <div className="flex flex-col gap-4 py-2 pl-4">
           {cardPack.words.map((word) => (
             <WordItem
@@ -170,12 +185,20 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
             />
           ))}
         </div>
+      ) : (
+        <div className="flex h-full flex-col items-center justify-center py-2">
+          <Typography.Title level={5}>暂无卡片</Typography.Title>
+          <Button variant="link" onClick={() => handleAddWord(cardPack.id)}>
+            添加卡片
+          </Button>
+        </div>
       ),
     }))
 
     return (
       <Accordion
         items={items}
+        value={activeCardPackId?.toString()}
         onValueChange={handleValueChange}
         className="-my-4"
         triggerClassName="text-xl items-center text-foreground py-0"
