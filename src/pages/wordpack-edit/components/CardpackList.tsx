@@ -96,7 +96,7 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
 
       setActiveCardPackId(Number(value))
 
-      scrollToCardPack(activeCardPackId!)
+      scrollToCardPack(Number(value))
     }
 
     const handleEditWordSuccess = (updatedWord: Word) => {
