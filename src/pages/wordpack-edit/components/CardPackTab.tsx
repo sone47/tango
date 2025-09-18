@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 
 import Button from '@/components/Button'
@@ -10,15 +10,15 @@ import { WordPackEntity } from '@/types'
 import CardpackList, { CardpackListRef } from './CardpackList'
 
 interface CardPackTabProps {
+  ref: React.RefObject<CardpackListRef | null>
   wordPack: WordPackEntity
   isEdit: boolean
   onSetIsEdit: (isEdit: boolean) => void
   onCreateWord: (cardPackId: number) => void
 }
 
-const CardPackTab = ({ wordPack, isEdit, onSetIsEdit, onCreateWord }: CardPackTabProps) => {
+const CardPackTab = ({ ref, wordPack, isEdit, onSetIsEdit, onCreateWord }: CardPackTabProps) => {
   const drawer = useDrawer()
-  const cardpackListRef = useRef<CardpackListRef>(null)
 
   const [cardPackName, setCardPackName] = useState('')
 
@@ -34,13 +34,13 @@ const CardPackTab = ({ wordPack, isEdit, onSetIsEdit, onCreateWord }: CardPackTa
         name: cardPackName,
       })
 
-      cardpackListRef.current?.appendCardPack({
+      ref?.current?.appendCardPack({
         ...newCardPack,
         words: [],
       })
 
       requestAnimationFrame(() => {
-        cardpackListRef.current?.scrollToCardPack(newCardPack.id)
+        ref?.current?.scrollToCardPack(newCardPack.id)
       })
 
       setCardPackName('')
@@ -85,7 +85,7 @@ const CardPackTab = ({ wordPack, isEdit, onSetIsEdit, onCreateWord }: CardPackTa
         </Drawer>
       )}
       <CardpackList
-        ref={cardpackListRef}
+        ref={ref}
         wordPack={wordPack}
         editable={isEdit}
         onAddCardPack={handleOpenCreateDrawer}

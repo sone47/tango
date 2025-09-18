@@ -8,8 +8,9 @@ import Loading from '@/components/Loading'
 import Page from '@/components/Page'
 import { Tabs } from '@/components/Tabs'
 import { wordPackService } from '@/services/wordPackService'
-import { WordPackEntity } from '@/types'
+import { Word, WordPackEntity } from '@/types'
 
+import { CardpackListRef } from './components/CardpackList'
 import CardPackTab from './components/CardPackTab'
 import WordCreatingButton from './components/WordCreatingButton'
 import WordCreatingDialog, { WordCreatingDialogRef } from './components/WordCreatingDialog'
@@ -28,6 +29,7 @@ export default function WordPackEditPage() {
   const [activeTab, setActiveTab] = useState('cardpack')
   const [wordCreatingDialogCardPackId, setWordCreatingDialogCardPackId] = useState<number>()
   const wordCreatingDialogRef = useRef<WordCreatingDialogRef>(null)
+  const cardPackTabRef = useRef<CardpackListRef>(null)
 
   const wordPackId = useMemo(() => +id!, [id])
   const showWordCreatingButton = useMemo(() => {
@@ -64,8 +66,15 @@ export default function WordPackEditPage() {
     }
   }
 
-  const handleWordCreated = () => {
-    fetchWordPack()
+  const handleWordCreated = (word: Word) => {
+    if (activeTab === 'cardpack') {
+      cardPackTabRef.current?.handleWordAddSuccess(word)
+      requestAnimationFrame(() => {
+        cardPackTabRef.current?.scrollToCardPackLastWord(word.cardPackId)
+      })
+    } else if (activeTab === 'word') {
+      fetchWordPack()
+    }
   }
 
   if (isLoading) {
@@ -110,6 +119,7 @@ export default function WordPackEditPage() {
             className: 'flex-1 overflow-y-auto',
             component: (
               <CardPackTab
+                ref={cardPackTabRef}
                 wordPack={wordPack!}
                 isEdit={isEdit}
                 onSetIsEdit={setIsEdit}

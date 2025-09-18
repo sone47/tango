@@ -166,7 +166,7 @@ const CardpackItem: React.FC<CardpackItemProps> = ({
       {isExpanded && (
         <div ref={contentInViewRef} className="p-4">
           {cardPack.words.length > 0 ? (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4" id={`cardpack-${cardPack.id}-words`}>
               <DraggableWordItem
                 words={cardPack.words}
                 language={language}

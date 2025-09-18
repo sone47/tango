@@ -10,7 +10,7 @@ import {
 } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useDebounce } from '@uidotdev/usehooks'
-import { isNil } from 'lodash'
+import { isNil, last } from 'lodash'
 import { FolderSearch } from 'lucide-react'
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { toast } from 'sonner'
@@ -33,7 +33,9 @@ interface CardpackListProps {
 
 export interface CardpackListRef {
   scrollToCardPack: (cardPackId: number) => void
+  scrollToCardPackLastWord: (cardPackId: number) => void
   appendCardPack: (cardPack: CardPack) => void
+  handleWordAddSuccess: (word: Word) => void
 }
 
 const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
@@ -93,15 +95,44 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
       }
     }
 
+    const scrollToCardPackLastWord = (cardPackId: number) => {
+      const cardpackWords = document.getElementById(`cardpack-${cardPackId}-words`)
+      if (cardpackWords) {
+        if (!expandedCardPackIds.has(cardPackId)) {
+          setExpandedCardPackIds((prev) => new Set([...prev, cardPackId]))
+        }
+
+        requestAnimationFrame(() => {
+          const lastWord = last(cardpackWords.childNodes[0].childNodes) as HTMLElement
+          lastWord.scrollIntoView({
+            block: 'center',
+            behavior: 'smooth',
+          })
+        })
+      }
+    }
+
     const appendCardPack = (cardPack: CardPack) => {
       setCardPacks([...cardPacks, cardPack])
-      // 自动展开新添加的卡包
+
       setExpandedCardPackIds((prev) => new Set([...prev, cardPack.id]))
+    }
+
+    const handleWordAddSuccess = (word: Word) => {
+      setCardPacks(
+        cardPacks.map((cardPack) =>
+          cardPack.id === word.cardPackId
+            ? { ...cardPack, words: [...cardPack.words, word] }
+            : cardPack
+        )
+      )
     }
 
     useImperativeHandle(ref, () => ({
       scrollToCardPack,
       appendCardPack,
+      scrollToCardPackLastWord,
+      handleWordAddSuccess,
     }))
 
     if (isLoading) {

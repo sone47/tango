@@ -5,11 +5,12 @@ import { toast } from 'sonner'
 import Dialog, { useDialog } from '@/components/Dialog'
 import VocabularyEditForm, { VocabularyFormData } from '@/components/VocabularyEditForm'
 import { vocabularyService } from '@/services/vocabularyService'
+import { Word } from '@/types'
 
 interface WordCreatingDialogProps {
   cardPackId?: number
   wordPackId?: number
-  onWordCreated?: () => void
+  onWordCreated?: (word: Word) => void
 }
 
 export interface WordCreatingDialogRef {
@@ -44,7 +45,8 @@ const WordCreatingDialog = forwardRef<WordCreatingDialogRef, WordCreatingDialogP
         if (result) {
           toast.success('单词添加成功')
           dialog.close()
-          onWordCreated?.()
+
+          onWordCreated?.(result)
         } else {
           toast.error('添加单词失败')
         }
