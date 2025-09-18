@@ -245,11 +245,12 @@ export class WordPackService {
           let totalVocabularyCount = 0
 
           // 3. 创建卡包和词汇记录
-          for (const cardPackData of parsedData.cardPacks) {
-            // 创建卡包记录
+          for (let i = 0; i < parsedData.cardPacks.length; i++) {
+            const cardPackData = parsedData.cardPacks[i]
             const cardPack = {
               wordPackId: wordPackId as number,
               name: cardPackData.name,
+              order: i,
             }
             const cardPackWithTimestamps = this.cardPackRepo.addTimestamps(cardPack, false)
             const cardPackId = await cardPackStore.add(cardPackWithTimestamps)

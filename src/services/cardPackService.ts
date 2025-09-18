@@ -43,7 +43,7 @@ export class CardPackService {
         })
       )
 
-      return cardPacks
+      return cardPacks.sort((a, b) => a.order - b.order)
     } catch (error) {
       console.error('获取卡包列表失败:', error)
       return []
@@ -85,7 +85,15 @@ export class CardPackService {
   }
 
   async createCardPack(data: Omit<CardPackEntity, 'id' | 'createdAt' | 'updatedAt' | 'words'>) {
-    return this.cardPackRepo.save(data)
+    const existingCardPacks = await this.cardPackRepo.findBy('wordPackId', data.wordPackId)
+    const maxOrder = Math.max(...existingCardPacks.map((cardPack) => cardPack.order || 0))
+
+    const cardPackData = {
+      ...data,
+      order: maxOrder + 1,
+    }
+
+    return this.cardPackRepo.save(cardPackData)
   }
 
   async deleteCardPack(cardPackId: number) {
@@ -115,6 +123,30 @@ export class CardPackService {
       )
     } catch (error) {
       console.error('删除卡包失败:', error)
+      throw error
+    }
+  }
+
+  /**
+   * 批量更新卡包的 order 字段
+   * @param wordPackId 词包ID
+   * @param cardPackIds 按顺序排列的卡包ID数组
+   */
+  async updateCardPacksOrder(wordPackId: number, cardPackIds: number[]) {
+    try {
+      await getGlobalIDBManager().transaction(['cardPacks'], 'readwrite', async (stores) => {
+        const cardPackStore = stores['cardPacks']
+
+        for (let i = 0; i < cardPackIds.length; i++) {
+          const cardPackId = cardPackIds[i]
+          const cardPack = await cardPackStore.get(cardPackId)
+          if (cardPack && cardPack.wordPackId === wordPackId) {
+            await cardPackStore.put({ ...cardPack, order: i })
+          }
+        }
+      })
+    } catch (error) {
+      console.error('修改卡包顺序失败:', error)
       throw error
     }
   }

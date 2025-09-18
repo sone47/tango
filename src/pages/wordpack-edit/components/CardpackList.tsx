@@ -200,7 +200,6 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
       setExpandedCardPackIds(newExpanded)
     }
 
-    // 处理拖拽开始
     const handleDragStart = (event: DragStartEvent) => {
       const { active } = event
       const activeData = active.data.current
@@ -212,11 +211,9 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
       }
     }
 
-    // 处理拖拽事件
-    const handleDragEnd = (event: DragEndEvent) => {
+    const handleDragEnd = async (event: DragEndEvent) => {
       const { active, over } = event
 
-      // 清除拖拽状态
       setActiveItem(null)
 
       if (!over) return
@@ -224,7 +221,6 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
       const activeData = active.data.current
       const overData = over.data.current
 
-      // 卡包排序
       if (activeData?.type === 'cardpack' && overData?.type === 'cardpack') {
         const activeCardPackId = activeData.cardPack.id
         const overCardPackId = overData.cardPack.id
@@ -236,8 +232,16 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
           const reorderedCardPacks = arrayMove(cardPacks, oldIndex, newIndex)
           setCardPacks(reorderedCardPacks)
 
-          // TODO: 调用 API 更新卡包顺序
-          // await cardPackService.updateCardPackOrder(wordPack!.id, reorderedCardPacks.map(cp => cp.id))
+          try {
+            await cardPackService.updateCardPacksOrder(
+              wordPack!.id,
+              reorderedCardPacks.map((cp) => cp.id)
+            )
+          } catch (error) {
+            console.error('修改卡包顺序失败:', error)
+            toast.error('修改卡包顺序失败')
+            setCardPacks(cardPacks)
+          }
         }
       }
 
