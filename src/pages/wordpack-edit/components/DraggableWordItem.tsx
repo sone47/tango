@@ -50,7 +50,7 @@ const DraggableWord: React.FC<DraggableWordProps> = ({
       >
         <GripVertical className="size-4" />
       </div>
-      <div className="flex-1">
+      <div className="flex-1 truncate">
         <WordItem
           word={word}
           language={language}
