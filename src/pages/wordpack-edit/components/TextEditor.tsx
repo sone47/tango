@@ -12,6 +12,7 @@ interface TextEditorProps {
   editable?: boolean
   drawerTitle?: string
   titleWidth?: number
+  iconSize?: number
   onConfirm: (text: string) => void
   onEditStateChange: (isEdit: boolean) => void
 }
@@ -24,6 +25,7 @@ const TextEditor = ({
   titleWidth,
   onConfirm,
   onEditStateChange,
+  iconSize = 5,
 }: TextEditorProps) => {
   const [text, setText] = useState('')
 
@@ -70,7 +72,9 @@ const TextEditor = ({
             <div>
               <Drawer
                 trigger={
-                  <Edit className="text-primary absolute top-1/2 -right-2 size-5 translate-x-full -translate-y-1/2 cursor-pointer" />
+                  <Edit
+                    className={`text-primary size-${iconSize} absolute top-1/2 -right-2 translate-x-full -translate-y-1/2 cursor-pointer`}
+                  />
                 }
                 open={isEdit}
                 onOpenChange={handleEditStateChange}

@@ -1,4 +1,4 @@
-import { CirclePlus, FolderPlus, Import, Upload } from 'lucide-react'
+import { CirclePlus, FolderPlus, Upload } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'

@@ -42,7 +42,7 @@ export function Tabs({
         ))}
       </TabsList>
       {tabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value} className={cn('pt-2', tab.className)}>
+        <TabsContent key={tab.value} value={tab.value} className={cn('mt-2', tab.className)}>
           {tab.component}
         </TabsContent>
       ))}

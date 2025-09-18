@@ -2,7 +2,6 @@ import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import Button from '@/components/Button'
-import Card from '@/components/Card'
 import Drawer, { useDrawer } from '@/components/Drawer'
 import Input from '@/components/Input'
 import { cardPackService } from '@/services/cardPackService'
@@ -61,7 +60,7 @@ const CardPackTab = ({ wordPack, isEdit, onSetIsEdit, onCreateWord }: CardPackTa
   }
 
   return (
-    <div className="flex h-full flex-col gap-2">
+    <div className="flex h-full flex-col gap-2 overflow-y-auto">
       {isEdit && (
         <Drawer
           title="新增卡包"
@@ -85,15 +84,13 @@ const CardPackTab = ({ wordPack, isEdit, onSetIsEdit, onCreateWord }: CardPackTa
           />
         </Drawer>
       )}
-      <Card className="flex-1 overflow-y-auto py-0" contentClassName="h-full pt-4">
-        <CardpackList
-          ref={cardpackListRef}
-          wordPack={wordPack}
-          editable={isEdit}
-          onAddCardPack={handleOpenCreateDrawer}
-          onAddWord={onCreateWord}
-        />
-      </Card>
+      <CardpackList
+        ref={cardpackListRef}
+        wordPack={wordPack}
+        editable={isEdit}
+        onAddCardPack={handleOpenCreateDrawer}
+        onAddWord={onCreateWord}
+      />
     </div>
   )
 }
