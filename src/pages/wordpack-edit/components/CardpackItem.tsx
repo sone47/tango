@@ -97,7 +97,7 @@ const CardpackItem: React.FC<CardpackItemProps> = ({
 
   const headerContent = (
     <div className="flex items-center gap-2 py-4">
-      <Button variant="ghost" size="sm" onClick={onToggle} className="h-auto p-1">
+      <Button variant="ghost" size="sm" onClick={onToggle} className="h-auto !p-0">
         {isExpanded ? <ChevronDown className="size-4" /> : <ChevronRight className="size-4" />}
       </Button>
       <TextEditor
@@ -112,7 +112,7 @@ const CardpackItem: React.FC<CardpackItemProps> = ({
       />
       {editable && (
         <div onClick={(e) => e.stopPropagation()} className="ml-6 flex items-center gap-2">
-          <Button variant="ghost" size="sm" className="!p-0" onClick={onAddWord}>
+          <Button variant="ghost" size="sm" className="h-auto !p-0" onClick={onAddWord}>
             <PlusSquare className="text-primary size-4" />
           </Button>
           <AlertDialog
@@ -129,7 +129,7 @@ const CardpackItem: React.FC<CardpackItemProps> = ({
         <div
           {...attributes}
           {...listeners}
-          className="ml-auto cursor-grab touch-none rounded p-2 active:cursor-grabbing"
+          className="ml-auto cursor-grab touch-none rounded active:cursor-grabbing"
           onClick={(e) => e.stopPropagation()}
           onMouseDown={(e) => e.stopPropagation()}
           title="拖拽对卡包进行排序"
