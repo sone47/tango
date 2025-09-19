@@ -21,15 +21,12 @@ interface CardpackItemProps {
   editable: boolean
   language: LanguageEnum
   wordPackId: number
-  index: number
-  totalExpanded: number
-  onToggle: () => void
-  onEditName: (newName: string) => void
-  onDelete: () => void
-  onAddWord: () => void
-  onEditWordSuccess: (updatedWord: Word) => void
-  onDeleteWordSuccess: (cardPackId: number, wordId: number) => void
-  onWordReorder: (cardPackId: number, wordId: number, newIndex: number) => void
+  onToggle?: () => void
+  onEditName?: (newName: string) => void
+  onDelete?: () => void
+  onAddWord?: () => void
+  onEditWordSuccess?: (updatedWord: Word, oldWord: Word) => void
+  onDeleteWordSuccess?: (cardPackId: number, wordId: number) => void
 }
 
 const CardpackItem: React.FC<CardpackItemProps> = ({
@@ -89,7 +86,7 @@ const CardpackItem: React.FC<CardpackItemProps> = ({
   }
 
   const handleNameConfirm = (newName: string) => {
-    onEditName(newName)
+    onEditName?.(newName)
     setIsEditingName(false)
   }
 
@@ -98,7 +95,7 @@ const CardpackItem: React.FC<CardpackItemProps> = ({
   }
 
   const handleDeleteWordSuccess = (wordId: number) => {
-    onDeleteWordSuccess(cardPack.id, wordId)
+    onDeleteWordSuccess?.(cardPack.id, wordId)
   }
 
   const headerContent = (

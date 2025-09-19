@@ -12,7 +12,7 @@ import { Word } from '@/types'
 interface WordEditButtonProps {
   wordPackId: number
   word: Word
-  onEditSuccess?: (updatedWord: Word) => void
+  onEditSuccess?: (updatedWord: Word, oldWord: Word) => void
   onDeleteSuccess?: (wordId: number) => void
 }
 
@@ -44,7 +44,12 @@ const WordEditButton = ({
   const handleFormSubmit = async (data: VocabularyFormData) => {
     setIsEditSubmitting(true)
     try {
-      const updatedWord = await vocabularyService.updateVocabulary(word.id, {
+      let updatedWord
+
+      if (data.cardPackId !== word.cardPackId) {
+        updatedWord = await vocabularyService.moveVocabularyToCardPack(word.id, data.cardPackId)
+      }
+      updatedWord = await vocabularyService.updateVocabulary(word.id, {
         cardPackId: data.cardPackId,
         phonetic: data.phonetic,
         word: data.word,
@@ -54,7 +59,7 @@ const WordEditButton = ({
       })
 
       if (updatedWord) {
-        onEditSuccess?.(updatedWord)
+        onEditSuccess?.(updatedWord, word)
 
         editDrawer.close()
         toast.success('卡片更新成功')

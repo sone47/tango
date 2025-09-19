@@ -9,7 +9,7 @@ export interface WordItemProps {
   editable: boolean
   language: LanguageEnum
   word: Word
-  onEditSuccess?: (updatedWord: Word) => void
+  onEditSuccess?: (updatedWord: Word, oldWord: Word) => void
   onDeleteSuccess?: (wordId: number) => void
   wordPackId: number
 }

@@ -256,9 +256,11 @@ export class WordPackService {
             const cardPackId = await cardPackStore.add(cardPackWithTimestamps)
 
             // 批量创建词汇记录
-            for (const vocabularyData of cardPackData.vocabularies) {
+            for (let j = 0; j < cardPackData.vocabularies.length; j++) {
+              const vocabularyData = cardPackData.vocabularies[j]
               const vocabulary = {
                 cardPackId: cardPackId as number,
+                order: j,
                 phonetic: vocabularyData.phonetic || '',
                 word: vocabularyData.word || '',
                 definition: vocabularyData.definition || '',

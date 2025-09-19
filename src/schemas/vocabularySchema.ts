@@ -3,6 +3,7 @@ import { PartOfSpeechEnum } from '@/constants/language'
 export interface VocabularyEntity {
   id: number // 自增主键，可选
   cardPackId: number // 卡包ID，外键
+  order: number // 卡片在卡包中的顺序
   phonetic?: string // 音标
   word: string // 写法
   definition: string // 释义
