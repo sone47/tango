@@ -5,14 +5,21 @@ import Typography from '@/components/Typography'
 import { LanguageEnum, PartOfSpeechEnum, partOfSpeechToLanguageMap } from '@/constants/language'
 import { Word } from '@/types'
 
-interface WordItemProps {
+export interface WordItemProps {
   language: LanguageEnum
   word: Word
   onEditSuccess?: (updatedWord: Word) => void
+  onDeleteSuccess?: (wordId: number) => void
   wordPackId: number
 }
 
-const WordItem = ({ language, word, onEditSuccess, wordPackId }: WordItemProps) => {
+const WordItem = ({
+  language,
+  word,
+  onEditSuccess,
+  onDeleteSuccess,
+  wordPackId,
+}: WordItemProps) => {
   const partOfSpeechMap = partOfSpeechToLanguageMap[language] as Record<PartOfSpeechEnum, string>
   const partOfSpeech =
     word.partOfSpeech === PartOfSpeechEnum.unknown || isNil(word.partOfSpeech)
@@ -30,7 +37,12 @@ const WordItem = ({ language, word, onEditSuccess, wordPackId }: WordItemProps) 
           {word.definition}
         </Typography.Text>
       </div>
-      <WordEditButton wordPackId={wordPackId} word={word} onSuccess={onEditSuccess} />
+      <WordEditButton
+        wordPackId={wordPackId}
+        word={word}
+        onEditSuccess={onEditSuccess}
+        onDeleteSuccess={onDeleteSuccess}
+      />
     </div>
   )
 }

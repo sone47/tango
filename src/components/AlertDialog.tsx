@@ -1,3 +1,4 @@
+import { Loader2 } from 'lucide-react'
 import React from 'react'
 
 import {
@@ -26,6 +27,7 @@ export interface AlertDialogProps {
   confirmVariant?: 'default' | 'destructive'
   confirmDisabled?: boolean
   children?: React.ReactNode
+  loading?: boolean
 }
 
 export function AlertDialog({
@@ -42,10 +44,10 @@ export function AlertDialog({
   confirmVariant = 'default',
   confirmDisabled = false,
   children,
+  loading = false,
 }: AlertDialogProps) {
   const handleConfirm = () => {
     onConfirm?.()
-    onOpenChange?.(false)
   }
 
   const handleCancel = () => {
@@ -67,11 +69,12 @@ export function AlertDialog({
         {showCancel && <AlertDialogCancel onClick={handleCancel}>{cancelText}</AlertDialogCancel>}
         <AlertDialogAction
           onClick={handleConfirm}
-          disabled={confirmDisabled}
+          disabled={confirmDisabled || loading}
           className={
             confirmVariant === 'destructive' ? 'bg-destructive hover:bg-destructive/90' : undefined
           }
         >
+          {loading && <Loader2 className="size-4 animate-spin" />}
           {confirmText}
         </AlertDialogAction>
       </AlertDialogFooter>

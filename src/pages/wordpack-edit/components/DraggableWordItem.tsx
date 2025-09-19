@@ -3,24 +3,11 @@ import { CSS } from '@dnd-kit/utilities'
 import { GripVertical } from 'lucide-react'
 import React from 'react'
 
-import { LanguageEnum } from '@/constants/language'
 import { Word } from '@/types'
 
-import WordItem from './WordItem'
+import WordItem, { WordItemProps } from './WordItem'
 
-interface DraggableWordProps {
-  word: Word
-  language: LanguageEnum
-  wordPackId: number
-  onEditSuccess: (updatedWord: Word) => void
-}
-
-const DraggableWord: React.FC<DraggableWordProps> = ({
-  word,
-  language,
-  wordPackId,
-  onEditSuccess,
-}) => {
+const DraggableWord: React.FC<WordItemProps> = ({ word, ...props }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: word.id,
     data: {
@@ -51,41 +38,22 @@ const DraggableWord: React.FC<DraggableWordProps> = ({
         <GripVertical className="size-4" />
       </div>
       <div className="flex-1 truncate">
-        <WordItem
-          word={word}
-          language={language}
-          wordPackId={wordPackId}
-          onEditSuccess={onEditSuccess}
-        />
+        <WordItem word={word} {...props} />
       </div>
     </div>
   )
 }
 
-interface DraggableWordItemProps {
+interface DraggableWordItemProps extends Omit<WordItemProps, 'word'> {
   words: Word[]
-  language: LanguageEnum
-  wordPackId: number
-  onEditSuccess: (updatedWord: Word) => void
 }
 
-const DraggableWordItem: React.FC<DraggableWordItemProps> = ({
-  words,
-  language,
-  wordPackId,
-  onEditSuccess,
-}) => {
+const DraggableWordItem: React.FC<DraggableWordItemProps> = ({ words, ...props }) => {
   return (
     <SortableContext items={words.map((word) => word.id)} strategy={verticalListSortingStrategy}>
       <div className="flex flex-col gap-2">
         {words.map((word) => (
-          <DraggableWord
-            key={word.id}
-            word={word}
-            language={language}
-            wordPackId={wordPackId}
-            onEditSuccess={onEditSuccess}
-          />
+          <DraggableWord key={word.id} word={word} {...props} />
         ))}
       </div>
     </SortableContext>

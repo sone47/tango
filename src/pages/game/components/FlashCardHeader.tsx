@@ -1,8 +1,4 @@
-import WordEditButton from '@/components/tango/WordEditButton'
-import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
 import { cn } from '@/lib/utils'
-import { usePracticeStore } from '@/stores/practiceStore'
-import { Word } from '@/types'
 
 interface FlashCardHeaderProps {
   currentIndex: number
@@ -19,18 +15,8 @@ const FlashCardHeader = ({
 }: FlashCardHeaderProps) => {
   const baseClasses = 'flex items-center justify-between'
   const variantClasses = {
-    light: 'bg-gray-100/80 backdrop-blur-sm text-gray-600',
-    dark: 'bg-white/80 backdrop-blur-sm text-gray-600',
-  }
-  const { updateState, shuffledWords, currentWordIndex } = usePracticeStore()
-  const { currentWordPack } = useCurrentWordPack()
-
-  const word = shuffledWords[currentWordIndex]
-
-  const handleEditSuccess = async (updatedWord: Word) => {
-    updateState({
-      shuffledWords: shuffledWords.map((w) => (w.id === updatedWord.id ? updatedWord : w)),
-    })
+    light: 'bg-muted text-muted-foreground',
+    dark: 'bg-card text-muted-foreground',
   }
 
   return (
@@ -39,11 +25,6 @@ const FlashCardHeader = ({
         <div className={`${variantClasses[variant]} rounded-full px-3 py-1 text-sm font-medium`}>
           {currentIndex + 1}/{totalCount}
         </div>
-        <WordEditButton
-          wordPackId={currentWordPack?.id || -1}
-          word={word}
-          onSuccess={handleEditSuccess}
-        />
       </div>
     </div>
   )

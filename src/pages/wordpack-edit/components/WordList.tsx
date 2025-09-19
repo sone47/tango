@@ -80,11 +80,19 @@ const WordList = ({ wordPack, onShowCreatingDialog }: WordListProps) => {
     setSearchText(value)
   }
 
+  const handleEditWordSuccess = (updatedWord: Word) => {
+    setWords(words.map((word) => (word.id === updatedWord.id ? updatedWord : word)))
+  }
+
+  const handleDeleteWordSuccess = (wordId: number) => {
+    setWords(words.filter((word) => word.id !== wordId))
+  }
+
   return (
     <div className="flex h-full flex-col">
       <div className="relative mx-4 mt-4">
         <Search className="text-muted-foreground/70 absolute top-1/2 left-3 size-4 h-full -translate-y-1/2"></Search>
-        <Input className="pl-10" placeholder="查询你要修改的单词" onChange={handleSearch} />
+        <Input className="pl-10" placeholder="查询卡片" onChange={handleSearch} />
       </div>
       <div className="flex-1 overflow-y-auto">
         <List
@@ -94,6 +102,8 @@ const WordList = ({ wordPack, onShowCreatingDialog }: WordListProps) => {
                 language={wordPack!.language}
                 word={searchedWords[index]}
                 wordPackId={wordPack!.id}
+                onEditSuccess={handleEditWordSuccess}
+                onDeleteSuccess={handleDeleteWordSuccess}
               />
             </div>
           )}

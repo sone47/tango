@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { AlignJustify, ChevronDown, ChevronRight, Plus, PlusSquare, Trash2 } from 'lucide-react'
+import { AlignJustify, ChevronDown, ChevronRight, PlusSquare, Trash2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 
@@ -28,6 +28,7 @@ interface CardpackItemProps {
   onDelete: () => void
   onAddWord: () => void
   onEditWordSuccess: (updatedWord: Word) => void
+  onDeleteWordSuccess: (cardPackId: number, wordId: number) => void
   onWordReorder: (cardPackId: number, wordId: number, newIndex: number) => void
 }
 
@@ -43,6 +44,7 @@ const CardpackItem: React.FC<CardpackItemProps> = ({
   onDelete,
   onAddWord,
   onEditWordSuccess,
+  onDeleteWordSuccess,
 }) => {
   const [isEditingName, setIsEditingName] = useState(false)
   const [headerOffsetTop, setHeaderOffsetTop] = useState(0)
@@ -93,6 +95,10 @@ const CardpackItem: React.FC<CardpackItemProps> = ({
 
   const handleEditStateChange = (isEdit: boolean) => {
     setIsEditingName(isEdit)
+  }
+
+  const handleDeleteWordSuccess = (wordId: number) => {
+    onDeleteWordSuccess(cardPack.id, wordId)
   }
 
   const headerContent = (
@@ -172,6 +178,7 @@ const CardpackItem: React.FC<CardpackItemProps> = ({
                 language={language}
                 wordPackId={wordPackId}
                 onEditSuccess={onEditWordSuccess}
+                onDeleteSuccess={(wordId) => handleDeleteWordSuccess(wordId)}
               />
             </div>
           ) : (

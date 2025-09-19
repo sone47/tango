@@ -104,14 +104,21 @@ export class VocabularyService {
     }
   }
 
-  async deleteVocabulary(vocabularyId: number): Promise<boolean> {
-    try {
-      const result = await this.vocabularyRepo.delete(vocabularyId)
-      return result
-    } catch (error) {
-      console.error('删除词汇失败:', error)
-      return false
-    }
+  async deleteVocabulary(vocabularyId: number) {
+    await getGlobalIDBManager().transaction(
+      ['practices', 'vocabularies'],
+      'readwrite',
+      async (stores) => {
+        const practiceStore = stores['practices']
+        const vocabularyStore = stores['vocabularies']
+
+        const practice = await practiceStore.index('vocabularyId').get(vocabularyId)
+        if (practice) {
+          await practiceStore.delete(practice.id)
+        }
+        await vocabularyStore.delete(vocabularyId)
+      }
+    )
   }
 }
 

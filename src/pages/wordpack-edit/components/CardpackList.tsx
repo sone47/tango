@@ -173,6 +173,16 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
       }
     }
 
+    const handleDeleteWordSuccess = (cardPackId: number, wordId: number) => {
+      setCardPacks(
+        cardPacks.map((cardPack) =>
+          cardPack.id === cardPackId
+            ? { ...cardPack, words: cardPack.words.filter((word) => word.id !== wordId) }
+            : cardPack
+        )
+      )
+    }
+
     const handleCardPackNameEdit = async (id: number, newName: string) => {
       try {
         await cardPackService.updateCardPack(id, { name: newName })
@@ -363,6 +373,7 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
                   onDelete={() => handleDeleteCardPack(cardPack.id)}
                   onAddWord={() => onAddWord(cardPack.id)}
                   onEditWordSuccess={handleEditWordSuccess}
+                  onDeleteWordSuccess={handleDeleteWordSuccess}
                   onWordReorder={handleWordReorder}
                 />
               )
@@ -382,7 +393,6 @@ const CardpackList = forwardRef<CardpackListRef, CardpackListProps>(
                 word={activeItem.data}
                 language={wordPack!.language}
                 wordPackId={wordPack!.id}
-                onEditSuccess={() => {}}
               />
             </div>
           )}
