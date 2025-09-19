@@ -6,6 +6,7 @@ import { LanguageEnum, PartOfSpeechEnum, partOfSpeechToLanguageMap } from '@/con
 import { Word } from '@/types'
 
 export interface WordItemProps {
+  editable: boolean
   language: LanguageEnum
   word: Word
   onEditSuccess?: (updatedWord: Word) => void
@@ -14,6 +15,7 @@ export interface WordItemProps {
 }
 
 const WordItem = ({
+  editable,
   language,
   word,
   onEditSuccess,
@@ -37,12 +39,14 @@ const WordItem = ({
           {word.definition}
         </Typography.Text>
       </div>
-      <WordEditButton
-        wordPackId={wordPackId}
-        word={word}
-        onEditSuccess={onEditSuccess}
-        onDeleteSuccess={onDeleteSuccess}
-      />
+      {editable && (
+        <WordEditButton
+          wordPackId={wordPackId}
+          word={word}
+          onEditSuccess={onEditSuccess}
+          onDeleteSuccess={onDeleteSuccess}
+        />
+      )}
     </div>
   )
 }

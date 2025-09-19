@@ -175,6 +175,7 @@ const CardpackItem: React.FC<CardpackItemProps> = ({
             <div className="flex flex-col gap-4" id={`cardpack-${cardPack.id}-words`}>
               <DraggableWordItem
                 words={cardPack.words}
+                editable={editable}
                 language={language}
                 wordPackId={wordPackId}
                 onEditSuccess={onEditWordSuccess}

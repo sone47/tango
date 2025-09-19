@@ -14,10 +14,11 @@ import WordItem from './WordItem'
 
 interface WordListProps {
   wordPack?: WordPackEntity | null
+  editable: boolean
   onShowCreatingDialog: () => void
 }
 
-const WordList = ({ wordPack, onShowCreatingDialog }: WordListProps) => {
+const WordList = ({ wordPack, editable, onShowCreatingDialog }: WordListProps) => {
   const [words, setWords] = useState<Word[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [searchText, setSearchText] = useState('')
@@ -99,6 +100,7 @@ const WordList = ({ wordPack, onShowCreatingDialog }: WordListProps) => {
           rowComponent={({ style, index }) => (
             <div style={style} className="p-4">
               <WordItem
+                editable={editable}
                 language={wordPack!.language}
                 word={searchedWords[index]}
                 wordPackId={wordPack!.id}

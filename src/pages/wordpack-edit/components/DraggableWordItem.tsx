@@ -7,7 +7,7 @@ import { Word } from '@/types'
 
 import WordItem, { WordItemProps } from './WordItem'
 
-const DraggableWord: React.FC<WordItemProps> = ({ word, ...props }) => {
+const DraggableWord: React.FC<WordItemProps> = ({ word, editable, ...props }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: word.id,
     data: {
@@ -29,16 +29,18 @@ const DraggableWord: React.FC<WordItemProps> = ({ word, ...props }) => {
       style={style}
       className="bg-background border-border flex items-center gap-2 rounded-lg border p-3"
     >
-      <div
-        {...attributes}
-        {...listeners}
-        className="text-muted-foreground cursor-grab touch-none p-1 active:cursor-grabbing"
-        title="拖拽排序单词"
-      >
-        <GripVertical className="size-4" />
-      </div>
+      {editable && (
+        <div
+          {...attributes}
+          {...listeners}
+          className="text-muted-foreground cursor-grab touch-none p-1 active:cursor-grabbing"
+          title="拖拽排序单词"
+        >
+          <GripVertical className="size-4" />
+        </div>
+      )}
       <div className="flex-1 truncate">
-        <WordItem word={word} {...props} />
+        <WordItem word={word} editable={editable} {...props} />
       </div>
     </div>
   )

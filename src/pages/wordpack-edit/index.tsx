@@ -135,6 +135,7 @@ export default function WordPackEditPage() {
               <Card className="h-full p-0" contentClassName="h-full overflow-y-auto p-0">
                 <WordList
                   wordPack={wordPack!}
+                  editable={isEdit}
                   onShowCreatingDialog={handleShowWordCreatingDialog}
                 />
               </Card>
