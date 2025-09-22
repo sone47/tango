@@ -75,19 +75,15 @@ const FlashCard = () => {
     })
   }
 
-  const handleCardFlip = (e: React.MouseEvent) => {
-    if (!e.currentTarget.contains(e.target as Node) || !isAllRevealed) {
+  const handleCardFlip = () => {
+    if (!isAllRevealed) {
       return
     }
 
     setIsFlipped(!isFlipped)
   }
 
-  const handleDoubleClick = (e: React.MouseEvent) => {
-    if (!e.currentTarget.contains(e.target as Node)) {
-      return
-    }
-
+  const handleDoubleClick = () => {
     updateState({
       revealState: Object.fromEntries(
         Object.keys(FlashCardItemNameMap).map((name) => [name, true])
