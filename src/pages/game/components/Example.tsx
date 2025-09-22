@@ -167,6 +167,7 @@ const ExampleComponent = ({
               </Button>
               <Speak
                 ref={speakRef}
+                autoPlay={isFlipped && shouldPlayAudio}
                 text={example.content}
                 buttonProps={{
                   className: 'text-muted-foreground',
