@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import ProficiencySlider from '@/components/ProficiencySlider'
 import { FlashCardItemNameMap } from '@/constants/flashCard'
+import { useDoubleClick } from '@/hooks/useDoubleClick'
 import { useSettings } from '@/hooks/useSettings'
 import { cn } from '@/lib/utils'
 import { practiceService } from '@/services/practiceService'
@@ -151,6 +152,12 @@ const FlashCard = () => {
     setIsExampleScrolling(isScrolling)
   }
 
+  const handler = useDoubleClick({
+    onClick: handleCardFlip,
+    onDoubleClick: handleDoubleClick,
+    delay: 200,
+  })
+
   return (
     <motion.div
       className="flex h-full w-full max-w-sm flex-col gap-4"
@@ -159,11 +166,7 @@ const FlashCard = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
-      <div
-        className="z-1 min-h-0 flex-1 perspective-[1000px]"
-        onClick={handleCardFlip}
-        onDoubleClick={handleDoubleClick}
-      >
+      <div className="z-1 min-h-0 flex-1 perspective-[1000px]" onClick={handler}>
         <VerticalSwipeHandler
           enabled={isAllRevealed && !isExampleScrolling}
           exitDuration={cardExitDuration}
