@@ -60,6 +60,8 @@ const HistoryPool = () => {
     })
   }
 
+  if (!currentWordPack) return null
+
   const currentWord = studiedWords[currentIndex]
 
   return (
@@ -78,7 +80,7 @@ const HistoryPool = () => {
             <CarouselContent>
               {studiedWords.map((word) => (
                 <CarouselItem key={word.id}>
-                  <CardPreview language={currentWordPack!.language} word={word} />
+                  <CardPreview language={currentWordPack.language} word={word} />
                 </CarouselItem>
               ))}
             </CarouselContent>
