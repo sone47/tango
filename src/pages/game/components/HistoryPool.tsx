@@ -3,17 +3,15 @@ import { useCallback, useEffect, useState } from 'react'
 
 import Modal from '@/components/Modal'
 import ProficiencySlider from '@/components/ProficiencySlider'
+import CardPreview from '@/components/tango/CardPreview'
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel'
-import { LanguageEnum } from '@/constants/language'
 import { useCurrentWordPack } from '@/hooks/useCurrentWordPack'
-import { usePartOfSpeechText } from '@/hooks/usePartOfSpeechText'
 import { practiceService } from '@/services/practiceService'
 import { usePracticeStore } from '@/stores/practiceStore'
 
 const HistoryPool = () => {
   const { currentWordPack } = useCurrentWordPack()
   const { studiedWords, showHistoryPool, updateState } = usePracticeStore()
-  const { getPartOfSpeechText } = usePartOfSpeechText(currentWordPack?.language as LanguageEnum)
 
   const [api, setApi] = useState<CarouselApi>()
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -80,18 +78,7 @@ const HistoryPool = () => {
             <CarouselContent>
               {studiedWords.map((word) => (
                 <CarouselItem key={word.id}>
-                  <div className="bg-muted flex h-full flex-col items-center justify-center gap-3 rounded-2xl p-6">
-                    <span className="text-secondary-foreground text-xl font-medium">
-                      {word.phonetic}
-                    </span>
-                    <span className="text-foreground text-3xl font-bold">{word.word}</span>
-                    <span className="text-muted-foreground text-lg">
-                      {getPartOfSpeechText(word.partOfSpeech)
-                        ? `[${getPartOfSpeechText(word.partOfSpeech)}]`
-                        : ''}
-                      {word.definition}
-                    </span>
-                  </div>
+                  <CardPreview language={currentWordPack!.language} word={word} />
                 </CarouselItem>
               ))}
             </CarouselContent>
