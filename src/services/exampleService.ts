@@ -16,7 +16,9 @@ export class ExampleService {
     return examples
   }
 
-  async addExample(example: ExampleEntity): Promise<ExampleEntity> {
+  async addExample(
+    example: Omit<ExampleEntity, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<ExampleEntity> {
     const newExample = {
       ...example,
       createdAt: new Date().toISOString(),
@@ -33,6 +35,10 @@ export class ExampleService {
     }
     const savedExample = await this.exampleRepo.save(updatedExample)
     return savedExample
+  }
+
+  async deleteExample(exampleId: number): Promise<void> {
+    await this.exampleRepo.delete(exampleId)
   }
 }
 

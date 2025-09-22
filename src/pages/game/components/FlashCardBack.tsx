@@ -1,38 +1,27 @@
 import { useIsFirstRender } from '@uidotdev/usehooks'
 import { AlertTriangle } from 'lucide-react'
 import { AuthenticationError } from 'openai'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 import AlertDialog, { useAlertDialog } from '@/components/AlertDialog'
 import Button from '@/components/Button'
 import { AnimatedList } from '@/components/magicui/animated-list'
-import Speak from '@/components/Speak'
 import Typography from '@/components/Typography'
-import { Badge } from '@/components/ui/badge'
-import { Skeleton } from '@/components/ui/skeleton'
 import { useExampleStream } from '@/hooks/useGenerateWordExample'
 import { useSettings } from '@/hooks/useSettings'
 import { cn } from '@/lib/utils'
 import { exampleService } from '@/services/exampleService'
 import { Word } from '@/types'
 
+import Example, { ExampleItem } from './Example'
+
 interface FlashCardBackProps {
   word: Word
   className?: string
   onScroll: (isScrolling: boolean) => void
   isFlipped: boolean
-}
-
-interface Example {
-  content: string
-  translation: string
-  isAi: boolean
-  id: number
-  wordPosition: number
-  isGenerating: boolean
-  audio?: string
 }
 
 const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackProps) => {
@@ -44,7 +33,9 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
   const { content, translation, isGenerating, generateExample } = useExampleStream(word.word)
 
   const [isScrolling, setIsScrolling] = useState(false)
-  const [examples, setExamples] = useState<Example[]>([])
+  const [examples, setExamples] = useState<ExampleItem[]>([])
+
+  const currentExampleId = useRef<number>(0)
 
   useEffect(() => {
     if (isScrolling) {
@@ -84,15 +75,20 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
     }
 
     try {
+      currentExampleId.current++
+
       setExamples([
         ...examples,
         {
+          vocabularyId: word.id,
           content,
           translation,
           isAi: true,
-          id: examples.length,
+          id: currentExampleId.current,
+          innerId: currentExampleId.current,
           wordPosition: -1,
           isGenerating: true,
+          isCollected: false,
         },
       ])
 
@@ -123,12 +119,23 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
         examples.map((example) => ({
           ...example,
           wordPosition: getWordPositionInExample(example.content),
-          isGenerating: false,
+          isCollected: true,
+          innerId: example.id,
         }))
       )
+
+      currentExampleId.current = Math.max(...examples.map((example) => example.id)) + 1
     } else {
       handleGenerateExample()
     }
+  }
+
+  const handleCollectToggleSuccess = (example: ExampleItem) => {
+    setExamples(
+      examples.map((prevExample) =>
+        prevExample.innerId === example.innerId ? example : prevExample
+      )
+    )
   }
 
   if (isFirstRender) {
@@ -160,60 +167,14 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
               }}
             >
               <AnimatedList delay={100}>
-                {examples.map((example, index) => (
-                  <div
-                    key={example.id}
-                    className="space-between bg-card flex min-h-[50px] w-full items-stretch gap-1 rounded-lg p-4"
-                  >
-                    <div className="flex flex-1 flex-col justify-start gap-2 text-left">
-                      {example.isGenerating && !example.content ? (
-                        <Skeleton className="h-4 w-[250px]" />
-                      ) : (
-                        <Typography.Text type="secondary" size="sm" className="!font-medium">
-                          {example.wordPosition >= 0 ? (
-                            <>
-                              {example.content.slice(0, example.wordPosition)}
-                              <span className="text-primary">
-                                {example.content.slice(
-                                  example.wordPosition,
-                                  example.wordPosition + word.word.length
-                                )}
-                              </span>
-                              {example.content.slice(example.wordPosition + word.word.length)}
-                            </>
-                          ) : (
-                            example.content
-                          )}
-                        </Typography.Text>
-                      )}
-                      {example.isGenerating && !example.translation ? (
-                        <Skeleton className="h-4 w-[200px]" />
-                      ) : (
-                        example.translation && (
-                          <Typography.Text type="secondary" size="xs">
-                            {example.translation}
-                          </Typography.Text>
-                        )
-                      )}
-                    </div>
-                    <div className="flex w-4 flex-col items-end justify-between gap-1">
-                      {!example.isGenerating && (
-                        <>
-                          <Speak
-                            text={example.content}
-                            audioUrl={example.isAi ? '' : example.audio}
-                            autoPlay={isFlipped && index === examples.length - 1}
-                            disabled={!isFlipped}
-                          />
-                          {example.isAi && (
-                            <Badge variant="secondary" className="font-medium">
-                              AI
-                            </Badge>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </div>
+                {examples.map((example) => (
+                  <Example
+                    key={example.innerId}
+                    example={example}
+                    isFlipped={isFlipped}
+                    word={word}
+                    onCollectToggleSuccess={handleCollectToggleSuccess}
+                  />
                 ))}
               </AnimatedList>
             </div>
@@ -224,7 +185,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
             </div>
           )}
           {word.word && (
-            <div onClick={(e) => e.stopPropagation()}>
+            <div>
               <Button variant="link" onClick={handleGenerateExample} loading={isGenerating}>
                 {isGenerating ? '生成中...' : examples.length > 0 ? '更多例句' : '生成例句'}
               </Button>

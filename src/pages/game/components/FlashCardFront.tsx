@@ -1,6 +1,6 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
-import Speak from '@/components/Speak'
+import Speak, { SpeakRef } from '@/components/Speak'
 import Typography from '@/components/Typography'
 import { FlashCardItemEnum, FlashCardItemNameMap } from '@/constants/flashCard'
 import { LanguageEnum } from '@/constants/language'
@@ -24,12 +24,19 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
   const word = shuffledWords[currentWordIndex]
 
   const isDraggingRef = useRef<Record<keyof CardRevealState, boolean>>(revealState)
+  const speakRef = useRef<SpeakRef>(null)
 
   const isFirstCard = currentWordIndex === 0
   const isAllRevealed = cardItemNames.every((name) => revealState[name])
   const guideItemName = cardItemNames.find(
     (key) => !settings.practice.hiddenInCard.includes(key as keyof typeof FlashCardItemNameMap)
   )
+
+  useEffect(() => {
+    if (isFlipped) {
+      speakRef.current?.stop()
+    }
+  }, [isFlipped])
 
   const handleRevealDragStart = (field: keyof CardRevealState) => {
     isDraggingRef.current[field] = true
@@ -62,6 +69,7 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
       <div className="flex min-h-0 flex-1 flex-col items-center justify-center space-y-8">
         {word.word && (
           <Speak
+            ref={speakRef}
             text={word.word}
             audioUrl={word.wordAudio}
             autoPlay={settings.practice.isAutoPlayAudio}
@@ -70,7 +78,6 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
               variant: 'primary',
               className: '!size-10 !p-8 rounded-2xl',
             }}
-            disabled={isFlipped}
           />
         )}
         <RevealOverlay

@@ -1,5 +1,6 @@
+import { omit } from 'lodash'
 import { Loader2, LucideIcon, Volume, Volume1, Volume2 } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
 import Button from '@/components/Button'
 import { useTTS } from '@/hooks/useTTS'
@@ -11,7 +12,12 @@ interface SpeakProps {
   autoPlay?: boolean
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
   buttonProps?: React.ComponentProps<typeof Button>
-  disabled?: boolean
+  onPlayAvailable?: () => void
+}
+
+export interface SpeakRef {
+  play: () => void
+  stop: () => void
 }
 
 const iconSizeMap = {
@@ -75,110 +81,96 @@ const Icon = ({ isPlaying, size = 'md' }: { isPlaying: boolean; size?: SpeakProp
   return <CurrentIcon className={cn(iconSizeMap[size])} />
 }
 
-const Speak = ({
-  text,
-  audioUrl,
-  autoPlay = false,
-  size = 'md',
-  buttonProps,
-  disabled,
-}: SpeakProps) => {
-  const playButtonRef = useRef<HTMLButtonElement>(null)
-  const urlAudioRef = useRef<HTMLAudioElement>(null)
-  const hasPlayed = useRef(false)
+const Speak = forwardRef<SpeakRef, SpeakProps>(
+  (
+    { text, audioUrl, autoPlay = false, size = 'md', buttonProps, onPlayAvailable }: SpeakProps,
+    ref
+  ) => {
+    const playButtonRef = useRef<HTMLButtonElement>(null)
+    const urlAudioRef = useRef<HTMLAudioElement>(null)
 
-  const { start, mutate, isGlobalLoading, audio: ttsAudio } = useTTS(text)
+    const { start, mutate, isGlobalLoading, audio: ttsAudio } = useTTS(text)
 
-  const isUrlPlay = !!audioUrl
+    const isUrlPlay = !!audioUrl
 
-  useEffect(() => {
-    if (isUrlPlay) {
-      urlAudioRef.current = new Audio(audioUrl)
-    } else {
-      start()
-    }
+    useEffect(() => {
+      if (isUrlPlay) {
+        urlAudioRef.current = new Audio(audioUrl)
+        onPlayAvailable?.()
 
-    return () => {
-      if (!isUrlPlay) {
-        mutate()
+        if (autoPlay) {
+          handlePlay()
+        }
+      } else {
+        start()
       }
 
+      return () => {
+        if (!isUrlPlay) {
+          mutate()
+        }
+
+        handleStop()
+      }
+    }, [])
+
+    useEffect(() => {
+      if (isUrlPlay || !ttsAudio.arrayBuffers.length || autoPlay) return
+
       handleStop()
-    }
-  }, [])
 
-  useEffect(() => {
-    if (isUrlPlay || !ttsAudio.arrayBuffers.length) return
+      setTimeout(() => {
+        onPlayAvailable?.()
+      }, 100)
+    }, [ttsAudio.arrayBuffers.length])
 
-    if (autoPlay && !hasPlayed.current) {
-      handlePlay()
-      return
-    }
+    useImperativeHandle(ref, () => ({
+      play: handlePlay,
+      stop: handleStop,
+    }))
 
-    if (disabled || !autoPlay) {
-      handleStop()
-    }
-  }, [ttsAudio.arrayBuffers.length, autoPlay, disabled])
-
-  useEffect(() => {
-    if (!isUrlPlay) return
-
-    if (autoPlay && !hasPlayed.current && !disabled) {
-      handlePlay()
-    }
-  }, [autoPlay, disabled])
-
-  useEffect(() => {
-    if (!disabled) return
-
-    handleStop()
-  }, [disabled])
-
-  const handlePlay = () => {
-    if (disabled) return
-
-    if (isUrlPlay) {
-      urlAudioRef.current?.play()
-    } else {
-      ttsAudio.play()
-    }
-
-    hasPlayed.current = true
-  }
-
-  const handleStop = () => {
-    if (isUrlPlay) {
-      urlAudioRef.current?.pause()
-    } else {
-      if (ttsAudio.isPlaying) {
-        ttsAudio.stop()
+    const handlePlay = () => {
+      if (isUrlPlay) {
+        urlAudioRef.current?.play()
+      } else {
+        ttsAudio.play()
       }
     }
+
+    const handleStop = () => {
+      if (isUrlPlay) {
+        urlAudioRef.current?.pause()
+      } else {
+        if (ttsAudio.isPlaying) {
+          ttsAudio.stop()
+        }
+      }
+    }
+
+    const handlePlayClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+
+      handleStop()
+      handlePlay()
+    }
+
+    return (
+      <Button
+        ref={playButtonRef}
+        variant="ghost"
+        onClick={handlePlayClick}
+        className={cn('h-auto !p-0', buttonProps?.className)}
+        disabled={isGlobalLoading}
+        {...omit(buttonProps, 'className')}
+      >
+        {isGlobalLoading ? (
+          <Loader2 className={cn('animate-spin', iconSizeMap[size])} />
+        ) : (
+          <Icon isPlaying={ttsAudio.isPlaying} size={size} />
+        )}
+      </Button>
+    )
   }
-
-  const handlePlayClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-
-    handleStop()
-    handlePlay()
-  }
-
-  return (
-    <Button
-      ref={playButtonRef}
-      variant="ghost"
-      onClick={handlePlayClick}
-      className="h-auto !p-0"
-      disabled={isGlobalLoading || disabled}
-      {...buttonProps}
-    >
-      {isGlobalLoading ? (
-        <Loader2 className={cn('animate-spin', iconSizeMap[size])} />
-      ) : (
-        <Icon isPlaying={ttsAudio.isPlaying} size={size} />
-      )}
-    </Button>
-  )
-}
+)
 
 export default Speak

@@ -1,3 +1,5 @@
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { isString } from 'lodash'
 import React from 'react'
 
 import {
@@ -42,6 +44,7 @@ export interface DialogProps {
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
   openAutoFocus?: boolean
   closeOnMaskClick?: boolean
+  hideTitle?: boolean
 }
 
 export function Dialog({
@@ -65,6 +68,7 @@ export function Dialog({
   maxWidth = 'lg',
   openAutoFocus = true,
   closeOnMaskClick = true,
+  hideTitle = false,
 }: DialogProps) {
   const handleConfirm = () => {
     onConfirm?.()
@@ -93,12 +97,17 @@ export function Dialog({
       showCloseButton={showCloseButton}
       onOpenAutoFocus={openAutoFocus ? undefined : (e) => e.preventDefault()}
       onPointerDownOutside={closeOnMaskClick ? undefined : (e) => e.preventDefault()}
+      aria-describedby={isString(description) ? description : undefined}
     >
-      {(title || description) && (
+      {!hideTitle || description ? (
         <DialogHeader>
-          {title && <DialogTitle>{title}</DialogTitle>}
+          <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
+      ) : (
+        <VisuallyHidden asChild>
+          <DialogTitle>{title}</DialogTitle>
+        </VisuallyHidden>
       )}
 
       {children && <div>{children}</div>}
