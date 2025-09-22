@@ -72,7 +72,7 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
             ref={speakRef}
             text={word.word}
             audioUrl={word.wordAudio}
-            autoPlay={settings.practice.isAutoPlayAudio}
+            autoPlay={settings.practice.isAutoPlayAudio && !isFlipped}
             size="2xl"
             buttonProps={{
               variant: 'primary',
