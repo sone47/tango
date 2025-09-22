@@ -167,13 +167,14 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
               }}
             >
               <AnimatedList delay={100}>
-                {examples.map((example) => (
+                {examples.map((example, index) => (
                   <Example
                     key={example.innerId}
                     example={example}
                     isFlipped={isFlipped}
                     word={word}
                     onCollectToggleSuccess={handleCollectToggleSuccess}
+                    shouldPlayAudio={index === examples.length - 1}
                   />
                 ))}
               </AnimatedList>

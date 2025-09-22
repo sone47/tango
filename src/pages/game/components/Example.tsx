@@ -22,25 +22,34 @@ interface ExampleProps {
   isFlipped: boolean
   word: Word
   example: ExampleItem
+  shouldPlayAudio: boolean
   onCollectToggleSuccess: (example: ExampleItem) => void
 }
 
-const ExampleComponent = ({ example, isFlipped, word, onCollectToggleSuccess }: ExampleProps) => {
+const ExampleComponent = ({
+  example,
+  isFlipped,
+  word,
+  onCollectToggleSuccess,
+  shouldPlayAudio,
+}: ExampleProps) => {
   const [toggleStarLoading, setToggleStarLoading] = useState(false)
+  const [isAudioAvailable, setIsAudioAvailable] = useState(false)
 
   const speakRef = useRef<SpeakRef>(null)
   const hasPlayedAudio = useRef(false)
-  const isAudioAvailable = useRef(false)
 
   useEffect(() => {
-    if (isFlipped) {
-      if (!isAudioAvailable.current) return
-
-      playAudioOnce()
-    } else {
+    if (!isFlipped) {
       speakRef.current?.stop()
     }
   }, [isFlipped])
+
+  useEffect(() => {
+    if (isFlipped && isAudioAvailable) {
+      playAudioOnce()
+    }
+  }, [isAudioAvailable, isFlipped])
 
   const handleToggleStar = async (example: ExampleItem) => {
     if (example.isCollected) {
@@ -61,7 +70,7 @@ const ExampleComponent = ({ example, isFlipped, word, onCollectToggleSuccess }: 
       })
     } catch (error) {
       console.error(error)
-      toast.error('删除例句失败')
+      toast.error('取消收藏失败')
     } finally {
       setToggleStarLoading(false)
     }
@@ -82,30 +91,25 @@ const ExampleComponent = ({ example, isFlipped, word, onCollectToggleSuccess }: 
         ...newExample,
         innerId: example.innerId,
         wordPosition: example.wordPosition,
-        isGenerating: example.isGenerating,
         isCollected: true,
       })
     } catch (error) {
       console.error(error)
-      toast.error('收藏例句失败')
+      toast.error('收藏失败')
     } finally {
       setToggleStarLoading(false)
     }
   }
 
   const playAudioOnce = () => {
-    if (hasPlayedAudio.current) return
+    if (hasPlayedAudio.current || !shouldPlayAudio) return
 
     speakRef.current?.play()
     hasPlayedAudio.current = true
   }
 
   const handlePlayAvailable = () => {
-    isAudioAvailable.current = true
-
-    if (!isFlipped) return
-
-    playAudioOnce()
+    setIsAudioAvailable(true)
   }
 
   return (
