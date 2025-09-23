@@ -84,7 +84,9 @@ export class CardPackService {
     return this.cardPackRepo.update(id, data)
   }
 
-  async createCardPack(data: Omit<CardPackEntity, 'id' | 'createdAt' | 'updatedAt' | 'words'>) {
+  async createCardPack(
+    data: Omit<CardPackEntity, 'id' | 'createdAt' | 'updatedAt' | 'words' | 'order'>
+  ) {
     const existingCardPacks = await this.cardPackRepo.findBy('wordPackId', data.wordPackId)
     const maxOrder = Math.max(...existingCardPacks.map((cardPack) => cardPack.order || 0))
 

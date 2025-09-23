@@ -31,6 +31,7 @@ const CardPackConfigModal = () => {
         name: '未选择卡包',
         words: [],
         wordPackId: 0,
+        order: 0,
       },
     [tempSelectedCardPack]
   )
