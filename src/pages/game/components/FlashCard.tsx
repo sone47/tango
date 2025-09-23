@@ -152,7 +152,7 @@ const FlashCard = () => {
     setIsExampleScrolling(isScrolling)
   }
 
-  const handler = useDoubleClick({
+  const handlers = useDoubleClick({
     onClick: handleCardFlip,
     onDoubleClick: handleDoubleClick,
     delay: 200,
@@ -166,7 +166,7 @@ const FlashCard = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
-      <div className="z-1 min-h-0 flex-1 perspective-[1000px]" onClick={handler}>
+      <div className="z-1 min-h-0 flex-1 perspective-[1000px]" {...handlers}>
         <VerticalSwipeHandler
           enabled={isAllRevealed && !isExampleScrolling}
           exitDuration={cardExitDuration}
