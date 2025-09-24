@@ -23,27 +23,6 @@ const ProficiencySlider = ({
   size = 'md',
   className = '',
 }: ProficiencySliderProps) => {
-  const getProficiencyColor = (proficiency: number) => {
-    // 将熟练度值限制在0-100范围内
-    const normalizedValue = Math.max(0, Math.min(100, proficiency))
-
-    if (normalizedValue <= 60) {
-      // 0-60%: 从红色到黄色的渐变
-      const ratio = normalizedValue / 60
-      const red = 239
-      const green = Math.round(68 + (185 - 68) * ratio)
-      const blue = Math.round(68 + (11 - 68) * ratio)
-      return `rgb(${red}, ${green}, ${blue})`
-    } else {
-      // 60-100%: 从黄色到绿色的渐变
-      const ratio = (normalizedValue - 60) / 40
-      const red = Math.round(245 - (245 - 16) * ratio)
-      const green = Math.round(158 + (185 - 158) * ratio)
-      const blue = Math.round(11 + (129 - 11) * ratio)
-      return `rgb(${red}, ${green}, ${blue})`
-    }
-  }
-
   const getTextSize = (size: string) => {
     switch (size) {
       case 'sm':
@@ -58,7 +37,7 @@ const ProficiencySlider = ({
   return (
     <div
       className={cn(
-        'backdrop-blur-sm rounded-2xl transition-opacity duration-300 flex-shrink-0 flex flex-col gap-4 border-1',
+        'backdrop-blur-sm rounded-2xl transition-opacity duration-300 flex-shrink-0 flex flex-col gap-4 shadow-lg',
         className
       )}
     >
@@ -70,21 +49,28 @@ const ProficiencySlider = ({
         max={100}
         disabled={disabled}
         size={size}
-        color={getProficiencyColor(value)}
       />
 
       {(showLabel || showValue) && (
         <div className="flex items-center justify-between">
           {showLabel && (
             <span
-              className={`font-medium ${disabled ? 'text-gray-400' : 'text-gray-700'} ${getTextSize(size)}`}
+              className={cn(
+                'font-medium',
+                disabled ? 'text-muted-foreground/70' : 'text-muted-foreground',
+                getTextSize(size)
+              )}
             >
               熟练度
             </span>
           )}
           {showValue && (
             <span
-              className={`font-bold ${disabled ? 'text-gray-400' : 'text-gray-900'} ${getTextSize(size)}`}
+              className={cn(
+                'font-bold',
+                disabled ? 'text-primary/70' : 'text-primary',
+                getTextSize(size)
+              )}
             >
               {value}%
             </span>

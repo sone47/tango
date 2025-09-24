@@ -160,8 +160,9 @@ const ExampleComponent = ({
                   <Star
                     className={cn(
                       'size-4',
-                      example.isCollected ? 'text-primary' : 'text-muted-foreground'
+                      example.isCollected ? 'text-[orange]' : 'text-muted-foreground'
                     )}
+                    fill={example.isCollected ? 'orange' : 'none'}
                   />
                 )}
               </Button>

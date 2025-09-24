@@ -80,60 +80,62 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
             }}
           />
         )}
-        <RevealOverlay
-          isRevealed={revealState.phonetic}
-          label="音标"
-          colorScheme="blue"
-          onDragStart={() => handleRevealDragStart(FlashCardItemEnum.phonetic)}
-          onDragEnd={(offsetX) => handleRevealDragEnd(FlashCardItemEnum.phonetic, offsetX)}
-          showGuide={isFirstCard && guideItemName === FlashCardItemEnum.phonetic}
-        >
-          <div className="flex h-12 items-center justify-center gap-2">
-            <span
-              className={cn(
-                'text-xl font-medium text-gray-800',
-                !revealState.phonetic && 'truncate'
-              )}
-            >
-              {word.phonetic}
-            </span>
-          </div>
-        </RevealOverlay>
+        <div className="w-full space-y-4">
+          <RevealOverlay
+            isRevealed={revealState.phonetic}
+            label="音标"
+            colorScheme="blue"
+            onDragStart={() => handleRevealDragStart(FlashCardItemEnum.phonetic)}
+            onDragEnd={(offsetX) => handleRevealDragEnd(FlashCardItemEnum.phonetic, offsetX)}
+            showGuide={isFirstCard && guideItemName === FlashCardItemEnum.phonetic}
+          >
+            <div className="flex h-12 items-center justify-center gap-2">
+              <span
+                className={cn(
+                  'text-xl font-medium text-gray-800',
+                  !revealState.phonetic && 'truncate'
+                )}
+              >
+                {word.phonetic}
+              </span>
+            </div>
+          </RevealOverlay>
 
-        <RevealOverlay
-          isRevealed={revealState.word}
-          label="写法"
-          colorScheme="purple"
-          onDragStart={() => handleRevealDragStart(FlashCardItemEnum.word)}
-          onDragEnd={(offsetX) => handleRevealDragEnd(FlashCardItemEnum.word, offsetX)}
-          showGuide={isFirstCard && guideItemName === FlashCardItemEnum.word}
-        >
-          <div className="flex h-16 items-center justify-center">
-            <span
-              className={cn('text-3xl font-bold text-gray-900', !revealState.word && 'truncate')}
-            >
-              {word.word}
-            </span>
-          </div>
-        </RevealOverlay>
+          <RevealOverlay
+            isRevealed={revealState.word}
+            label="写法"
+            colorScheme="purple"
+            onDragStart={() => handleRevealDragStart(FlashCardItemEnum.word)}
+            onDragEnd={(offsetX) => handleRevealDragEnd(FlashCardItemEnum.word, offsetX)}
+            showGuide={isFirstCard && guideItemName === FlashCardItemEnum.word}
+          >
+            <div className="flex h-16 items-center justify-center">
+              <span
+                className={cn('text-3xl font-bold text-gray-900', !revealState.word && 'truncate')}
+              >
+                {word.word}
+              </span>
+            </div>
+          </RevealOverlay>
 
-        <RevealOverlay
-          isRevealed={revealState.definition}
-          label="释义"
-          colorScheme="emerald"
-          onDragStart={() => handleRevealDragStart(FlashCardItemEnum.definition)}
-          onDragEnd={(offsetX) => handleRevealDragEnd(FlashCardItemEnum.definition, offsetX)}
-          showGuide={isFirstCard && guideItemName === FlashCardItemEnum.definition}
-        >
-          <div className="flex h-12 items-center justify-center">
-            <span className={cn('text-lg text-gray-700', !revealState.definition && 'truncate')}>
-              {getPartOfSpeechText(word.partOfSpeech)
-                ? `[${getPartOfSpeechText(word.partOfSpeech)}]`
-                : ''}
-              {word.definition}
-            </span>
-          </div>
-        </RevealOverlay>
+          <RevealOverlay
+            isRevealed={revealState.definition}
+            label="释义"
+            colorScheme="emerald"
+            onDragStart={() => handleRevealDragStart(FlashCardItemEnum.definition)}
+            onDragEnd={(offsetX) => handleRevealDragEnd(FlashCardItemEnum.definition, offsetX)}
+            showGuide={isFirstCard && guideItemName === FlashCardItemEnum.definition}
+          >
+            <div className="flex h-12 items-center justify-center">
+              <span className={cn('text-lg text-gray-700', !revealState.definition && 'truncate')}>
+                {getPartOfSpeechText(word.partOfSpeech)
+                  ? `[${getPartOfSpeechText(word.partOfSpeech)}]`
+                  : ''}
+                {word.definition}
+              </span>
+            </div>
+          </RevealOverlay>
+        </div>
       </div>
 
       {/* 底部提示 */}
