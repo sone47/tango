@@ -31,8 +31,6 @@ const Slider = ({
   formatValue,
   showValue = false,
 }: SliderProps) => {
-  const displayValue = formatValue ? formatValue(value) : value.toString()
-
   const getTrackSizeClasses = (size: 'sm' | 'md' | 'lg') => {
     switch (size) {
       case 'sm':
@@ -64,7 +62,7 @@ const Slider = ({
 
     return (
       <div className="min-w-[2.5rem] text-center text-xs font-medium text-gray-600">
-        {displayValue}
+        {formatValue ? formatValue(value) : value.toString()}
       </div>
     )
   }
@@ -73,14 +71,14 @@ const Slider = ({
     <SliderPrimitive.Root
       data-slot="slider"
       value={[value]}
-      onValueChange={(value: number[]) => onChange(value[0])}
+      onValueChange={(value: number[]) => onChange?.(value[0])}
       onValueCommit={(value: number[]) => onChangeComplete?.(value[0])}
       min={min}
       max={max}
       disabled={disabled}
       step={step}
       className={cn(
-        'relative flex w-full items-center data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col',
+        'relative flex w-full items-center touch-none select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col',
         className
       )}
     >
@@ -105,7 +103,7 @@ const Slider = ({
           'border-primary bg-card ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50',
           getThumbSizeClasses(size)
         )}
-        style={{ borderColor: color }}
+        style={{ backgroundColor: color }}
       />
     </SliderPrimitive.Root>
   )

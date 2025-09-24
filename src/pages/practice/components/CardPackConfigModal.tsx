@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 
 import Button from '@/components/Button'
 import Modal from '@/components/Modal'
-import ProficiencySlider from '@/components/ProficiencySlider'
+import Slider from '@/components/Slider'
 import Typography from '@/components/Typography'
 import { useLastestData } from '@/hooks/useLastestData'
 import { useSettings } from '@/hooks/useSettings'
@@ -99,13 +99,7 @@ const CardPackConfigModal = () => {
             选择熟练度 ≤ {proficiency}% 的单词
           </Typography.Text>
           <div className="flex flex-col gap-2">
-            <ProficiencySlider
-              value={proficiency}
-              onChange={setProficiency}
-              showLabel={false}
-              showValue={false}
-              size="lg"
-            />
+            <Slider value={proficiency} onChange={setProficiency} size="lg"></Slider>
             <div className="flex justify-between text-xs text-gray-500">
               <span>0%</span>
               <span>50%</span>
