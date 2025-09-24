@@ -30,7 +30,6 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
   const generateDisabledDialog = useAlertDialog()
   const generateExampleFailedDialog = useAlertDialog()
   const isFirstRender = useIsFirstRender()
-  const { content, translation, isGenerating, generateExample } = useExampleStream(word.word)
 
   const [isScrolling, setIsScrolling] = useState(false)
   const [examples, setExamples] = useState<ExampleItem[]>([])
@@ -44,23 +43,6 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
       onScroll(false)
     }
   }, [isScrolling, onScroll])
-
-  useEffect(() => {
-    if (!examples.length) return
-
-    const lastExample = examples[examples.length - 1]
-
-    setExamples([
-      ...examples.slice(0, -1),
-      {
-        ...examples[examples.length - 1],
-        content: content ? content : lastExample.content,
-        translation: translation ? translation : lastExample.translation,
-        wordPosition: content ? getWordPositionInExample(content) : lastExample.wordPosition,
-        isGenerating,
-      },
-    ])
-  }, [content, translation, isGenerating])
 
   const handleGenerateExample = async (event?: React.MouseEvent) => {
     event?.stopPropagation()
@@ -81,8 +63,8 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
         ...examples,
         {
           vocabularyId: word.id,
-          content,
-          translation,
+          content: '',
+          translation: '',
           isAi: true,
           id: currentExampleId.current,
           innerId: currentExampleId.current,
@@ -103,6 +85,34 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
       }
     }
   }
+
+  const handleExampleGenerating = (data: { content: string; translation: string }) => {
+    setExamples((examples) => [
+      ...examples.slice(0, -1),
+      {
+        ...examples[examples.length - 1],
+        content: data.content,
+        translation: data.translation,
+        isGenerating: true,
+        wordPosition: getWordPositionInExample(data.content),
+      },
+    ])
+  }
+
+  const handleExampleGenerated = () => {
+    setExamples((examples) => [
+      ...examples.slice(0, -1),
+      {
+        ...examples[examples.length - 1],
+        isGenerating: false,
+      },
+    ])
+  }
+
+  const { isGenerating, generateExample } = useExampleStream(word.word, {
+    onGenerating: handleExampleGenerating,
+    onGenerated: handleExampleGenerated,
+  })
 
   const checkGenerateEnabled = () => {
     return !!settings.advanced.aiApiKey.trim()

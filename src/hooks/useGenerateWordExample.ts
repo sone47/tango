@@ -3,20 +3,26 @@ import { useMemo, useRef, useState } from 'react'
 
 import { useSettings } from './useSettings'
 
-export function useExampleStream(word: string) {
+interface GeneratedEventProps {
+  content: string
+  translation: string
+}
+
+interface EventsProps {
+  onGenerating?: (data: GeneratedEventProps) => void
+  onGenerated?: (data: GeneratedEventProps) => void
+}
+
+export function useExampleStream(word: string, events?: EventsProps) {
   const { settings } = useSettings()
 
-  const [content, setContent] = useState('')
-  const [translation, setTranslation] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
 
   const messages = useRef<{ role: 'system' | 'user' | 'assistant'; content: string }[]>([
     {
       role: 'system',
       content: `你是一个日语老师，请根据单词造句，生成一个例句（自然、符合语法），并给出翻译。每轮给出的例句与过去生成的场景和情境不一样，例句长度不要超过50个字符。
-输出格式为两行：
-例句: xxx
-翻译: yyy`,
+输出格式为两行，用换行符分隔。第一行为例句，第二行为中文翻译。`,
     },
     { role: 'user', content: `单词：[${word}]` },
   ])
@@ -31,10 +37,8 @@ export function useExampleStream(word: string) {
     [settings.advanced.aiApiKey]
   )
 
-  const _generateExample = async () => {
+  const generateExample = async () => {
     setIsGenerating(true)
-    setContent('')
-    setTranslation('')
 
     const response = await client.chat.completions.create({
       model: 'deepseek-chat',
@@ -44,6 +48,8 @@ export function useExampleStream(word: string) {
     })
 
     let buffer = ''
+    let content = ''
+    let translation = ''
 
     try {
       for await (const chunk of response) {
@@ -51,15 +57,11 @@ export function useExampleStream(word: string) {
         if (delta) {
           buffer += delta
 
-          const exMatch = buffer.match(/例句:\s*([^\n]+)/)
-          const trMatch = buffer.match(/翻译:\s*([^\n]+)/)
+          const [ex, tr] = buffer.split('\n')
+          content = ex
+          translation = tr
 
-          if (exMatch) {
-            setContent(exMatch[1])
-          }
-          if (trMatch) {
-            setTranslation(trMatch[1])
-          }
+          events?.onGenerating?.({ content, translation })
         }
       }
 
@@ -71,14 +73,11 @@ export function useExampleStream(word: string) {
         { role: 'user', content: `单词：[${word}]` }
       )
 
-      setTimeout(() => {
-        setContent('')
-        setTranslation('')
-      })
+      events?.onGenerated?.({ content, translation })
     } finally {
       setIsGenerating(false)
     }
   }
 
-  return { content, translation, isGenerating, generateExample: _generateExample }
+  return { isGenerating, generateExample }
 }
