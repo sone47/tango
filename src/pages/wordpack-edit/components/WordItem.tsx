@@ -60,7 +60,7 @@ const WordItem = ({
       <Dialog
         open={cardPreviewDialog.isOpen}
         onOpenChange={cardPreviewDialog.setIsOpen}
-        contentClassName="p-0 h-[300px] bg-transparent border-none"
+        contentClassName="p-0 h-[300px] bg-transparent border-none shadow-none"
         title="卡片信息预览"
         hideTitle
         showCloseButton={false}

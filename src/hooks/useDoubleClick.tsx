@@ -92,10 +92,6 @@ export function useDoubleClick({
 
   const handleEnd = useCallback(
     (e: React.MouseEvent | React.TouchEvent) => {
-      if (!isTouchEvent(e) && touchHandled.current) {
-        return
-      }
-
       if (isDragging.current) {
         isDragging.current = false
         startPoint.current = null
@@ -129,9 +125,8 @@ export function useDoubleClick({
   return {
     onMouseDown: handleStart,
     onMouseMove: handleMove,
-    onMouseUp: handleEnd,
+    onClick: handleEnd,
     onTouchStart: handleStart,
     onTouchMove: handleMove,
-    onTouchEnd: handleEnd,
   }
 }
