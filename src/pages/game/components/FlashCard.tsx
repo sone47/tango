@@ -195,6 +195,7 @@ const FlashCard = () => {
                 totalCount={totalCount}
                 variant={isFlipped ? 'dark' : 'light'}
                 className={isFlipped ? 'rotate-y-180' : ''}
+                wordId={word.id}
               />
             )}
             <FlashCardFront isFlipped={isFlipped} />
