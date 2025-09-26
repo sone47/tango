@@ -15,7 +15,12 @@ import RevealOverlay from './RevealOverlay'
 
 const cardItemNames = Object.keys(FlashCardItemNameMap) as (keyof typeof FlashCardItemNameMap)[]
 
-const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
+interface FlashCardFrontProps {
+  isFlipped: boolean
+  onAudioLoaded?: () => void
+}
+
+const FlashCardFront = ({ isFlipped, onAudioLoaded }: FlashCardFrontProps) => {
   const { settings } = useSettings()
   const { currentWordIndex, revealState, updateState, shuffledWords } = usePracticeStore()
   const { currentWordPack } = useCurrentWordPack()
@@ -78,6 +83,7 @@ const FlashCardFront = ({ isFlipped }: { isFlipped: boolean }) => {
               variant: 'primary',
               className: '!size-10 !p-8 rounded-2xl',
             }}
+            onPlayAvailable={onAudioLoaded}
           />
         )}
         <div className="w-full space-y-4">

@@ -16,6 +16,7 @@ export function useTTS(text: string) {
       console.error(error)
       toast.error('语音生成失败')
     },
+    dedupingInterval: 0,
   })
 
   return res

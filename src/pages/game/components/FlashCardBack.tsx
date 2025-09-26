@@ -22,9 +22,16 @@ interface FlashCardBackProps {
   className?: string
   onScroll: (isScrolling: boolean) => void
   isFlipped: boolean
+  exampleAudioLoadable: boolean
 }
 
-const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackProps) => {
+const FlashCardBack = ({
+  word,
+  className,
+  onScroll,
+  isFlipped,
+  exampleAudioLoadable,
+}: FlashCardBackProps) => {
   const navigate = useNavigate()
   const { settings } = useSettings()
   const generateDisabledDialog = useAlertDialog()
@@ -185,6 +192,7 @@ const FlashCardBack = ({ word, className, onScroll, isFlipped }: FlashCardBackPr
                     word={word}
                     onCollectToggleSuccess={handleCollectToggleSuccess}
                     shouldPlayAudio={index === examples.length - 1}
+                    audioLoadable={exampleAudioLoadable}
                   />
                 ))}
               </AnimatedList>

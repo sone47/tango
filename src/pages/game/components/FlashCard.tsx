@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import ProficiencySlider from '@/components/ProficiencySlider'
 import { FlashCardItemNameMap } from '@/constants/flashCard'
@@ -35,6 +35,14 @@ const FlashCard = () => {
   const [swipePrompt, setSwipePrompt] = useState<SwipePrompt>(SwipePrompt.None)
   const [isExampleScrolling, setIsExampleScrolling] = useState(false)
 
+  const [hintLoaded, setHintLoaded] = useState(false)
+  const [wordAudioLoaded, setWordAudioLoaded] = useState(false)
+
+  const exampleAudioLoadable = useMemo(
+    () => (hintLoaded && wordAudioLoaded) || isFlipped,
+    [hintLoaded, wordAudioLoaded, isFlipped]
+  )
+
   const isAllRevealed = cardItemNames.every((name) => revealState[name])
   const totalCount = shuffledWords.length
   const word = shuffledWords[currentWordIndex]
@@ -43,6 +51,9 @@ const FlashCard = () => {
     practiceService.getPracticeByVocabularyId(word.id).then((practice) => {
       setProficiency(practice?.proficiency ?? 0)
     })
+
+    setHintLoaded(false)
+    setWordAudioLoaded(false)
   }, [word.id])
 
   useEffect(() => {
@@ -158,6 +169,14 @@ const FlashCard = () => {
     delay: 200,
   })
 
+  const handleHinderLoaded = () => {
+    setHintLoaded(true)
+  }
+
+  const handleWordAudioLoaded = () => {
+    setWordAudioLoaded(true)
+  }
+
   return (
     <motion.div
       className="flex h-full w-full max-w-sm flex-col gap-4"
@@ -196,13 +215,16 @@ const FlashCard = () => {
                 variant={isFlipped ? 'dark' : 'light'}
                 className={isFlipped ? 'rotate-y-180' : ''}
                 wordId={word.id}
+                isFlipped={isFlipped}
+                onHinderLoaded={handleHinderLoaded}
               />
             )}
-            <FlashCardFront isFlipped={isFlipped} />
+            <FlashCardFront isFlipped={isFlipped} onAudioLoaded={handleWordAudioLoaded} />
             <FlashCardBack
               className="absolute top-0 left-0 h-full w-full p-4"
               word={word}
               isFlipped={isFlipped}
+              exampleAudioLoadable={exampleAudioLoadable}
               onScroll={handleExampleScroll}
             />
           </motion.div>

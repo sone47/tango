@@ -24,6 +24,7 @@ interface ExampleProps {
   example: ExampleItem
   shouldPlayAudio: boolean
   onCollectToggleSuccess: (example: ExampleItem) => void
+  audioLoadable: boolean
 }
 
 const ExampleComponent = ({
@@ -32,6 +33,7 @@ const ExampleComponent = ({
   word,
   onCollectToggleSuccess,
   shouldPlayAudio,
+  audioLoadable,
 }: ExampleProps) => {
   const [toggleStarLoading, setToggleStarLoading] = useState(false)
   const [isAudioAvailable, setIsAudioAvailable] = useState(false)
@@ -166,15 +168,17 @@ const ExampleComponent = ({
                   />
                 )}
               </Button>
-              <Speak
-                ref={speakRef}
-                autoPlay={isFlipped && shouldPlayAudio}
-                text={example.content}
-                buttonProps={{
-                  className: 'text-muted-foreground',
-                }}
-                onPlayAvailable={handlePlayAvailable}
-              />
+              {(audioLoadable || isAudioAvailable) && (
+                <Speak
+                  ref={speakRef}
+                  autoPlay={isFlipped && shouldPlayAudio}
+                  text={example.content}
+                  buttonProps={{
+                    className: 'text-muted-foreground',
+                  }}
+                  onPlayAvailable={handlePlayAvailable}
+                />
+              )}
             </div>
             {example.isAi && (
               <Badge variant="secondary" className="font-medium">

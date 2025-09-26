@@ -115,13 +115,15 @@ const Speak = forwardRef<SpeakRef, SpeakProps>(
     }, [])
 
     useEffect(() => {
+      if (ttsAudio.arrayBuffers.length) {
+        setTimeout(() => {
+          onPlayAvailable?.()
+        }, 100)
+      }
+
       if (isUrlPlay || !ttsAudio.arrayBuffers.length || autoPlay) return
 
       handleStop()
-
-      setTimeout(() => {
-        onPlayAvailable?.()
-      }, 100)
     }, [ttsAudio.arrayBuffers.length])
 
     useImperativeHandle(ref, () => ({

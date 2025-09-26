@@ -1,4 +1,4 @@
-import { Lightbulb, Loader2 } from 'lucide-react'
+import { Lightbulb } from 'lucide-react'
 import { useRef, useState } from 'react'
 
 import Button from '@/components/Button'
@@ -12,6 +12,8 @@ interface FlashCardHeaderProps {
   variant?: 'light' | 'dark'
   className?: string
   wordId?: number
+  isFlipped?: boolean
+  onHinderLoaded?: () => void
 }
 
 const FlashCardHeader = ({
@@ -20,6 +22,8 @@ const FlashCardHeader = ({
   variant = 'light',
   className = '',
   wordId,
+  isFlipped,
+  onHinderLoaded,
 }: FlashCardHeaderProps) => {
   const variantClasses = {
     light: 'bg-muted text-muted-foreground',
@@ -28,8 +32,8 @@ const FlashCardHeader = ({
 
   const { examples } = useExamples(wordId)
 
-  const speakRef = useRef<SpeakRef>(null)
   const [hintLoading, setHintLoading] = useState(true)
+  const speakRef = useRef<SpeakRef>(null)
 
   const handleShowHint = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -38,6 +42,7 @@ const FlashCardHeader = ({
 
   const handlePlayAvailable = () => {
     setHintLoading(false)
+    onHinderLoaded?.()
   }
 
   return (
@@ -47,19 +52,15 @@ const FlashCardHeader = ({
           <div className={`${variantClasses[variant]} rounded-full px-3 py-1 text-sm font-medium`}>
             {currentIndex + 1}/{totalCount}
           </div>
-          {examples[0]?.content && (
-            <div>
+          {examples.length ? (
+            <div className={cn((isFlipped || hintLoading) && 'hidden')}>
               <Button variant="ghost" size="icon" onClick={handleShowHint} className="!p-0">
-                {hintLoading ? (
-                  <Loader2 className="size-4 animate-spin" />
-                ) : (
-                  <Lightbulb className="text-primary size-4" />
-                )}
+                <Lightbulb className="text-primary size-4" />
               </Button>
               <Speak
                 ref={speakRef}
-                text={examples[0]?.content}
-                audioUrl={examples[0]?.audio}
+                text={examples[examples.length - 1]?.content}
+                audioUrl={examples[examples.length - 1]?.audio}
                 size="2xl"
                 buttonProps={{
                   variant: 'primary',
@@ -68,7 +69,7 @@ const FlashCardHeader = ({
                 onPlayAvailable={handlePlayAvailable}
               />
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </>
