@@ -1,5 +1,5 @@
 import { Lightbulb } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import Button from '@/components/Button'
 import Speak, { SpeakRef } from '@/components/Speak'
@@ -34,6 +34,12 @@ const FlashCardHeader = ({
 
   const [hintLoading, setHintLoading] = useState(true)
   const speakRef = useRef<SpeakRef>(null)
+
+  useEffect(() => {
+    if (isFlipped) {
+      speakRef.current?.stop()
+    }
+  }, [isFlipped])
 
   const handleShowHint = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
