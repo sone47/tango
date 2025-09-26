@@ -59,7 +59,7 @@ const FlashCardHeader = ({
             {currentIndex + 1}/{totalCount}
           </div>
           {examples.length ? (
-            <div className={cn((isFlipped || hintLoading) && 'hidden')}>
+            <div className={cn((isFlipped || hintLoading) && 'invisible')}>
               <Button variant="ghost" size="icon" onClick={handleShowHint} className="!p-0">
                 <Lightbulb className="text-primary size-4" />
               </Button>
