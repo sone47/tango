@@ -30,7 +30,13 @@ const FlashCardHeader = ({
     dark: 'bg-card text-muted-foreground',
   }
 
-  const { examples } = useExamples(wordId)
+  const { examples } = useExamples(wordId, {
+    onLoaded: (examples) => {
+      if (!examples.length) {
+        handlePlayAvailable()
+      }
+    },
+  })
 
   const [hintLoading, setHintLoading] = useState(true)
   const speakRef = useRef<SpeakRef>(null)
